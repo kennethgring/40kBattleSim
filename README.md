@@ -1,5 +1,8 @@
 # TableTopDamageL1_09
 
+## LINK TO GOOGLE DOC PROJECT SPECS
+https://docs.google.com/document/d/18cqy8gi2caCHGMhSnG-sYAwAHNzUV2VBMd70Hj5fMwQ/edit?usp=sharing
+
 
 
 ## Getting started

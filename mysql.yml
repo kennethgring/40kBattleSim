@@ -1,0 +1,19 @@
+# use the following command on our VM to connect to MySQL:
+# mysql -h localhost -P 12205 --protocol=TCP -u root -p
+
+# just a copy of .yml file running on our VM
+version: '3.8'
+services:
+  db2:
+    image: mysql/mysql-server:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: baktop09
+      MYSQL_DATABASE: 40kBattleSim
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - BattleData:/var/lib/mysql
+    ports:
+      - "12205:3306"
+volumes:
+  BattleData:

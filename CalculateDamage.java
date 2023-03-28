@@ -11,10 +11,15 @@ public class CalculateDamage {
         Defender defender = new Defender(10, 4, 4, 1, 6, false);
         
         double avgDamage = calcAvgDamage(attacker, weapon, defender);
-        int avgModelsKilled = calcAvgModelsKilled(avgDamage, weapon, defender);
+        int avgModelsKilled = calcModelsKilled(avgDamage, weapon, defender);
+        int simDamage = simAttackDamage(attacker, defender, weapon);
+        int simModelsKilled = calcModelsKilled(simDamage, weapon, defender);
 
         System.out.println("Average Total Damage: " + avgDamage);
         System.out.println("Average Models Killed: " + avgModelsKilled);
+        System.out.println("***********************");
+        System.out.println("Simulated Total Damage: " + simDamage);
+        System.out.println("Simulated Models Killed: " + simModelsKilled);
     }
 
     /**
@@ -108,7 +113,6 @@ public class CalculateDamage {
      * calcAverageDamage
      * 
      * TODO: Implement modifiers and re-rolls
-     * TODO: Make work as a helper method for both average and simulate
      * 
      * @param avgDamage the average total damage from an attack, calculated by the calcAvgDamage method
      * @param weapon Is an object which holds all the weapon data input by the user. The damage stat is the
@@ -118,7 +122,7 @@ public class CalculateDamage {
      * 
      * @return and int that shows the average number of defending models killed by the attack
      */
-    public static int calcAvgModelsKilled(double avgDamage, Weapon weapon, Defender defender) {
+    public static int calcModelsKilled(double avgDamage, Weapon weapon, Defender defender) {
         int modelsKilled = 0;
         int modelWounds = defender.getWounds();
         int fxdAvgDamage = (int)Math.floor(avgDamage); // Turns avgDamage into an int for this method
@@ -197,6 +201,6 @@ public class CalculateDamage {
      * @return A random number between 1 and 6
      */
     public static int rollD6() {
-        return (int) (Math.random() * 6) + 1;
+        return (int) ((Math.random() * 6) + 1);
     }
 }

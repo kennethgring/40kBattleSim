@@ -103,10 +103,7 @@ public class DemoApplication {
         if (userDataMap.containsKey(userId)) {
             response.addCookie(newCookie("user-id", userId));
         }
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/");
-        redirectView.setStatusCode(HttpStatus.SEE_OTHER);
-        return redirectView;
+        return seeHome();
     }
 
     /**
@@ -115,6 +112,13 @@ public class DemoApplication {
     @GetMapping("/clear")
     public RedirectView clear(HttpServletResponse response) {
         response.addCookie(newCookie("user-id", "", 0));
+        return seeHome();
+    }
+
+    /**
+     * Create an HTTP 303 See Other redirect to "/".
+     */
+    private static RedirectView seeHome() {
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
         redirectView.setStatusCode(HttpStatus.SEE_OTHER);

@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 @SpringBootApplication
 @Controller
@@ -71,7 +73,9 @@ public class DemoApplication {
             }
             userData.setRecipe(recipe);
             userDataMap.put(userID, userData);
-            response.addCookie(new Cookie("user-id", userID));
+            Cookie userIDCookie = new Cookie("user-id", userID);
+            userIDCookie.setPath("/");
+            response.addCookie(userIDCookie);
         } else {
             recipe = userData.getRecipe();
         }
@@ -82,15 +86,30 @@ public class DemoApplication {
     }
 
     @GetMapping("/share/{userID}")
-    @ResponseBody
-    public String share(@PathVariable String userID) {
-        return "You want to restore the user ID \"" + userID + "\".";
+    public RedirectView share(
+            @PathVariable String userID,
+            HttpServletResponse response) {
+        if (userDataMap.containsKey(userID)) {
+            Cookie userIDCookie = new Cookie("user-id", userID);
+            userIDCookie.setPath("/");
+            response.addCookie(userIDCookie);
+        }
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("/");
+        redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+        return redirectView;
     }
 
     @GetMapping("/clear")
-    @ResponseBody
-    public String clear() {
-        return "You want to reset your user ID.";
+    public RedirectView clear(HttpServletResponse response) {
+        Cookie userIDCookie = new Cookie("user-id", "");
+        userIDCookie.setPath("/");
+        userIDCookie.setMaxAge(0);
+        response.addCookie(userIDCookie);
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("/");
+        redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+        return redirectView;
     }
 
 }

@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,20 +55,26 @@ public class DemoApplication {
 
     @GetMapping("/")
     public String home(
-            @RequestParam(name="name", defaultValue="World") String name,
-            Model model) {
-        String userID = UUID.randomUUID().toString();
-        UserData userData = new UserData();
-        userDataMap.put(userID, userData);
+            @CookieValue(name="user-id", defaultValue="") String userID,
+            Model model,
+            HttpServletResponse response) {
+        UserData userData = userDataMap.get(userID);
+        boolean isNewUser = userData == null;
         String recipe;
-        try {
-            recipe = availableRecipes.pop();
-        } catch (NoSuchElementException e) {
-            recipe = null;
+        if (isNewUser) {
+            userID = UUID.randomUUID().toString();
+            userData = new UserData();
+            try {
+                recipe = availableRecipes.pop();
+            } catch (NoSuchElementException e) {
+                recipe = null;
+            }
+            userData.setRecipe(recipe);
+            userDataMap.put(userID, userData);
+            response.addCookie(new Cookie("user-id", userID));
+        } else {
+            recipe = userData.getRecipe();
         }
-        userData.setRecipe(recipe);
-
-        model.addAttribute("name", name);
         model.addAttribute("userID", userID);
         model.addAttribute("recipe", recipe);
         model.addAttribute("userDataMap", userDataMap.toString());

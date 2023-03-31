@@ -51,7 +51,7 @@ public class DemoApplication {
     }
 
     @GetMapping("/")
-    public String greeting(
+    public String home(
             @RequestParam(name="name", defaultValue="World") String name,
             Model model) {
         String userID = UUID.randomUUID().toString();
@@ -69,7 +69,7 @@ public class DemoApplication {
         model.addAttribute("userID", userID);
         model.addAttribute("recipe", recipe);
         model.addAttribute("userDataMap", userDataMap.toString());
-        return "greeting";
+        return "home";
     }
 
     @GetMapping("/share/{userID}")

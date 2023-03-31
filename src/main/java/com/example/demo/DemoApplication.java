@@ -60,6 +60,9 @@ public class DemoApplication {
         availableRecipes = new LinkedList<>(allRecipes);
     }
 
+    /**
+     * Display info about a user's ID and data.
+     */
     @GetMapping("/")
     public String home(
             @CookieValue(name="user-id", defaultValue="") String userId,
@@ -91,6 +94,9 @@ public class DemoApplication {
         return "home";
     }
 
+    /**
+     * Set the user ID cookie to the given string and redirect home.
+     */
     @GetMapping("/share/{userId}")
     public RedirectView share(
             @PathVariable String userId,
@@ -104,6 +110,9 @@ public class DemoApplication {
         return redirectView;
     }
 
+    /**
+     * Clear cookies.
+     */
     @GetMapping("/clear")
     public RedirectView clear(HttpServletResponse response) {
         response.addCookie(newCookie("user-id", "", 0));
@@ -113,18 +122,27 @@ public class DemoApplication {
         return redirectView;
     }
 
+    /**
+     * Create a cookie at the path "/".
+     */
     private static Cookie newCookie(String name, String value) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         return cookie;
     }
 
+    /**
+     * Create a cookie at the path "/" with the given expiry data.
+     */
     private static Cookie newCookie(String name, String value, int maxAge) {
         Cookie cookie = newCookie(name, value);
         cookie.setMaxAge(maxAge);
         return cookie;
     }
 
+    /**
+     * Format date and time for display.
+     */
     private static String formattedTime(OffsetDateTime dateTime) {
         return dateTime
             .withNano(0)

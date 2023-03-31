@@ -7,5 +7,7 @@
 <body>
     <p th:text="'Hello, ' + ${name} + '!'" />
     <p>Here's a UUID: <code th:text="${userID}" /></p>
+    <p th:text="'Here\'s a recipe: ' + ${recipe}" />
+    <p>Here's all the user data: <code th:text="${userDataMap}" /></p>
 </body>
 </html>

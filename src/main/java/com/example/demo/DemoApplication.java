@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class DemoApplication {
 
+    private static OffsetDateTime startupTime;
     private HashMap<String, UserData> userDataMap;
     private LinkedList<String> availableRecipes;
     private static final String[] allRecipesArray = new String[] {
@@ -45,6 +49,7 @@ public class DemoApplication {
     };
 
     public static void main(String[] args) {
+        startupTime = OffsetDateTime.now(ZoneId.systemDefault());
         SpringApplication.run(DemoApplication.class, args);
     }
 
@@ -82,7 +87,7 @@ public class DemoApplication {
         model.addAttribute("recipe", recipe != null ? recipe : "nothing");
         model.addAttribute("sorry",
                            recipe == null || recipe.contains("raisin"));
-        model.addAttribute("userDataMap", userDataMap.toString());
+        model.addAttribute("startupTime", formattedTime(startupTime));
         return "home";
     }
 
@@ -118,6 +123,13 @@ public class DemoApplication {
         Cookie cookie = newCookie(name, value);
         cookie.setMaxAge(maxAge);
         return cookie;
+    }
+
+    private static String formattedTime(OffsetDateTime dateTime) {
+        return dateTime
+            .withNano(0)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            .replaceFirst("T", " ");
     }
 
 }

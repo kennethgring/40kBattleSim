@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +48,7 @@ public class DemoApplication {
     };
 
     public static void main(String[] args) {
-        startupTime = OffsetDateTime.now(ZoneId.systemDefault());
+        startupTime = OffsetDateTime.now();
         SpringApplication.run(DemoApplication.class, args);
     }
 

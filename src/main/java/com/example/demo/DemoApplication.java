@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.UUID;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ public class DemoApplication {
             @RequestParam(name="name", defaultValue="World") String name,
             Model model) {
         model.addAttribute("name", name);
+        model.addAttribute("userID", UUID.randomUUID());
         return "greeting";
     }
 

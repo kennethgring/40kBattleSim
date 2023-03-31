@@ -77,8 +77,11 @@ public class DemoApplication {
         } else {
             recipe = userData.getRecipe();
         }
+        model.addAttribute("isNewUser", isNewUser);
         model.addAttribute("userId", userId);
-        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipe", recipe != null ? recipe : "nothing");
+        model.addAttribute("sorry",
+                           recipe == null || recipe.contains("raisin"));
         model.addAttribute("userDataMap", userDataMap.toString());
         return "home";
     }

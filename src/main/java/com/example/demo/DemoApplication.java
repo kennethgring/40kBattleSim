@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @SpringBootApplication
 @Controller
@@ -21,6 +23,18 @@ public class DemoApplication {
             Model model) {
         model.addAttribute("name", name);
         return "greeting";
+    }
+
+    @GetMapping("/share/{userID}")
+    @ResponseBody
+    public String share(@PathVariable String userID) {
+        return "You want to restore the user ID \"" + userID + "\".";
+    }
+
+    @GetMapping("/clear")
+    @ResponseBody
+    public String clear() {
+        return "You want to reset your user ID.";
     }
 
 }

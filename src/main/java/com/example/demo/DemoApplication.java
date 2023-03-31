@@ -57,14 +57,14 @@ public class DemoApplication {
 
     @GetMapping("/")
     public String home(
-            @CookieValue(name="user-id", defaultValue="") String userID,
+            @CookieValue(name="user-id", defaultValue="") String userId,
             Model model,
             HttpServletResponse response) {
-        UserData userData = userDataMap.get(userID);
+        UserData userData = userDataMap.get(userId);
         boolean isNewUser = userData == null;
         String recipe;
         if (isNewUser) {
-            userID = UUID.randomUUID().toString();
+            userId = UUID.randomUUID().toString();
             userData = new UserData();
             try {
                 recipe = availableRecipes.pop();
@@ -72,27 +72,27 @@ public class DemoApplication {
                 recipe = null;
             }
             userData.setRecipe(recipe);
-            userDataMap.put(userID, userData);
-            Cookie userIDCookie = new Cookie("user-id", userID);
-            userIDCookie.setPath("/");
-            response.addCookie(userIDCookie);
+            userDataMap.put(userId, userData);
+            Cookie userIdCookie = new Cookie("user-id", userId);
+            userIdCookie.setPath("/");
+            response.addCookie(userIdCookie);
         } else {
             recipe = userData.getRecipe();
         }
-        model.addAttribute("userID", userID);
+        model.addAttribute("userId", userId);
         model.addAttribute("recipe", recipe);
         model.addAttribute("userDataMap", userDataMap.toString());
         return "home";
     }
 
-    @GetMapping("/share/{userID}")
+    @GetMapping("/share/{userId}")
     public RedirectView share(
-            @PathVariable String userID,
+            @PathVariable String userId,
             HttpServletResponse response) {
-        if (userDataMap.containsKey(userID)) {
-            Cookie userIDCookie = new Cookie("user-id", userID);
-            userIDCookie.setPath("/");
-            response.addCookie(userIDCookie);
+        if (userDataMap.containsKey(userId)) {
+            Cookie userIdCookie = new Cookie("user-id", userId);
+            userIdCookie.setPath("/");
+            response.addCookie(userIdCookie);
         }
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
@@ -102,10 +102,10 @@ public class DemoApplication {
 
     @GetMapping("/clear")
     public RedirectView clear(HttpServletResponse response) {
-        Cookie userIDCookie = new Cookie("user-id", "");
-        userIDCookie.setPath("/");
-        userIDCookie.setMaxAge(0);
-        response.addCookie(userIDCookie);
+        Cookie userIdCookie = new Cookie("user-id", "");
+        userIdCookie.setPath("/");
+        userIdCookie.setMaxAge(0);
+        response.addCookie(userIdCookie);
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
         redirectView.setStatusCode(HttpStatus.SEE_OTHER);

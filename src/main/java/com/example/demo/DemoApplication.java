@@ -73,11 +73,7 @@ public class DemoApplication {
         if (isNewUser) {
             userId = UUID.randomUUID().toString();
             userData = new UserData();
-            try {
-                recipe = availableRecipes.pop();
-            } catch (NoSuchElementException e) {
-                recipe = null;
-            }
+            recipe = availableRecipes.pollFirst();
             userData.setRecipe(recipe);
             userDataMap.put(userId, userData);
             response.addCookie(newCookie("user-id", userId));

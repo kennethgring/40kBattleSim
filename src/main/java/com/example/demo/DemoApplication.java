@@ -73,9 +73,7 @@ public class DemoApplication {
             }
             userData.setRecipe(recipe);
             userDataMap.put(userId, userData);
-            Cookie userIdCookie = new Cookie("user-id", userId);
-            userIdCookie.setPath("/");
-            response.addCookie(userIdCookie);
+            response.addCookie(newCookie("user-id", userId));
         } else {
             recipe = userData.getRecipe();
         }
@@ -90,9 +88,7 @@ public class DemoApplication {
             @PathVariable String userId,
             HttpServletResponse response) {
         if (userDataMap.containsKey(userId)) {
-            Cookie userIdCookie = new Cookie("user-id", userId);
-            userIdCookie.setPath("/");
-            response.addCookie(userIdCookie);
+            response.addCookie(newCookie("user-id", userId));
         }
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
@@ -102,14 +98,23 @@ public class DemoApplication {
 
     @GetMapping("/clear")
     public RedirectView clear(HttpServletResponse response) {
-        Cookie userIdCookie = new Cookie("user-id", "");
-        userIdCookie.setPath("/");
-        userIdCookie.setMaxAge(0);
-        response.addCookie(userIdCookie);
+        response.addCookie(newCookie("user-id", "", 0));
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
         redirectView.setStatusCode(HttpStatus.SEE_OTHER);
         return redirectView;
+    }
+
+    private static Cookie newCookie(String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/");
+        return cookie;
+    }
+
+    private static Cookie newCookie(String name, String value, int maxAge) {
+        Cookie cookie = newCookie(name, value);
+        cookie.setMaxAge(maxAge);
+        return cookie;
     }
 
 }

@@ -2,6 +2,7 @@
 # mysql -h localhost -P 12205 --protocol=TCP -u root -p
 
 # just a copy of .yml file running on our VM
+# TODO: add phpMyAdmin support? not sure if necessary
 version: '3.8'
 services:
   db2:

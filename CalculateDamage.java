@@ -43,6 +43,9 @@ public class CalculateDamage {
 
         // All attacks that hit are totalled
         double hits;
+        int hitBonus = 0;
+        if (modifiers.getHitPlusOne()) {hitBonus++;}
+        if (modifiers.getHitMinusOne()) {hitBonus--;}
         if (weapon.getIsRanged()) {
             hits = weapon.getNum() * weapon.getAttacks() * ((7.0-attacker.getBalSkill())/6.0);
         } else {

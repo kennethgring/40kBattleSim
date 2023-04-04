@@ -1,5 +1,14 @@
 //import java.io.*;
-
+/*
+ * The CalculateDamage class has three major methods the user interacts with:
+ *  calcAvgDamage finds the average amount of damage inflicted by an attack given the dice probability
+ *  simAttackDamage simulates an actual attack by using Math.random() to simulate dice rolls
+ *  calcModelsKilled finds the number of models killed by an attack.
+ * 
+ * To use these methods first an Attacker, Weapon, Defender, and Modifiers object must be created. This
+ * will most likely be done automatically by a class that converts input information from the front end
+ * into this program. Defaults are provided if this is not the case.
+ */
 public class CalculateDamage {
     public static void main (String[] args) {
         // These are placeholder stats intended to fill the methods until we can create
@@ -40,23 +49,45 @@ public class CalculateDamage {
      * @return a double which shows the average total damage
      */
     public static double calcAvgDamage(Attacker attacker, Weapon weapon, Defender defender, Modifiers modifiers) {
-
-        // All attacks that hit are totalled
+        // Calculates the number of hits
         double hits;
+        int toHit = 0;
         int hitBonus = 0;
+        int attacks = weapon.getNum() * weapon.getAttacks();
         if (modifiers.getHitPlusOne()) {hitBonus++;}
         if (modifiers.getHitMinusOne()) {hitBonus--;}
+
+        // Finds the toHit value that will be subtracted from 7
         if (weapon.getIsRanged()) {
-            hits = weapon.getNum() * weapon.getAttacks() * ((7.0-attacker.getBalSkill())/6.0);
+            toHit = attacker.getBalSkill() + hitBonus;    
         } else {
-            hits = weapon.getNum() * weapon.getAttacks() * ((7.0-attacker.getWepSkill())/6.0);
+            toHit = attacker.getWepSkill() + hitBonus;   
         }
+
+        // If the toHit value is too high or too low, set it to 6 or 1 which are the maximum and minimum
+        // values even with modifiers.
+        if (toHit >= 7) {
+            toHit = 6;
+        } else if (toHit <= 0) {
+            toHit = 1;
+        }
+        hits = attacks * ((7.0-toHit)/6.0);
+
+        // If rerollOnes then reroll Ones, otherwise reroll all hits if that modifier is true
+        if (modifiers.getRerollHitsOne() && !modifiers.getRerollHits()) {
+            hits += (attacks / 6) * ((7.0-toHit)/6.0);
+        } else if (modifiers.getRerollHits()) {
+            int misses = attacks - (int)hits;
+            hits += misses * ((7.0-toHit)/6.0);
+        }
+        // TODO: explodingHits, mortalWoundHits
         
         // Then all the hits have to wound the opponent, the higher the strength the more likely it is
         double woundsDealt = hits * ((7.0 - toWound(weapon, defender))/6); 
+        // TODO: rerollWounds, mortalWoundWounds, extraAPWound
 
         // Then the defender has a chance to save against woundsDealt and feelNoPain unsaved damage
-        // TODO: Break up this equation into more local variables
+        // TODO: Break up this equation into more local variables. savePlus/MinusOne, rerollSave/One, damageMinusOne
         double avgDamage = (woundsDealt * (1 - ((7.0 - effSave(weapon, defender, modifiers))/6.0)) * 
             weapon.getDamage()) * (1 - ((7.0 - defender.getFeelNoPain())/6.0));
         return avgDamage;
@@ -89,6 +120,7 @@ public class CalculateDamage {
                 }
             }
         }
+        // TODO: hitPlus/MinusOne, rerollHits/rerollHitsOne, explodingHits, mortalWoundHits
         
         // Finds the number of hits that manage to wound
         int woundsDealt = 0;
@@ -98,6 +130,7 @@ public class CalculateDamage {
                 woundsDealt++;
             }
         }
+        // TODO: rerollWounds, mortalWoundWounds, extraAPWound
 
         int damageDealt = 0;
         int effSave = effSave(weapon, defender, modifiers);
@@ -113,14 +146,13 @@ public class CalculateDamage {
                 damageDealt--;
             }
         }
+        // TODO: savePlus/MinusOne, rerollSave/One, damageMinusOne
         return damageDealt;
     }
 
     /**
      * Calculates the average number of defending models killed from an attack. Must be invoked after
      * calcAverageDamage
-     * 
-     * TODO: Implement modifiers and re-rolls
      * 
      * @param avgDamage the average total damage from an attack, calculated by the calcAvgDamage method
      * @param weapon Is an object which holds all the weapon data input by the user. The damage stat is the
@@ -134,22 +166,29 @@ public class CalculateDamage {
         int modelsKilled = 0;
         int modelWounds = defender.getWounds();
         int fxdAvgDamage = (int)Math.floor(avgDamage); // Turns avgDamage into an int for this method
+        int damage = weapon.getDamage();
+        if (modifiers.getDamageMinusOne()) {
+            damage--;
+            if (damage <= 0) {
+                damage = 1;
+            }
+        }
         // Applies damage on a per-model basis (as explained in the damage parameter) until there is no more 
         // damage to apply
         while (fxdAvgDamage > 0) {
             // Edge case where there is more damage in the damage statistic than the damage total, so
             // the damage total is subtracted as subtracted the damage statistic would subtract more
             // damage than existed in the total.
-            if (weapon.getDamage() > fxdAvgDamage) {
+            if (damage > fxdAvgDamage) {
                 modelWounds -= fxdAvgDamage;
             } else {
-                modelWounds -= weapon.getDamage();
+                modelWounds -= damage;
             }
             if (modelWounds <= 0) {
                 modelsKilled++;
                 modelWounds = defender.getWounds();
             }
-            fxdAvgDamage -= weapon.getDamage();
+            fxdAvgDamage -= damage;
         }
         if (modelsKilled > defender.getSize()) {
             modelsKilled = defender.getSize();

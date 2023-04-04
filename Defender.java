@@ -4,15 +4,13 @@ public class Defender {
     private int save;
     private int wounds;
     private int feelNoPain;
-    private boolean invulSave;
 
-    public Defender(int size, int toughness, int save, int wounds, int feelNoPain, boolean invulSave) {
+    public Defender(int size, int toughness, int save, int wounds, int feelNoPain) {
         this.size = size;
         this.toughness = toughness;
         this.save = save;
         this.wounds = wounds;
         this.feelNoPain = feelNoPain;
-        this.invulSave = invulSave;
     }
 
     public int getSize() {
@@ -33,9 +31,5 @@ public class Defender {
 
     public int getFeelNoPain() {
         return this.feelNoPain;
-    }
-
-    public boolean getInvulSave() {
-        return this.invulSave;
     }
 }

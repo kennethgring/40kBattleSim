@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Page Title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+</style>
+<link rel="stylesheet" href="all.css">
+</head>
+<body>
+
+<header class="header">
+</header>
+
+<main>                  
+    <p>Damage Calculator</p><br><br>
+    <div class="content">
+    <p>Attacker Stats:</p><br>
+
+    <label for="atk_unit_name">Attacker Unit Name:</label>
+    <input type="text" id="atk_unit_name" name="atk_unit_name">
+
+    <label for="weapon">Weapon Name:</label>
+    <input type="text" id="weapon" name="weapon"><br><br>
+
+    <label for="skills">Ballistic/Weapons Skills: </label>
+    <select name="skills" id="skills">
+        <option value="null">--choose--</option>
+        <option value="10">10+</option>
+        <option value="9">9+</option>
+        <option value="8">8+</option>
+        <option value="7">7+</option>
+        <option value="6">6+</option>
+        <option value="5">5+</option>
+        <option value="4">4+</option>
+        <option value="3">3+</option>
+        <option value="2">2+</option>
+        <option value="1">1+</option>
+    </select>
+
+    <label for="attacks">Attacks:</label>
+    <input type="number" id="attacks" name="attacks" min="1" max="99">
+
+    <label for="strength">Strength: </label>
+    <select name="strength" id="strength">
+        <option value="null">--choose--</option>
+        <option value="6">6+</option>
+        <option value="5">5+</option>
+        <option value="4">4+</option>
+        <option value="3">3+</option>
+        <option value="2">2+</option>
+    </select>
+
+    <label for="armor_pen">Armor Penetration: </label>
+    <select name="armor_pen" id="armor_pen">
+        <option value="null">--choose--</option>
+        <option value="0">0</option>
+        <option value="-1">-1</option>
+        <option value="-2">-2</option>
+        <option value="-3">-3</option>
+        <option value="-4">-4</option>
+    </select>
+
+    <label for="damage">Damage:</label>
+    <input type="number" id="damage" name="damage" min="1" max="99"><br><br>
+
+    <p>Defender Stats:</p><br>
+
+    <label for="def_unit_name">Defender Unit Name:</label>
+    <input type="text" id="def_unit_name" name="def_unit_name">
+
+    <label for="size">Size:</label>
+    <input type="number" id="size" name="size" min="1" max="99"><br><br>
+
+    <label for="toughness">Toughness: </label>
+    <select name="toughness" id="toughness">
+        <option value="null">--choose--</option>
+        <option value="6">6+</option>
+        <option value="5">5+</option>
+        <option value="4">4+</option>
+        <option value="3">3+</option>
+        <option value="2">2+</option>
+    </select>
+
+    <label for="save">Save: </label>
+    <select name="save" id="save">
+        <option value="null">--choose--</option>
+        <option value="6">6+</option>
+        <option value="5">5+</option>
+        <option value="4">4+</option>
+        <option value="3">3+</option>
+        <option value="2">2+</option>
+    </select>
+
+    <label for="feel_no_pain">Feel no Pain:</label>
+    <input type="number" id="feel_no_pain" name="feel_no_pain" min="1" max="99"><br><br>
+    <a href="./calculate.html">
+        <button type="calculate">Calculate</button><br>
+    </a>
+    <button type="save">Save</button><br>
+    <a href="./compare.html">
+        <button type="comapare">Comapare</button><br>
+    </a>
+    </div>
+</main>
+</body>
+</html>

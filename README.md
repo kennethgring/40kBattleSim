@@ -8,13 +8,13 @@ in Java using the Spring framework.
 ## Running
 
 ```sh
-./mvnw spring-boot:run
+./mvnw
 ```
 
 Or, with a different port than the default, e.g. `8888`:
 
 ```sh
-PORT=8888 ./mvnw spring-boot:run
+PORT=8888 ./mvnw
 ```
 
 

@@ -1,8 +1,6 @@
-# Cookie Demo (with Spring)
+# Damage Calculator (with Spring)
 
-A replica of Owen's
-[Flask cookie demo app](https://git.doit.wisc.edu/cdis/cs/courses/cs506/sp2023/l1_09/cookie-demo)
-in Java using the Spring framework.
+A port of Patrick's Vaadin damage calculator app.
 
 
 ## Running

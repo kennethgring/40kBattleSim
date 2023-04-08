@@ -57,7 +57,7 @@ public class Application {
                 boolean defInvulSave,
             Model model,
             HttpServletResponse response) {
-        boolean wepIsRanged = wepType == "ranged";
+        boolean wepIsRanged = wepType.equals("ranged");
         model.addAttribute("atkBalSkill", atkBalSkill);
         model.addAttribute("atkWepSkill", atkWepSkill);
         model.addAttribute("wepNumber", wepNumber);

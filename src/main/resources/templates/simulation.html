@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>40kBattleSim</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: auto;
+  max-width: 80ch;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+
+<h1>40k Battle Sim</h1>
+
+<p><a href="/">Home</a></p>
+
+<pre>
+<span th:text="'atkBalSkill: ' + ${atkBalSkill}"/>
+<span th:text="'atkWepSkill: ' + ${atkWepSkill}"/>
+<span th:text="'wepNumber: ' + ${wepNumber}"/>
+<span th:text="'wepIsRanged: ' + ${wepIsRanged}"/>
+<span th:text="'wepAttacks: ' + ${wepAttacks}"/>
+<span th:text="'wepStrength: ' + ${wepStrength}"/>
+<span th:text="'wepArmorPen: ' + ${wepArmorPen}"/>
+<span th:text="'wepDamage: ' + ${wepDamage}"/>
+<span th:text="'defSize: ' + ${defSize}"/>
+<span th:text="'defToughness: ' + ${defToughness}"/>
+<span th:text="'defSave: ' + ${defSave}"/>
+<span th:text="'defWounds: ' + ${defWounds}"/>
+<span th:text="'defFnp: ' + ${defFnp}"/>
+<span th:text="'defInvulSave: ' + ${defInvulSave}"/>
+</pre>
+
+<p th:text="'Average Damage: ' + ${avgDamage}"/>
+<p th:text="'Average Models Killed: ' + ${avgModelsKilled}"/>
+
+
+</body>
+
+</html>

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Hello from Spring</title>
+  <title>40kBattleSim</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
 
@@ -24,7 +24,93 @@ body {
 <body>
 
 
-<h1>Hello world!</h1>
+<h1>40k Battle Sim</h1>
+
+<form method="get" action="/simulation">
+  <h2>Simulate Attack</h2>
+
+  <h3>Attacker Information</h3>
+  <p><label>
+    Ballistic Skill:
+    <input name="atk-bal-skill" type="number" min="0" max="10" required>
+  </label></p>
+  <p><label>
+    Weapon Skill:
+    <input name="atk-wep-skill" type="number" min="0" max="10" required>
+  </label></p>
+
+  <h3>Weapon Information</h3>
+  <p><label>
+    Number:
+    <input name="wep-number" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Type:
+    <select name="wep-type" required>
+      <option value="">Select Type</option>
+      <option value="melee">Melee</option>
+      <option value="ranged">Ranged</option>
+    </select>
+  </label></p>
+  <p><label>
+    Attacks:
+    <input name="wep-attacks" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Strength:
+    <input name="wep-strength" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Armor Penetration:
+    <input name="wep-armor-pen" type="number" min="-6" max="0" required>
+  </label></p>
+  <p><label>
+    Damage:
+    <input name="wep-damage" type="number" min="0" required>
+  </label></p>
+
+  <h3>Defender Information</h3>
+  <p><label>
+    Size:
+    <input name="def-size" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Toughness:
+    <input name="def-toughness" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Save:
+    <select name="def-save" required>
+      <option value="">Select Save</option>
+      <option value="2">2+</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+      <option value="7">7+</option>
+    </select>
+  </label></p>
+  <p><label>
+    Wounds:
+    <input name="def-wounds" type="number" min="0" max="10" required>
+  </label></p>
+  <p><label>
+    Feel No Pain:
+    <select name="def-fnp" required>
+      <option value="0">NA</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+    </select>
+  </label></p>
+  <p><label>
+    Invulnerability Save:
+    <input name="def-invul-save" type="checkbox">
+  </label></p>
+
+  <p><input type="submit" value="Simulate"></p>
+</form>
 
 
 </body>

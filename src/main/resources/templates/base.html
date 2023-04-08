@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html th:fragment="layout (title, content)">
+<head>
+  <meta charset="utf-8">
+  <th:block th:replace="${title}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: auto;
+  max-width: 80ch;
+}
+
+
+  </style>
+</head>
+<body>
+  <h1>40k Battle Sim</h1>
+  <th:block th:replace="${content}"/>
+</body>
+</html>

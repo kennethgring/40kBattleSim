@@ -52,3 +52,51 @@ CREATE TABLE 40kBattleSim.Calculations (
     FOREIGN KEY (weapon_id) REFERENCES 40kBattleSim.Weapon(`weapon_id`),
     FOREIGN KEY (defender_id) REFERENCES 40kBattleSim.Defender(`defender_id`)
 );
+
+
+-- Insertion of dummy testing data.
+-- User ID will be staticly coded at 0 (cookies will replace this later)
+
+-- Insert a test attacker row into Attacker table.
+-- test_attacker_1 has ballistic skill = 5 and weapon skill = 5
+-- No need to add in unit ID since it should be auto incremented by the table
+-- Attacker_ID = 1
+INSERT INTO 40kBattleSim.Attacker(user_id, unit_name, ballistic_skill, weapon_skill)
+VALUES (0, 'test_attacker_1', '5', '5');
+
+-- Insert a second test attacker row into Attacker table.
+-- test_attacker_2 has ballistic skill = 1 and weapon skill = 1
+-- No need to add in unit ID since it should be auto incremented by the table
+-- Attacker_ID = 2
+INSERT INTO 40kBattleSim.Attacker(user_id, unit_name, ballistic_skill, weapon_skill)
+VALUES (0, 'test_attacker_2', '1', '1');
+
+-- Insert a ballistic weapon into the Weapon table.
+-- weapon_type = 0 to indicate ballistic type
+-- No need to add in weapon ID since it should be auto incremented by the table
+-- References test_attacker_1 with ballistic skill of 5
+-- weapon_type = 0, attacks = 2, strength = 2, armor_pen = 2, damage = 4.1
+INSERT INTO 40kBattleSim.Weapon(user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage, attacker_id)
+VALUES (0, 0, 'test_ballistic', '2', '2', '2', '4.1', '1');
+
+-- Insert a non-ballistic weapon into the Weapon table.
+-- weapon_type = 1 to indicate non-ballistic type
+-- No need to add in weapon ID since it should be auto incremented by the table
+-- References test_attacker_2 with weapon skill of 1
+-- weapon_type = 1, attacks = 5, strength = 5, armor_pen = 5, damage = 1.0
+INSERT INTO 40kBattleSim.Weapon(user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage, attacker_id)
+VALUES (0, 1, 'test_non_ballistic', '5', '5', '5', '1.0', '2');
+
+-- Insert a defender into the Defender table.
+-- No need to add in defender_id since it should be auto-incremented by the table
+-- size = 1, toughness = 1, save = 1, wounds = 1, feel_no_pain = 3
+-- Defender ID = 1
+INSERT INTO 40kBattleSim.Defender(user_id, unit_name, size, toughness, save, wounds, feel_no_pain)
+VALUES (0, 'test_def_1', '1', '1', '1', '1', '3');
+
+-- Insert a defender into the Defender table.
+-- No need to add in defender_id since it should be auto-incremented by the table
+-- size = 4, toughness = 4, save = 3, wounds = 2, feel_no_pain = 1
+-- Defender ID = 2
+INSERT INTO 40kBattleSim.Defender(user_id, unit_name, size, toughness, save, wounds, feel_no_pain)
+VALUES (0, 'test_def_2', '4', '4', '3', '2', '1');

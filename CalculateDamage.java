@@ -40,8 +40,6 @@ public class CalculateDamage {
      * Calculates the average total damage of an attack between two units using one weapon type. Invoke multiple
      * times, once per weapon type in the attacking unit. 
      * 
-     * TODO: Implement modifiers and re-rolls
-     * 
      * @param attacker Is an object which holds all the attacker data input by the user
      * @param weapon Is an object which holds all the weapon data input by the user
      * @param defender Is an object which holds all the defender data input by the user
@@ -77,19 +75,68 @@ public class CalculateDamage {
         if (modifiers.getRerollHitsOne() && !modifiers.getRerollHits()) {
             hits += (attacks / 6) * ((7.0-toHit)/6.0);
         } else if (modifiers.getRerollHits()) {
-            int misses = attacks - (int)hits;
+            double misses = attacks - hits;
             hits += misses * ((7.0-toHit)/6.0);
         }
-        // TODO: explodingHits, mortalWoundHits
+        // Exploding hits
+        if (modifiers.getExplodingHits()) {
+            hits += (attacks / 6);
+        }
+        // Mortal wounds on hit rolls of 6
+        double mortalWounds = 0;
+        if (modifiers.getMortalWoundHits()) {
+            mortalWounds = (attacks / 6);
+        }
         
         // Then all the hits have to wound the opponent, the higher the strength the more likely it is
         double woundsDealt = hits * ((7.0 - toWound(weapon, defender))/6); 
-        // TODO: rerollWounds, mortalWoundWounds, extraAPWound
+        // Reroll wounds
+        if (modifiers.getRerollWounds()) {
+            double fails = hits - woundsDealt;
+            woundsDealt += fails * ((7.0 - toWound(weapon, defender))/6); 
+        }
+        // Mortal wounds on wound rolls of 6
+        if (modifiers.getMortalWoundWounds()) {
+            mortalWounds += (hits / 6);
+        }
+        // Set aside wounds that have an extra point of armor penetration
+        double extraAPWounds = 0;
+        double otherSave = effSave(weapon, defender, modifiers) - 1;
+        if (modifiers.getExtraAPWound()) {
+            extraAPWounds = (hits / 6);
+            woundsDealt -= extraAPWounds;
+            if (otherSave < 1) {
+                otherSave = 1;
+            }
+        }
 
         // Then the defender has a chance to save against woundsDealt and feelNoPain unsaved damage
-        // TODO: Break up this equation into more local variables. savePlus/MinusOne, rerollSave/One, damageMinusOne
-        double avgDamage = (woundsDealt * (1 - ((7.0 - effSave(weapon, defender, modifiers))/6.0)) * 
-            weapon.getDamage()) * (1 - ((7.0 - defender.getFeelNoPain())/6.0));
+        double unsavedWounds = woundsDealt * (1 - ((7.0 - effSave(weapon, defender, modifiers))/6.0));
+        double unsavedExtraAP = extraAPWounds * (1 - ((7.0 - otherSave)/6.0));
+        // Reroll saves of one, also contains rerolls for the separate extra AP wound track
+        if (modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
+            unsavedWounds -= (woundsDealt / 6) * ((7.0 - effSave(weapon, defender, modifiers))/6.0);
+            if (modifiers.getExtraAPWound()) {
+                unsavedExtraAP -= (extraAPWounds / 6) * ((7.0 - otherSave)/6.0);
+            }
+        } else if (modifiers.getRerollSave()) {
+            unsavedWounds -= unsavedWounds * ((7.0 - effSave(weapon, defender, modifiers))/6.0);
+            if (modifiers.getExtraAPWound()) {
+                unsavedExtraAP -= unsavedExtraAP * ((7.0 - otherSave)/6.0);
+            }
+        }
+
+        // Damage minus one
+        int damage = weapon.getDamage();
+        if (modifiers.getDamageMinusOne()) {
+            damage--;
+            if (damage <= 0) {
+                damage = 1;
+            }
+        }
+        // Damage is totalled, mortal wounds skip the save process but can still be blocked by feel no pain
+        double avgDamage = ((unsavedWounds + unsavedExtraAP) * damage) + mortalWounds; 
+        avgDamage -= avgDamage * ((7.0 - defender.getFeelNoPain())/6.0);
         return avgDamage;
     }
 
@@ -236,8 +283,19 @@ public class CalculateDamage {
     private static int effSave(Weapon weapon, Defender defender, Modifiers modifiers) {
          // Effective save, saves the value of a save minus armorPen
         int effSave = defender.getSave();
+        if(modifiers.getSavePlusOne()) {
+            effSave += 1;
+        }
+        if (modifiers.getSaveMinusOne()) {
+            effSave -= 1;
+        }
         if (!modifiers.getInvulSave()) {
             effSave = effSave + weapon.getArmorPen();
+        }
+        if (effSave >= 7) {
+            effSave = 6;
+        } else if (effSave <= 0) {
+            effSave = 1;
         }
         return effSave;
     }

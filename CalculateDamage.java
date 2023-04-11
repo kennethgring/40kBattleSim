@@ -11,9 +11,6 @@
  */
 public class CalculateDamage {
     public static void main (String[] args) {
-        // These are placeholder stats intended to fill the methods until we can create
-        // functionality for pulling stats from MySQL.
-        // TODO: Write code to import data from, and export data to the front end
         // IMPORTANT //
         // The new modifiers object contains the invulSave boolean that used to be in the Defender object.
 
@@ -145,8 +142,6 @@ public class CalculateDamage {
      * attack weapon. The simulation will use the rollD6() helper method to roll dice instead of using
      * the base probability to determine the numbers of hits, wounds, etc.
      * 
-     * TODO: Implement modifiers and re-rolls
-     * 
      * @param attacker Is an object which holds all the attacker data input by the user
      * @param weapon Is an object which holds all the weapon data input by the user
      * @param defender Is an object which holds all the defender data input by the user
@@ -154,46 +149,167 @@ public class CalculateDamage {
      * @return An int value showing the simulated number of damage produced by the attack
      */
     public static int simAttackDamage(Attacker attacker, Defender defender, Weapon weapon, Modifiers modifiers) {
+        int roll; // Used for all the dice rolling
         // Rolls all the dice in the attack and totals all the hits
         int hits = 0;
+        int hitBonus = 0;
+        int toHit = 0;
+        if (modifiers.getHitPlusOne()) {hitBonus++;}
+        if (modifiers.getHitMinusOne()) {hitBonus--;}
+        // toHit is the effective target values based off of bonuses
+        if (weapon.getIsRanged()) {
+            toHit = attacker.getBalSkill() + hitBonus;    
+        } else {
+            toHit = attacker.getWepSkill() + hitBonus;   
+        }
+        // Checks if the toHit is in the valid range and sets it within the defined range of 1-6
+        if (toHit >= 7) {
+            toHit = 6;
+        } else if (toHit <= 0) {
+            toHit = 1;
+        }
+
+        int mortalWounds = 0;
+        // Main toHit for loop, will roll every attack die
         for (int i = 0; i < (weapon.getNum() * weapon.getAttacks()); i++) {
-            if (weapon.getIsRanged()) {
-                if (rollD6() >= attacker.getBalSkill()) {
-                    hits++;
+            roll = rollD6();
+            if (roll >= (7 - toHit)) {
+                hits++;
+                if (roll == 6) {
+                    if (modifiers.getExplodingHits()) {
+                        hits++;
+                    }
+                    if (modifiers.getMortalWoundHits()) {
+                        mortalWounds++;
+                    }
                 }
-            } else {
-                if (rollD6() >= attacker.getWepSkill()) {
-                    hits++;
+            } else { // In case of rerolls
+                if (modifiers.getRerollHitsOne() && !modifiers.getRerollHits() && roll == 1) {
+                    roll = rollD6();
+                    if (roll >= (7 - toHit)) {
+                        hits++;
+                        if (roll == 6) {
+                            if (modifiers.getExplodingHits()) {
+                                hits++;
+                            }
+                            if (modifiers.getMortalWoundHits()) {
+                                mortalWounds++;
+                            }
+                        }
+                    }
+                } else if (modifiers.getRerollHits()) {
+                    roll = rollD6();
+                    if (roll >= (7 - toHit)) {
+                        hits++;
+                        if (roll == 6) {
+                            if (modifiers.getExplodingHits()) {
+                                hits++;
+                            }
+                            if (modifiers.getMortalWoundHits()) {
+                                mortalWounds++;
+                            }
+                        }
+                    }
                 }
             }
         }
-        // TODO: hitPlus/MinusOne, rerollHits/rerollHitsOne, explodingHits, mortalWoundHits
         
         // Finds the number of hits that manage to wound
         int woundsDealt = 0;
+        int extraAPWounds = 0;
         int toWound = toWound(weapon, defender);
         for (int i = 0; i < hits; i++) {
-            if (rollD6() >= toWound) {
+            roll = rollD6();
+            if (roll >= toWound) {
                 woundsDealt++;
+                if (roll == 6) {
+                    if (modifiers.getMortalWoundWounds()) {
+                        mortalWounds++;
+                    }
+                    if (modifiers.getExtraAPWound()) {
+                        woundsDealt--;
+                        extraAPWounds++;
+                    }
+                }
+            } else {
+                if (modifiers.getRerollWounds()) {
+                    roll = rollD6();
+                    if (roll >= toWound) {
+                        woundsDealt++;
+                        if (roll == 6) {
+                            if (modifiers.getMortalWoundWounds()) {
+                                mortalWounds++;
+                            }
+                            if (modifiers.getExtraAPWound()) {
+                                woundsDealt--;
+                                extraAPWounds++;
+                            }
+                        }
+                    }
+                }
             }
         }
-        // TODO: rerollWounds, mortalWoundWounds, extraAPWound
 
         int damageDealt = 0;
         int effSave = effSave(weapon, defender, modifiers);
-        // Finds the total unsaved damage
-        for (int i = 0; i < woundsDealt; i++) {
-            if (rollD6() < effSave) {
-                damageDealt += weapon.getDamage();
+        int damage = weapon.getDamage();
+        if (modifiers.getDamageMinusOne()) {
+            damage--;
+            if (damage <= 0) {
+                damage = 1;
             }
         }
+        // Create the separate wound track for extra ap wounds
+        if (modifiers.getExtraAPWound()) {
+            int otherSave = effSave - 1;
+            if (otherSave >= 7) {
+                otherSave = 6;
+            } else if (otherSave <= 0) {
+                otherSave = 1;
+            }
+            for (int i = 0; i < extraAPWounds; i++) {
+                roll = rollD6();
+                if (roll < otherSave) {
+                    if (roll == 1 && modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
+                        roll = rollD6();
+                        if (roll >= otherSave) {
+                            damageDealt -= damage;
+                        }
+                    } else if (modifiers.getRerollSave()) {
+                        roll = rollD6();
+                        if (roll >= otherSave) {
+                            damageDealt -= damage;
+                        }
+                    }
+                    damageDealt += damage;
+                }
+            }
+        }
+        // Finds the total unsaved damage
+        for (int i = 0; i < woundsDealt; i++) {
+            roll = rollD6();
+            if (roll < effSave) {
+                if (roll == 1 && modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
+                    roll = rollD6();
+                    if (roll >= effSave) {
+                        damageDealt -= damage;
+                    }
+                } else if (modifiers.getRerollSave()) {
+                    roll = rollD6();
+                    if (roll >= effSave) {
+                        damageDealt -= damage;
+                    }
+                }
+                damageDealt += damage;
+            }
+        }
+        damageDealt += mortalWounds;
         // Subtracts any damage blocked by feel no pain
         for (int i = 0; i < damageDealt; i++) {
             if (rollD6() >= defender.getFeelNoPain()) {
                 damageDealt--;
             }
         }
-        // TODO: savePlus/MinusOne, rerollSave/One, damageMinusOne
         return damageDealt;
     }
 

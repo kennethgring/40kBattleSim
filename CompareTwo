@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1 {text-align: center;}
+.hr {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Compare Two</h1>
+<!--This code will create the heading in the center. The text align in style makes it in the center.-->
+
+<!-- Start of the attributes for Simulation 1-->
+<h4>Attacking Units- </h4>
+<h4>Defending Units- </h4>
+<h4>Average Total Damage- </h4>
+<h4>Average Models Killed- </h4>
+<h4>Simulated Total Damage- </h4>
+<h4>Simulated Models Killed- </h4>
+<!-- End of the attributes for Simulation 1-->
+
+<div class="hr"></div> <!-- This creates the horizontal line between the two sepearate elements-->
+
+<!-- Start of the attributes for Simulation 2-->
+<h4>Attacking Units- </h4>
+<h4>Defending Units- </h4>
+<h4>Average Total Damage- </h4>
+<h4>Average Models Killed- </h4>
+<h4>Simulated Total Damage- </h4>
+<h4>Simulated Models Killed- </h4>
+<!-- End of the attributes for Simulation 2-->
+
+<!-- Button that will take the user back to the home page-->
+<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'><button>Home Page</button></a>
+</body>
+<!--TODO
+Make it so that the color sheme of the page can be changed
+Color options should include Light (Black text on white background)
+Dark (White text on black background) and Badger (White text on red background)
+Change the link of the button to the home page-->
+</html>

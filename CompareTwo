@@ -40,8 +40,21 @@ h1 {text-align: center;}
 <h4>Simulated Models Killed- </h4>
 <!-- End of the attributes for Simulation 2-->
 
+<br> <!-- Page break for formatting-->
+
+<!-- Gets input for the first simulation-->
+<label for="Compare">Compare</label>
+<input type="text" id="sim1" name="simulation1">
+
+<!-- Gets input for the second simulation-->
+<label for="To">To</label>
+<input type="text" id="sim2" name="simulation2">
+
+<!-- This is the button that will go get the comparison data-->
+<button type="Do Comparison">Do Comparison</button>
+
 <!-- Button that will take the user back to the home page-->
-<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'><button>Home Page</button></a>
+<h4></h4><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'><button>Home Page</button></a>
 </body>
 <!--TODO
 Make it so that the color sheme of the page can be changed

@@ -63,8 +63,8 @@ public class CalculateDamage {
         // values even with modifiers.
         if (toHit >= 7) {
             toHit = 6;
-        } else if (toHit <= 0) {
-            toHit = 1;
+        } else if (toHit <= 1) {
+            toHit = 2;
         }
         hits = attacks * ((7.0-toHit)/6.0);
 
@@ -102,8 +102,8 @@ public class CalculateDamage {
         if (modifiers.getExtraAPWound()) {
             extraAPWounds = (hits / 6);
             woundsDealt -= extraAPWounds;
-            if (otherSave < 1) {
-                otherSave = 1;
+            if (otherSave <= 1) {
+                otherSave = 2;
             }
         }
 
@@ -165,8 +165,8 @@ public class CalculateDamage {
         // Checks if the toHit is in the valid range and sets it within the defined range of 1-6
         if (toHit >= 7) {
             toHit = 6;
-        } else if (toHit <= 0) {
-            toHit = 1;
+        } else if (toHit <= 1) {
+            toHit = 2;
         }
 
         int mortalWounds = 0;
@@ -261,11 +261,11 @@ public class CalculateDamage {
         }
         // Create the separate wound track for extra ap wounds
         if (modifiers.getExtraAPWound()) {
-            int otherSave = effSave - 1;
+            int otherSave = effSave + 1;
             if (otherSave >= 7) {
                 otherSave = 6;
-            } else if (otherSave <= 0) {
-                otherSave = 1;
+            } else if (otherSave <= 1) {
+                otherSave = 2;
             }
             for (int i = 0; i < extraAPWounds; i++) {
                 roll = rollD6();
@@ -410,8 +410,8 @@ public class CalculateDamage {
         }
         if (effSave >= 7) {
             effSave = 6;
-        } else if (effSave <= 0) {
-            effSave = 1;
+        } else if (effSave <= 1) {
+            effSave = 2;
         }
         return effSave;
     }

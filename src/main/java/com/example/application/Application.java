@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -94,36 +95,36 @@ public class Application {
     /**
      * Add a new weapon.
      */
-    @GetMapping("/new-weapon")
+    @PostMapping("/new-weapon")
     public String NewWeapon() {
-
-        return "new-weapon";
+        System.out.println("created new weapon");
+        return "home";
     }
 
     /**
      * Add a new attacker.
      */
-    @GetMapping("/new-attacker")
+    @PostMapping("/new-attacker")
     public String NewAttacker() {
-
-        return "new-attacker";
+        System.out.println("created new attacker");
+        return "home";
     }
 
     /**
      * Add a new attacker.
      */
-    @GetMapping("/new-defender")
+    @PostMapping("/new-defender")
     public String NewDefender() {
-
-        return "new-defender";
+        System.out.println("created new defender");
+        return "home";
     }
 
     /**
      * Add a new simulation.
      */
-    @GetMapping("/new-simulation")
+    @PostMapping("/new-simulation")
     public String NewSimulation() {
-
-        return "new-simulation";
+        System.out.println("created new simulation");
+        return "simulation";
     }   
 }

@@ -38,7 +38,7 @@ Loads all the weapons the user has access to, including pre-filled ones.
 Loads all the defenders the user has access to, including pre-filled
 ones.
 
-## `List<Simulation> loadSimulations(UserId userId)`
+## `List<Entry<Simulation>> loadSimulations(UserId userId)`
 
 Loads all the simulations the user has saved.
 

@@ -172,7 +172,7 @@ public class Application {
                               @RequestParam(name="def-minus-one-to-damage", defaultValue="off")
                 boolean defMinusOneToDamage,
                               Model model,
-                              HttpServletResponse response) {) {
+                              HttpServletResponse response) { 
         System.out.println("created new defender");
         return "home";
     }

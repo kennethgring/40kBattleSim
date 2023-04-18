@@ -31,8 +31,16 @@ public class Application {
 
     public Application() {
         attackers = new LinkedList<>();
+        attackers.add(new SimpleUnit("Warriarch Hammerius"));
+        attackers.add(new SimpleUnit("Stabbystab, the Attackist"));
         weapons = new LinkedList<>();
+        weapons.add(new SimpleUnit("Damascus Longsword"));
+        weapons.add(new SimpleUnit("The Slayinator"));
+        weapons.add(new SimpleUnit("Combination Laser Minigun and Chainsaw "
+                                   + "Launcher"));
         defenders = new LinkedList<>();
+        defenders.add(new SimpleUnit("Invictus the Unpuncturable"));
+        defenders.add(new SimpleUnit("Shield Guy"));
         simulations = new LinkedList<>();
     }
 

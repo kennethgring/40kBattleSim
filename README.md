@@ -4,6 +4,17 @@ This is a rough draft.
 Do it differently if you have a better idea.
 
 
+## `boolean userExists(UserId userId)`
+
+Return whether the user ID is that of an existing user.
+
+## `void addUser(UserId userId)`
+
+Add the user ID to the list of known users.
+
+*Optional.*
+*May be implemented in the other methods, or may be unnecessary.*
+
 ## `Entry<Attacker> saveAttacker(UserId userId, Attacker attacker)`
 
 Save attacker.

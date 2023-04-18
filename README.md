@@ -75,13 +75,17 @@ the user has access to it.
 
 ## `class UserId`
 
-Probably just a String or integer, in which case we would just use those
-classes directly.
+User ID type.
+
+*Probably just a String or integer, in which case we would just use that
+type directly.*
 
 ## `class Pk`
 
 Primary key type.
-Probably just an integer.
+
+*Probably just an integer, in which case we would just use the int type
+directly.*
 
 ## `class Simulation`
 

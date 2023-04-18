@@ -5,7 +5,7 @@ public interface Bridge {
     Entry<Attacker> saveAttacker(UserId userId, Attacker attacker);
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
     Entry<Defender> saveDefender(UserId userId, Defender defender);
-    boolean saveSimulation(UserId userId, Pk attackerPk, Pk weaponPk, Pk defenderPk, Modifiers modifiers, FixedSimResults results);
+    boolean saveSimulation(UserId userId, Pk attackerPk, Pk weaponPk, Pk defenderPk, Modifiers modifiers, Simulation results);
     List<Entry<Attacker>> loadAttackers(UserId userId);
     List<Entry<Weapon>> loadWeapons(UserId userId);
     List<Entry<Defender>> loadDefenders(UserId userId);

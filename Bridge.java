@@ -31,22 +31,6 @@ class Entry<UnitType> {
     // Fields and methods for Entry class
 }
 
-class Attacker {
-    // Fields and methods for Attacker class
-}
-
-class Weapon {
-    // Fields and methods for Weapon class
-}
-
-class Defender {
-    // Fields and methods for Defender class
-}
-
-class Modifiers {
-    // Fields and methods for Modifiers class
-}
-
 class UnitType {
     // Fields and methods for UnitType class
     // This class can be extended by Attacker, Weapon, and Defender classes

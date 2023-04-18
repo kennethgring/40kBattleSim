@@ -1,6 +1,6 @@
-# Damage Calculator (with Spring)
+# Simulation of 40kBattleSim
 
-A port of Patrick's Vaadin damage calculator app.
+The general design of 40kBattleSim's frontend.
 
 
 ## Running

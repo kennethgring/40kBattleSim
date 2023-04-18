@@ -97,10 +97,9 @@ adds a simulation.
 
 *If no such data is saved, then this class is completely unnecessary.*
 
-## `class Entry<UnitType>`
+## `class Entry<Unit>`
 
-Represents a UnitType in the database.
-Contains the UnitType object, the UserId of its owner, and its primary
-key.
+Represents a Unit in the database.
+Contains the Unit object, the UserId of its owner, and its primary key.
 
-*Or maybe we should add these extra fields to the UnitType classes...*
+*Or maybe we should add these extra fields to the Unit classes...*

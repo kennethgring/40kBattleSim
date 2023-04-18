@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
@@ -53,6 +54,40 @@ public class Application {
         model.addAttribute("weapons", weapons);
         model.addAttribute("defenders", defenders);
         return "home";
+    }
+
+    @PostMapping("/submit/new-attacker")
+    public RedirectView newAttacker(
+            @RequestParam(name="name") String name,
+            HttpServletResponse response) {
+        attackers.add(new SimpleUnit(name));
+        return seeOther("/");
+    }
+
+    @PostMapping("/submit/new-weapon")
+    public RedirectView newWeapon(
+            @RequestParam(name="name") String name,
+            HttpServletResponse response) {
+        weapons.add(new SimpleUnit(name));
+        return seeOther("/");
+    }
+
+    @PostMapping("/submit/new-defender")
+    public RedirectView newDefender(
+            @RequestParam(name="name") String name,
+            HttpServletResponse response) {
+        defenders.add(new SimpleUnit(name));
+        return seeOther("/");
+    }
+
+    /**
+     * Create an HTTP 303 See Other redirect to the given path.
+     */
+    private RedirectView seeOther(String path) {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(path);
+        redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+        return redirectView;
     }
 
 }

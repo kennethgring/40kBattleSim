@@ -12,9 +12,6 @@ Return whether the user ID is that of an existing user.
 
 Add the user ID to the list of known users.
 
-*Optional.*
-*May be implemented in the other methods, or may be unnecessary.*
-
 ## `boolean saveAttacker(UserId userId, Attacker attacker)`
 
 Save attacker.

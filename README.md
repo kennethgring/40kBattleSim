@@ -19,7 +19,7 @@ Returns null on failure.
 Save defender.
 Returns null on failure.
 
-## `boolean saveSimulation(UserId, Pk attackerPk, Pk weaponPk, Pk defenderPk, Modifiers modifiers, FixedSimResults results)`
+## `boolean saveSimulation(UserId userId, Pk attackerPk, Pk weaponPk, Pk defenderPk, Modifiers modifiers, FixedSimResults results)`
 
 Save simulation.
 Return success status.
@@ -41,6 +41,26 @@ ones.
 ## `List<Entry<Simulation>> loadSimulations(UserId userId)`
 
 Loads all the simulations the user has saved.
+
+## `Entry<Attacker> getAttacker(UserId userId, Pk pk)`
+
+Get the attacker with the corresponding primary key, if it exists and
+the user has access to it.
+
+## `Entry<Weapon> getWeapon(UserId userId, Pk pk)`
+
+Get the weapon with the corresponding primary key, if it exists and
+the user has access to it.
+
+## `Entry<Defender> getDefender(UserId userId, Pk pk)`
+
+Get the defender with the corresponding primary key, if it exists and
+the user has access to it.
+
+## `Entry<Simulation> getSimulation(UserId userId, Pk pk)`
+
+Get the simulation with the corresponding primary key, if it exists and
+the user has access to it.
 
 ## `class UserId`
 

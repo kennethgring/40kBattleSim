@@ -47,7 +47,7 @@ public class Application {
     }
 
     /**
-     * Show the simulation form.
+     * Show forms to add units and simulations.
      */
     @GetMapping("/")
     public String home(Model model, HttpServletResponse response) {
@@ -55,6 +55,15 @@ public class Application {
         model.addAttribute("weapons", weapons);
         model.addAttribute("defenders", defenders);
         return "home";
+    }
+
+    /**
+     * Show saved simulations.
+     */
+    @GetMapping("/simulations")
+    public String comparisonPage(Model model, HttpServletResponse response) {
+        model.addAttribute("simulations", simulations);
+        return "simulations";
     }
 
     @PostMapping("/submit/new-attacker")

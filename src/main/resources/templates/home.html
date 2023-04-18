@@ -39,7 +39,7 @@
     Attacker:
     <select name="attacker" required>
       <option value=""></option>
-      <th:block th:each="element: ${attackers}">
+      <th:block th:each="element : ${attackers}">
         <option th:value="${element.name}" th:text="${element.name}">
       </th:block>
     </select>
@@ -48,7 +48,7 @@
     Weapon:
     <select name="weapon" required>
       <option value=""></option>
-      <th:block th:each="element: ${weapons}">
+      <th:block th:each="element : ${weapons}">
         <option th:value="${element.name}" th:text="${element.name}">
       </th:block>
     </select>
@@ -57,7 +57,7 @@
     Defender:
     <select name="defender" required>
       <option value=""></option>
-      <th:block th:each="element: ${defenders}">
+      <th:block th:each="element : ${defenders}">
         <option th:value="${element.name}" th:text="${element.name}">
       </th:block>
     </select>

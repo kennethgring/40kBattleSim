@@ -1,6 +1,7 @@
 package com.example.application;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -80,6 +81,26 @@ public class Application {
         return seeOther("/");
     }
 
+    @PostMapping("/submit/new-simulation")
+    public RedirectView newSimulation(
+            @RequestParam(name="attacker") String attackerName,
+            @RequestParam(name="weapon") String weaponName,
+            @RequestParam(name="defender") String defenderName,
+            @RequestParam(name="modifiers") String modifiersName,
+            HttpServletResponse response) {
+        SimpleUnit attacker = findUnitWithName(attackers, attackerName);
+        SimpleUnit weapon = findUnitWithName(weapons, weaponName);
+        SimpleUnit defender = findUnitWithName(defenders, defenderName);
+        if (attacker == null || weapon == null || defender == null) {
+            throw new NullPointerException();
+        }
+        SimpleUnit modifiers = new SimpleUnit(modifiersName);
+        SimpleSimulation simulation =
+            new SimpleSimulation(attacker, weapon, defender, modifiers);
+        simulations.add(simulation);
+        return seeOther("/simulations");
+    }
+
     /**
      * Create an HTTP 303 See Other redirect to the given path.
      */
@@ -88,6 +109,18 @@ public class Application {
         redirectView.setUrl(path);
         redirectView.setStatusCode(HttpStatus.SEE_OTHER);
         return redirectView;
+    }
+
+    /**
+     * Find a SimpleUnit with a given name in a list.
+     */
+    private SimpleUnit findUnitWithName(List<SimpleUnit> list, String name) {
+        for (SimpleUnit element : list) {
+            if (element.getName().equals(name)) {
+                return element;
+            }
+        }
+        return null;
     }
 
 }

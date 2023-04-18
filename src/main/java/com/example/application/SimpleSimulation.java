@@ -1,6 +1,6 @@
 package com.example.application;
 
-class SimpleSimulation {
+public class SimpleSimulation {
     private SimpleUnit attacker;
     private SimpleUnit weapon;
     private SimpleUnit defender;

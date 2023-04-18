@@ -1,6 +1,6 @@
 package com.example.application;
 
-class SimpleUnit {
+public class SimpleUnit {
     private String name;
     public String getName() {
         return name;

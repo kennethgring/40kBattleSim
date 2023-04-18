@@ -17,6 +17,15 @@ class UserId {
 
 class Pk {
     // Fields and methods for Pk class
+    private int pk;
+
+    public Pk(int pk) {
+        this.pk = pk;
+    }
+
+    public int getPk() {
+        return this.pk;
+    }
 }
 
 class Simulation {

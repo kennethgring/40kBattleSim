@@ -1,5 +1,7 @@
 package com.example.application;
 
+import java.util.LinkedList;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.SpringApplication;
@@ -18,8 +20,20 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class Application {
 
+    private LinkedList<SimpleUnit> attackers;
+    private LinkedList<SimpleUnit> weapons;
+    private LinkedList<SimpleUnit> defenders;
+    private LinkedList<SimpleSimulation> simulations;
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+    }
+
+    public Application() {
+        attackers = new LinkedList<>();
+        weapons = new LinkedList<>();
+        defenders = new LinkedList<>();
+        simulations = new LinkedList<>();
     }
 
     /**

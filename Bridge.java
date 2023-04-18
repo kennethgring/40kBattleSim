@@ -1,4 +1,5 @@
 import java.util.*;
+import java.sql.*;
 
 public interface Bridge {
     Entry<Attacker> saveAttacker(UserId userId, Attacker attacker);
@@ -13,6 +14,15 @@ public interface Bridge {
 
 class UserId {
     // Fields and methods for UserId class
+    private int id;
+
+    public UserId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }
 
 class Pk {
@@ -28,13 +38,67 @@ class Pk {
     }
 }
 
+// Contains all the inputs and outputs for a simulation. Provides access to static average values and
+// the ability to re-run simulations.
 class Simulation {
     // Fields and methods for Simulation class
+    private Attacker attacker;
+    private Weapon weapon;
+    private Defender defender;
+    private Modifiers modifiers;
+
+    private double avgDamage;
+    private int avgModelsKilled;
+
+    private int simDamage;
+    private int simModelsKilled;
+
+    public Simulation(Attacker attacker, Weapon weapon, Defender defender, Modifiers modifiers) {
+        this.attacker = attacker;
+        this.weapon = weapon;
+        this.defender = defender;
+        this.modifiers = modifiers;
+
+        this.avgDamage = CalculateDamage.calcAvgDamage(this.attacker, this.weapon, this.defender, this.modifiers);
+        this.avgModelsKilled = CalculateDamage.calcModelsKilled(this.avgDamage, this.weapon, this.defender, this.modifiers);
+
+        this.simDamage = CalculateDamage.simAttackDamage(this.attacker, this.defender, this.weapon, this.modifiers);
+        this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
+    }
+
+    // Both values are calculated once and never touched again by the calculation
+    public double getAvgDamage() {
+        return this.avgDamage;
+    }
+    public int getAvgModelsKilled() {
+        return this.avgModelsKilled;
+    }
+
+    // Getters for simulated attack outputs
+    public int getSimDamage() {
+        return this.simDamage;
+    }
+    public int getSimModelsKilled() {
+        return this.simModelsKilled;
+    }
+    // Simulates another attack, replacing the previous values
+    public void reSimulate() {
+        this.simDamage = CalculateDamage.simAttackDamage(this.attacker, this.defender, this.weapon, this.modifiers);
+        this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
+    }
 }
 
+/* Merged this class with the simulation class
 class FixedSimResults {
     // Fields and methods for FixedSimResults class
+    private double avgDamage;
+    private double avgModelsKilled;
+
+    public FixedSimResults(Attacker attacker, Weapon weapon, Defender defender) {
+
+    }
 }
+*/
 
 class Entry<UnitType> {
     // Fields and methods for Entry class

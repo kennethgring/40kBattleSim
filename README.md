@@ -15,20 +15,20 @@ Add the user ID to the list of known users.
 *Optional.*
 *May be implemented in the other methods, or may be unnecessary.*
 
-## `Entry<Attacker> saveAttacker(UserId userId, Attacker attacker)`
+## `boolean saveAttacker(UserId userId, Attacker attacker)`
 
 Save attacker.
-Returns null on failure.
+Return success status.
 
-## `Entry<Weapon> saveWeapon(UserId userId, Weapon weapon)`
+## `boolean saveWeapon(UserId userId, Weapon weapon)`
 
 Save weapon.
-Returns null on failure.
+Return success status.
 
-## `Entry<Defender> saveDefender(UserId userId, Defender defender)`
+## `boolean saveDefender(UserId userId, Defender defender)`
 
 Save defender.
-Returns null on failure.
+Return success status.
 
 ## `boolean saveSimulation(UserId userId, Pk attackerPk, Pk weaponPk, Pk defenderPk, Modifiers modifiers, FixedSimResults results)`
 

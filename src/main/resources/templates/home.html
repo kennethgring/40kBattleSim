@@ -4,93 +4,246 @@
     <title>40kBattleSim</title>
   </head>
   <body><section th:remove="tag">
-
-
-<form method="get" action="/simulation">
-  <h2>Simulate Attack</h2>
-
-  <h3>Attacker Information</h3>
-  <p><label>
-    Ballistic Skill:
-    <input name="atk-bal-skill" type="number" min="0" max="10" required>
-  </label></p>
-  <p><label>
-    Weapon Skill:
-    <input name="atk-wep-skill" type="number" min="0" max="10" required>
-  </label></p>
-
-  <h3>Weapon Information</h3>
-  <p><label>
-    Number:
-    <input name="wep-number" type="number" min="1" required>
-  </label></p>
-  <p><label>
-    Type:
-    <select name="wep-type" required>
-      <option value="">Select Type</option>
-      <option value="melee">Melee</option>
-      <option value="ranged">Ranged</option>
-    </select>
-  </label></p>
-  <p><label>
-    Attacks:
-    <input name="wep-attacks" type="number" min="1" required>
-  </label></p>
-  <p><label>
-    Strength:
-    <input name="wep-strength" type="number" min="1" required>
-  </label></p>
-  <p><label>
-    Armor Penetration:
-    <input name="wep-armor-pen" type="number" min="-6" max="0" required>
-  </label></p>
-  <p><label>
-    Damage:
-    <input name="wep-damage" type="number" min="0" required>
-  </label></p>
-
-  <h3>Defender Information</h3>
-  <p><label>
-    Size:
-    <input name="def-size" type="number" min="1" required>
-  </label></p>
-  <p><label>
-    Toughness:
-    <input name="def-toughness" type="number" min="1" required>
-  </label></p>
-  <p><label>
-    Save:
-    <select name="def-save" required>
-      <option value="">Select Save</option>
-      <option value="2">2+</option>
-      <option value="3">3+</option>
-      <option value="4">4+</option>
-      <option value="5">5+</option>
-      <option value="6">6+</option>
-      <option value="7">7+</option>
-    </select>
-  </label></p>
-  <p><label>
-    Wounds:
-    <input name="def-wounds" type="number" min="0" max="10" required>
-  </label></p>
-  <p><label>
-    Feel No Pain:
-    <select name="def-fnp" required>
-      <option value="0">NA</option>
-      <option value="3">3+</option>
-      <option value="4">4+</option>
-      <option value="5">5+</option>
-      <option value="6">6+</option>
-    </select>
-  </label></p>
-  <p><label>
-    Invulnerability Save:
-    <input name="def-invul-save" type="checkbox">
-  </label></p>
-
-  <p><input type="submit" value="Simulate"></p>
-</form>
+    <form method="post" action="/new-weapon">
+      <h2>Create Weapon</h2>
+      <p><label>
+        Name:
+        <input name="name" type="text" required>
+      </label></p>
+      <p><label>
+        Number:
+        <input name="number" type="number" min="1" required>
+      </label></p>
+      <p><label>
+        Type:
+        <select name="type" required>
+          <option value=""></option>
+          <option value="melee">Melee</option>
+          <option value="ranged">Ranged</option>
+        </select>
+      </label></p>
+      <p><label>
+        Attacks (A):
+        <input name="attacks" type="number" min="1" required>
+      </label></p>
+      <p><label>
+        Strength (S):
+        <input name="strength" type="number" min="1" required>
+      </label></p>
+      <p><label>
+        Armor Penetration (AP):
+        <select name="armor-pen" required>
+          <option value=""></option>
+          <option value="0">0</option>
+          <option value="-1">-1</option>
+          <option value="-2">-2</option>
+          <option value="-3">-3</option>
+          <option value="-4">-4</option>
+          <option value="-5">-5</option>
+          <option value="-6">-6</option>
+        </select>
+      </label></p>
+      <p><label>
+        Damage (D):
+        <input name="damage" type="number" min="1" required>
+      </label></p>
+      <p><label>
+        Exploding Hits:
+        <input name="exploding-hits" type="checkbox">
+      </label></p>
+      <p><label>
+        Mortal Wounds on 6's to Hit:
+        <input name="mw-6-hit" type="checkbox">
+      </label></p>
+      <p><label>
+        Mortal Wounds on 6's to Wound:
+        <input name="mw-6-wound" type="checkbox">
+      </label></p>
+      <p><label>
+        Additional AP on 6's to Wound:
+        <input name="aap-6-wound" type="checkbox">
+      </label></p>
+      <p><input type="submit" value="Add Weapon"></p>
+    </form>
+    
+    <form method="post" action="/new-attacker">
+      <h2>Create Attacker</h2>
+      <p><label>
+        Name:
+        <input name="name" type="text" required>
+      </label></p>
+      <p><label>
+        Ballistic Skill (BS):
+        <select name="bal-skill" required>
+          <option value=""></option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="5">5+</option>
+          <option value="6">6+</option>
+        </select>
+      </label></p>
+      <p><label>
+        Weapon Skill (WS):
+        <select name="wep-skill" required>
+          <option value=""></option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="5">5+</option>
+          <option value="6">6+</option>
+        </select>
+      </label></p>
+      <p><label>
+        Weapon #1:
+        <select name="weapon-1" required>
+          <option value=""></option>
+          <option value="weapon-0000">Damascus Longsword</option>
+          <option value="weapon-0001">The Slayinator</option>
+          <option value="weapon-0002">Combination Laser Minigun and Chainsaw Launcher</option>
+        </select>
+      </label></p>
+      <p><label>
+        Weapon #2:
+        <select name="weapon-2">
+          <option value=""></option>
+          <option value="weapon-0000">Damascus Longsword</option>
+          <option value="weapon-0001">The Slayinator</option>
+          <option value="weapon-0002">Combination Laser Minigun and Chainsaw Launcher</option>
+        </select>
+      </label></p>
+      <p><label>
+        Weapon #3:
+        <select name="weapon-3">
+          <option value=""></option>
+          <option value="weapon-0000">Damascus Longsword</option>
+          <option value="weapon-0001">The Slayinator</option>
+          <option value="weapon-0002">Combination Laser Minigun and Chainsaw Launcher</option>
+        </select>
+      </label></p>
+      <p><label>
+        +1 to Hit:
+        <input name="plus-1-hit" type="checkbox">
+      </label></p>
+      <p><label>
+        &minus;1 to Hit:
+        <input name="minus-1-hit" type="checkbox">
+      </label></p>
+      <p><label>
+        +1 to Wound:
+        <input name="plus-1-wound" type="checkbox">
+      </label></p>
+      <p><label>
+        &minus;1 to Wound:
+        <input name="minus-1-wound" type="checkbox">
+      </label></p>
+      <p><label>
+        Re-roll Hits:
+        <input name="reroll-hits" type="checkbox">
+      </label></p>
+      <p><label>
+        Re-roll Hit Rolls of 1:
+        <input name="reroll-hit-1s" type="checkbox">
+      </label></p>
+      <p><label>
+        Re-roll Wounds:
+        <input name="reroll-wounds" type="checkbox">
+      </label></p>
+      <p><label>
+        Re-roll Wound Rolls of 1:
+        <input name="reroll-wound-1s" type="checkbox">
+      </label></p>
+      <p><input type="submit" value="Add Attacker"></p>
+    </form>
+    
+    <form method="post" action="/new-defender">
+      <h2>Create Defender</h2>
+      <p><label>
+        Name:
+        <input name="name" type="text" required>
+      </label></p>
+      <p><label>
+        Size:
+        <input name="size" type="number" min="1" required>
+      </label></p>
+      <p><label>
+        Toughness (T):
+        <input name="toughness" type="number" min="1" required>
+      </label></p>
+      <p><label>
+        Save (SV):
+        <select name="save" required>
+          <option value=""></option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="5">5+</option>
+          <option value="6">6+</option>
+          <option value="7">7+</option>
+        </select>
+      </label></p>
+      <p><label>
+        Wounds (W):
+        <input name="wounds" type="number" required>
+      </label></p>
+      <p><label>
+        Feel No Pain:
+        <select name="fnp" required>
+          <option value="0" selected>NA</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="5">5+</option>
+          <option value="6">6+</option>
+        </select>
+      </label></p>
+      <p><label>
+        +1 to Save:
+        <input name="plus-1-save" type="checkbox">
+      </label></p>
+      <p><label>
+        &minus;1 to Save:
+        <input name="minus-1-save" type="checkbox">
+      </label></p>
+      <p><label>
+        Invulnerable Save:
+        <input name="invul-save" type="checkbox">
+      </label></p>
+      <p><label>
+        Re-roll Saves:
+        <input name="reroll-saves" type="checkbox">
+      </label></p>
+      <p><label>
+        Re-roll Saves of 1:
+        <input name="reroll-saves-1" type="checkbox">
+      </label></p>
+      <p><label>
+        &minus;1 to Damage:
+        <input name="minus-1-damage" type="checkbox">
+      </label></p>
+      <p><input type="submit" value="Add Defender"></p>
+    </form>
+    
+    <form method="post" action="/new-simulation">
+      <h2>Simulate Attack</h2>
+      <p><label>
+        Attacker:
+        <select name="attacker" required>
+          <option value=""></option>
+          <option value="atacker-0000">Warriarch Hammmerius</option>
+          <option value="atacker-0001">Stabbystab, the Attackist</option>
+        </select>
+      </label></p>
+      <p><label>
+        Defender:
+        <select name="defender" required>
+          <option value=""></option>
+          <option value="defender-0000">Invictus the Unpuncturable</option>
+          <option value="defender-0001">Shield Guy</option>
+        </select>
+      </label></p>
+      <p><input type="submit" value="Simulate"></p>
+    </form>
+    
 
 
   </section></body>

@@ -39,25 +39,27 @@
     Attacker:
     <select name="attacker" required>
       <option value=""></option>
-      <option value="atacker-0000">Warriarch Hammmerius</option>
-      <option value="atacker-0001">Stabbystab, the Attackist</option>
+      <th:block th:each="element: ${attackers}">
+        <option th:value="${element.name}" th:text="${element.name}">
+      </th:block>
     </select>
   </label></p>
   <p><label>
     Weapon:
     <select name="weapon" required>
       <option value=""></option>
-      <option value="weapon-0000">Damascus Longsword</option>
-      <option value="weapon-0001">The Slayinator</option>
-      <option value="weapon-0002">Combination Laser Minigun and Chainsaw Launcher</option>
+      <th:block th:each="element: ${weapons}">
+        <option th:value="${element.name}" th:text="${element.name}">
+      </th:block>
     </select>
   </label></p>
   <p><label>
     Defender:
     <select name="defender" required>
       <option value=""></option>
-      <option value="defender-0000">Invictus the Unpuncturable</option>
-      <option value="defender-0001">Shield Guy</option>
+      <th:block th:each="element: ${defenders}">
+        <option th:value="${element.name}" th:text="${element.name}">
+      </th:block>
     </select>
   </label></p>
   <p><label>

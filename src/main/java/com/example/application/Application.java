@@ -49,6 +49,9 @@ public class Application {
      */
     @GetMapping("/")
     public String home(Model model, HttpServletResponse response) {
+        model.addAttribute("attackers", attackers);
+        model.addAttribute("weapons", weapons);
+        model.addAttribute("defenders", defenders);
         return "home";
     }
 

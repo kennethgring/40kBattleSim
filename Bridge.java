@@ -2,6 +2,7 @@ import java.util.*;
 import java.sql.*;
 
 public interface Bridge {
+    // TODO: Also need methods to look up units by primary key
     Entry<Attacker> saveAttacker(UserId userId, Attacker attacker);
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
     Entry<Defender> saveDefender(UserId userId, Defender defender);

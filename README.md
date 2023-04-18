@@ -95,10 +95,12 @@ Includes an Attacker, Weapon, Defender, Modifiers, and FixedSimResults.
 The simulation results that only need to be computed once, when the user
 adds a simulation.
 
+*If no such data is saved, then this class is completely unnecessary.*
+
 ## `class Entry<UnitType>`
 
 Represents a UnitType in the database.
 Contains the UnitType object, the UserId of its owner, and its primary
 key.
 
-*Or maybe we should add these extra fields to the UnitType classes.*
+*Or maybe we should add these extra fields to the UnitType classes...*

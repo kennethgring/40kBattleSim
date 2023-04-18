@@ -8,14 +8,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
 @SpringBootApplication
@@ -100,14 +103,19 @@ public class Application {
         SimpleUnit attacker = findUnitWithName(attackers, attackerName);
         SimpleUnit weapon = findUnitWithName(weapons, weaponName);
         SimpleUnit defender = findUnitWithName(defenders, defenderName);
-        if (attacker == null || weapon == null || defender == null) {
-            throw new NullPointerException();
-        }
         SimpleUnit modifiers = new SimpleUnit(modifiersName);
         SimpleSimulation simulation =
             new SimpleSimulation(attacker, weapon, defender, modifiers);
         simulations.add(simulation);
         return seeOther("/simulations");
+    }
+
+    @ExceptionHandler(NoSuchUnitException.class)
+    public ResponseEntity<String> handleNoSuchUnit(
+            NoSuchUnitException exception) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(exception.getMessage());
     }
 
     /**
@@ -123,13 +131,14 @@ public class Application {
     /**
      * Find a SimpleUnit with a given name in a list.
      */
-    private SimpleUnit findUnitWithName(List<SimpleUnit> list, String name) {
+    private SimpleUnit findUnitWithName(List<SimpleUnit> list, String name)
+            throws NoSuchUnitException {
         for (SimpleUnit element : list) {
             if (element.getName().equals(name)) {
                 return element;
             }
         }
-        return null;
+        throw new NoSuchUnitException("No such unit: " + name);
     }
 
 }

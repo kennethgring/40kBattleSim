@@ -65,11 +65,6 @@ the user has access to it.
 Get the defender with the corresponding primary key, if it exists and
 the user has access to it.
 
-## `Entry<Simulation> getSimulation(UserId userId, Pk pk)`
-
-Get the simulation with the corresponding primary key, if it exists and
-the user has access to it.
-
 ## `class UserId`
 
 User ID type.

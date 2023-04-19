@@ -40,7 +40,7 @@
     <select name="attacker" required>
       <option value=""></option>
       <th:block th:each="element : ${attackers}">
-        <option th:value="${element.name}" th:text="${element.name}">
+        <option th:value="${element.name}" th:text="${element.name}"/>
       </th:block>
     </select>
   </label></p>
@@ -49,7 +49,7 @@
     <select name="weapon" required>
       <option value=""></option>
       <th:block th:each="element : ${weapons}">
-        <option th:value="${element.name}" th:text="${element.name}">
+        <option th:value="${element.name}" th:text="${element.name}"/>
       </th:block>
     </select>
   </label></p>
@@ -58,7 +58,7 @@
     <select name="defender" required>
       <option value=""></option>
       <th:block th:each="element : ${defenders}">
-        <option th:value="${element.name}" th:text="${element.name}">
+        <option th:value="${element.name}" th:text="${element.name}"/>
       </th:block>
     </select>
   </label></p>

@@ -14,6 +14,8 @@ public class Bridge {
         //String unitName = attacker.getUnitName();
         int ballisticSkill = attacker.getBalSkill();
         int weaponSkill = attacker.getWepSkill();
+        
+        
     }
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
     Entry<Defender> saveDefender(UserId userId, Defender defender);

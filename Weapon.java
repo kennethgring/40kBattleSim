@@ -1,4 +1,5 @@
 public class Weapon {
+    private String name;
     private int num;
     private boolean isRanged;
     private int attacks;
@@ -7,13 +8,18 @@ public class Weapon {
     private int damage;
 
     // TODO: Add generic constructor and setter methods
-    public Weapon(int num, boolean isRanged, int attacks, int strength, int armorPen, int damage) {
+    public Weapon(String name, int num, boolean isRanged, int attacks, int strength, int armorPen, int damage) {
+        this.name = name;
         this.num = num;
         this.isRanged = isRanged;
         this.attacks = attacks;
         this.strength = strength;
         this.armorPen = armorPen;
         this.damage = damage;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public int getNum() {

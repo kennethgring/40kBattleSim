@@ -1,4 +1,5 @@
 public class Defender {
+    private String name;
     private int size;
     private int toughness;
     private int save;
@@ -7,12 +8,17 @@ public class Defender {
 
         // TODO: Add generic constructor and setter methods
 
-    public Defender(int size, int toughness, int save, int wounds, int feelNoPain) {
+    public Defender(String name, int size, int toughness, int save, int wounds, int feelNoPain) {
+        this.name = name;
         this.size = size;
         this.toughness = toughness;
         this.save = save;
         this.wounds = wounds;
         this.feelNoPain = feelNoPain;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public int getSize() {

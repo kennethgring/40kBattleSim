@@ -55,15 +55,21 @@ Loads all the simulations the user has saved.
 Get the attacker with the corresponding primary key, if it exists and
 the user has access to it.
 
+*Only as necessary as the FixedSimResults class.*
+
 ## `Entry<Weapon> getWeapon(UserId userId, Pk pk)`
 
 Get the weapon with the corresponding primary key, if it exists and
 the user has access to it.
 
+*Only as necessary as the FixedSimResults class.*
+
 ## `Entry<Defender> getDefender(UserId userId, Pk pk)`
 
 Get the defender with the corresponding primary key, if it exists and
 the user has access to it.
+
+*Only as necessary as the FixedSimResults class.*
 
 ## `class UserId`
 

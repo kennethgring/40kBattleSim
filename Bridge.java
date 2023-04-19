@@ -30,19 +30,6 @@ class UserId {
     }
 }
 
-class Pk {
-    // Fields and methods for Pk class
-    private int pk;
-
-    public Pk(int pk) {
-        this.pk = pk;
-    }
-
-    public int getPk() {
-        return this.pk;
-    }
-}
-
 // Contains all the inputs and outputs for a simulation. Provides access to static average values and
 // the ability to re-run simulations.
 class Simulation {
@@ -93,21 +80,10 @@ class Simulation {
     }
 }
 
-/* Merged this class with the simulation class
-class FixedSimResults {
-    // Fields and methods for FixedSimResults class
-    private double avgDamage;
-    private double avgModelsKilled;
-
-    public FixedSimResults(Attacker attacker, Weapon weapon, Defender defender) {
-
-    }
-}
-*/
-
 class Entry<UnitType> {
     // Fields and methods for Entry class
-    
+    UnitType unitType;
+
 }
 
 

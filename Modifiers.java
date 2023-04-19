@@ -15,6 +15,8 @@ public class Modifiers {
     private boolean rerollSaveOne;
     private boolean damageMinusOne;
 
+        // TODO: Add generic constructor and setter methods
+
     public Modifiers(boolean[] modifiers) {
         this.hitPlusOne = modifiers[0];
         this.hitMinusOne = modifiers[1];

@@ -5,6 +5,8 @@ public class Defender {
     private int wounds;
     private int feelNoPain;
 
+        // TODO: Add generic constructor and setter methods
+
     public Defender(int size, int toughness, int save, int wounds, int feelNoPain) {
         this.size = size;
         this.toughness = toughness;

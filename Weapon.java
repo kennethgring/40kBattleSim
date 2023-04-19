@@ -6,6 +6,7 @@ public class Weapon {
     private int armorPen;
     private int damage;
 
+    // TODO: Add generic constructor and setter methods
     public Weapon(int num, boolean isRanged, int attacks, int strength, int armorPen, int damage) {
         this.num = num;
         this.isRanged = isRanged;

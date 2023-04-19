@@ -1,21 +1,28 @@
 import java.util.*;
 import java.sql.*;
 
-public interface Bridge {
+public class Bridge {
     // TODO: Also need methods to look up units by primary key
+    private final String url = "jdbc:mysql://localhost:3306/40kBattleSim";
+    private final String username = "your_username";
+    private final String password = "your_password";
+
     boolean userExists(UserId userId);
     void addUser(UserId userId);
-    Entry<Attacker> saveAttacker(UserId userId, Attacker attacker);
+    public Entry<Attacker> saveAttacker(UserId userId, Attacker attacker) {
+        Entry<Attacker> entry = null;
+        //String unitName = attacker.getUnitName();
+        int ballisticSkill = attacker.getBalSkill();
+        int weaponSkill = attacker.getWepSkill();
+    }
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
     Entry<Defender> saveDefender(UserId userId, Defender defender);
-    boolean saveSimulation(UserId userId, Pk attackerPk, Pk weaponPk, Pk defenderPk, Modifiers modifiers, Simulation results);
+    boolean saveSimulation(UserId userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
     List<Entry<Attacker>> loadAttackers(UserId userId);
     List<Entry<Weapon>> loadWeapons(UserId userId);
     List<Entry<Defender>> loadDefenders(UserId userId);
     List<Simulation> loadSimulations(UserId userId);
 }
-
-
 
 class UserId {
     // Fields and methods for UserId class

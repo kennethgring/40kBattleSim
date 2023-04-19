@@ -9,14 +9,52 @@ public class Bridge {
 
     boolean userExists(UserId userId);
     void addUser(UserId userId);
+    /*
+     * Saves an attacker into the table
+     */
     public Entry<Attacker> saveAttacker(UserId userId, Attacker attacker) {
         Entry<Attacker> entry = null;
-        //String unitName = attacker.getUnitName();
+        String unitName = attacker.getName();
         int ballisticSkill = attacker.getBalSkill();
         int weaponSkill = attacker.getWepSkill();
-        
-        
+
+        try {
+            // Connect to the MySQL database
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare the SQL query
+            String query = "INSERT INTO Attacker (user_id, unit_name, ballistic_skill, weapon_skill) VALUES (?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameter values for the SQL query
+            statement.setInt(1, userId.getId());
+            statement.setString(2, unitName);
+            statement.setInt(3, ballisticSkill);
+            statement.setInt(4, weaponSkill);
+
+            // Execute the SQL query
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the generated attacker_id
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int attackerId = generatedKeys.getInt(1);
+                    // Create the Entry object with the saved data
+                    entry = new Entry<Attacker>(attacker, userId, attackerId);
+                }
+            }
+
+            // Close the database connection and statement
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return entry;
     }
+
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
     Entry<Defender> saveDefender(UserId userId, Defender defender);
     boolean saveSimulation(UserId userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);

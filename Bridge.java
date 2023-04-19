@@ -2,12 +2,46 @@ import java.util.*;
 import java.sql.*;
 
 public class Bridge {
-    // TODO: Also need methods to look up units by primary key
+    // TODO: Also need methods to look up units by primary key. ALSO double check queries
     private final String url = "jdbc:mysql://localhost:3306/40kBattleSim";
     private final String username = "your_username";
     private final String password = "your_password";
 
-    boolean userExists(UserId userId);
+    boolean userExists(UserId userId) {
+        boolean exists = false;
+        try {
+            // Connect to the MySQL database
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare the SQL query
+            String query = "SELECT COUNT(*) FROM Attacker a " +
+            "JOIN Weapon w ON a.user_id = w.user_id " +
+            "JOIN Defender d ON w.user_id = d.user_id " +
+            "JOIN Calculations c ON d.user_id = c.user_id " +
+            "WHERE a.user_id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId.getId());
+
+            // Execute the SQL query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if the user exists in the Attacker table
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                exists = count > 0;
+            }
+
+            // Close the database connection and statement
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
     void addUser(UserId userId);
     /*
      * Saves an attacker into the table

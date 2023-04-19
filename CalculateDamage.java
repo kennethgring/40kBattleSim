@@ -10,29 +10,6 @@
  * into this program. Defaults are provided if this is not the case.
  */
 public class CalculateDamage {
-    public static void main (String[] args) {
-        // IMPORTANT //
-        // The new modifiers object contains the invulSave boolean that used to be in the Defender object.
-
-        Attacker attacker = new Attacker(3, 0);
-        Weapon weapon = new Weapon(20, true, 2, 4, 1, 1);
-        Defender defender = new Defender(10, 4, 4, 1, 6);
-        boolean[] mods = {false, false, false, false, false, false, false, false, false, false, false, false,
-            false, false, false};
-        Modifiers modifiers = new Modifiers(mods);
-        
-        double avgDamage = calcAvgDamage(attacker, weapon, defender, modifiers);
-        int avgModelsKilled = calcModelsKilled(avgDamage, weapon, defender, modifiers);
-        int simDamage = simAttackDamage(attacker, defender, weapon, modifiers);
-        int simModelsKilled = calcModelsKilled(simDamage, weapon, defender, modifiers);
-
-        System.out.println("Average Total Damage: " + avgDamage);
-        System.out.println("Average Models Killed: " + avgModelsKilled);
-        System.out.println("***********************");
-        System.out.println("Simulated Total Damage: " + simDamage);
-        System.out.println("Simulated Models Killed: " + simModelsKilled);
-    }
-
     /**
      * Calculates the average total damage of an attack between two units using one weapon type. Invoke multiple
      * times, once per weapon type in the attacking unit. 

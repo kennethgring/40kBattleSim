@@ -3,6 +3,8 @@ import java.sql.*;
 
 public interface Bridge {
     // TODO: Also need methods to look up units by primary key
+    boolean userExists(UserId userId);
+    void addUser(UserId userId);
     Entry<Attacker> saveAttacker(UserId userId, Attacker attacker);
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
     Entry<Defender> saveDefender(UserId userId, Defender defender);
@@ -12,6 +14,8 @@ public interface Bridge {
     List<Entry<Defender>> loadDefenders(UserId userId);
     List<Simulation> loadSimulations(UserId userId);
 }
+
+
 
 class UserId {
     // Fields and methods for UserId class
@@ -103,11 +107,7 @@ class FixedSimResults {
 
 class Entry<UnitType> {
     // Fields and methods for Entry class
-}
-
-class UnitType {
-    // Fields and methods for UnitType class
-    // This class can be extended by Attacker, Weapon, and Defender classes
+    
 }
 
 

@@ -82,7 +82,27 @@ class Simulation {
 
 class Entry<UnitType> {
     // Fields and methods for Entry class
-    UnitType unitType;
+    private UnitType unitType;
+    private UserId userId;
+    private int pk; //primary key
+
+    public Entry(UnitType unitType, UserId userId, int pk) {
+        this.unitType = unitType;
+        this.userId = userId;
+        this.pk = pk;
+    }
+
+    public UnitType getUnitType() {
+        return this.unitType;
+    }
+
+    public UserId getUserId() {
+        return this.userId;
+    }
+
+    public int getPk() {
+        return this.pk;
+    }
 
 }
 

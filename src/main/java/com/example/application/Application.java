@@ -69,6 +69,17 @@ public class Application {
         return "simulations";
     }
 
+    /**
+     * Show saved attackers, weapons, and defenders.
+     */
+    @GetMapping("/units")
+    public String unitViewPage(Model model, HttpServletResponse response) {
+        model.addAttribute("attackers", attackers);
+        model.addAttribute("weapons", weapons);
+        model.addAttribute("defenders", defenders);
+        return "units";
+    }
+
     @PostMapping("/submit/new-attacker")
     public RedirectView newAttacker(
             @RequestParam(name="name") String name,

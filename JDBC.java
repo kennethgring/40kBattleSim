@@ -1,5 +1,10 @@
 import java.sql.*;
 
+/**
+ * JDBC class that will connect and run queries on our MySQL server.
+ * NOTE: requires the mysql-connector-j.jar dependency.
+ * @author Alex Tang
+ */
 public class JDBC {
 
     private final String url; //"jdbc:mysql://localhost:3306/JDBCTest"

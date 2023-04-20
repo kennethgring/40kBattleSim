@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html th:replace="~{base :: layout(~{::title}, ~{::section})}">
+  <head>
+    <title>Simulations | 40kBattleSim</title>
+  </head>
+  <body><section th:remove="tag">
+
+
+<p th:each="sim : ${simulations}">
+  <th:block th:text="${sim.attacker.name}"/>
+  uses
+  <th:block th:text="${sim.weapon.name}"/>
+  to destroy
+  <th:block th:text="${sim.defender.name}"/>!
+  <th:block th:unless="${#strings.isEmpty(sim.modifiers.name)}">
+    (<th:block th:text="${sim.modifiers.name}"/>)
+  </th:block>
+</p>
+<th:block th:if="${#lists.isEmpty(simulations)}">
+  <p>No simulations.</p>
+</th:block>
+
+
+  </section></body>
+</html>

@@ -142,7 +142,55 @@ public class Bridge {
         return entry;
     }
 
-    Entry<Defender> saveDefender(UserId userId, Defender defender);
+    Entry<Defender> saveDefender(UserId userId, Defender defender) {
+        Entry<Defender> entry = null;
+        String name = defender.getName();
+        int size = defender.getSize();
+        int toughness = defender.getToughness();
+        int save = defender.getSave();
+        int wounds = defender.getWounds();
+        int fnp = defender.getFeelNoPain();
+
+        try {
+            // Connect to the MySQL database
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare the SQL query
+            String query = "INSERT INTO Defender (user_id, unit_name, size, toughness, save, wounds, feel_no_pain) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameter values for the SQL query
+            statement.setInt(1, userId.getId());
+            statement.setString(2, name);
+            statement.setInt(3, size);
+            statement.setInt(4, toughness);
+            statement.setInt(5, save);
+            statement.setInt(6, wounds);
+            statement.setInt(7, fnp);
+            
+
+            // Execute the SQL query
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the generated attacker_id
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int defenderId = generatedKeys.getInt(1);
+                    // Create the Entry object with the saved data
+                    entry = new Entry<Defender>(defender, userId, defenderId);
+                }
+            }
+
+            // Close the database connection and statement
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entry;
+    }
+
     boolean saveSimulation(UserId userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
     List<Entry<Attacker>> loadAttackers(UserId userId);
     List<Entry<Weapon>> loadWeapons(UserId userId);

@@ -18,7 +18,7 @@ import com.example.application.calc.Attacker;
 import com.example.application.calc.CalculateDamage;
 import com.example.application.calc.Defender;
 import com.example.application.calc.Weapon;
-
+//Hello
 @SpringBootApplication
 @Controller
 public class Application {

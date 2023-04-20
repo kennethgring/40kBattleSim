@@ -6,3 +6,15 @@ body {
   margin: auto;
   max-width: 80ch;
 }
+
+h1 {
+  color: #a00000;
+}
+
+@media (prefers-color-scheme: dark) {
+
+  h1 {
+    color: #ff8080;
+  }
+
+}

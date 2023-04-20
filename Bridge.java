@@ -7,6 +7,7 @@ public class Bridge {
     private final String username = "your_username";
     private final String password = "your_password";
 
+    // TODO: Update when userId table comes out
     boolean userExists(UserId userId) {
         boolean exists = false;
         try {
@@ -92,6 +93,7 @@ public class Bridge {
 
     /*
      * Saves a weapon into the table
+     * TODO: Update once num is added to table
      */
     Entry<Weapon> saveWeapon(UserId userId, Weapon weapon) {
         Entry<Weapon> entry = null;

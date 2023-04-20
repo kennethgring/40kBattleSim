@@ -43,6 +43,7 @@ public class Bridge {
     }
 
     void addUser(UserId userId);
+
     /*
      * Saves an attacker into the table
      */
@@ -89,7 +90,58 @@ public class Bridge {
         return entry;
     }
 
-    Entry<Weapon> saveWeapon(UserId userId, Weapon weapon);
+    /*
+     * Saves a weapon into the table
+     */
+    Entry<Weapon> saveWeapon(UserId userId, Weapon weapon) {
+        Entry<Weapon> entry = null;
+        String name = weapon.getName();
+        int num = weapon.getNum();
+        boolean isRanged = weapon.getIsRanged();
+        int attacks = weapon.getAttacks();
+        int strength = weapon.getStrength();
+        int armorPen = weapon.getArmorPen();
+        int damage = weapon.getDamage();
+
+        try {
+            // Connect to the MySQL database
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare the SQL query
+            String query = "INSERT INTO Weapon (user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameter values for the SQL query
+            statement.setInt(1, userId.getId());
+            statement.setBoolean(2, isRanged);
+            statement.setString(3, name);
+            statement.setInt(4, attacks);
+            statement.setInt(5, strength);
+            statement.setInt(6, armorPen);
+            statement.setInt(7, damage);
+
+            // Execute the SQL query
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the generated attacker_id
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int weaponId = generatedKeys.getInt(1);
+                    // Create the Entry object with the saved data
+                    entry = new Entry<Weapon>(weapon, userId, weaponId);
+                }
+            }
+
+            // Close the database connection and statement
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entry;
+    }
+
     Entry<Defender> saveDefender(UserId userId, Defender defender);
     boolean saveSimulation(UserId userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
     List<Entry<Attacker>> loadAttackers(UserId userId);

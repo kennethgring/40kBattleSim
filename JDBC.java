@@ -7,13 +7,13 @@ import java.sql.*;
  */
 public class JDBC {
 
-    private final String url; //"jdbc:mysql://localhost:3306/JDBCTest"
+    private final String url; //"jdbc:mysql://localhost:12205/40kBattleSim"
     private final String user;
     private final String password;
 
     /**
      * Constructor for JDBC connection. Requires URL, user, and password.
-     * @param url mysql URL, will always be "jdbc:mysql://localhost:3306/JDBCTest"
+     * @param url mysql URL, will always be "jdbc:mysql://localhost:12205/40kBattleSim"
      * @param user MySQL user, should always be root
      * @param password password, according to .yml file for the MySQL server should be "baktop09"
      */

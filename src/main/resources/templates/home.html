@@ -4,12 +4,15 @@
     <title>40kBattleSim</title>
   </head>
   <body><section th:remove="tag">
-    <form method="post" action="/new-weapon">
+    <div class="container">
+    <form id="general-form" method="post" action="/new-weapon">
       <h2>Create Weapon</h2>
-      <p><label>
-        Name:
-        <input name="name" type="text" required>
-      </label></p>
+      <p>
+        <div class="labels"><label>Name:</label></div>
+        <div class="input-tab">
+        <input class="input-field" name="name" type="text" required>
+        </div>
+      </p>
       <p><label>
         Number:
         <input name="number" type="number" min="1" required>
@@ -66,7 +69,7 @@
       <p><input type="submit" value="Add Weapon"></p>
     </form>
     
-    <form method="post" action="/new-attacker">
+    <form id="general-form" method="post" action="/new-attacker">
       <h2>Create Attacker</h2>
       <p><label>
         Name:
@@ -156,7 +159,7 @@
       <p><input type="submit" value="Add Attacker"></p>
     </form>
     
-    <form method="post" action="/new-defender">
+    <form id="general-form" method="post" action="/new-defender">
       <h2>Create Defender</h2>
       <p><label>
         Name:
@@ -223,7 +226,7 @@
       <p><input type="submit" value="Add Defender"></p>
     </form>
     
-    <form method="post" action="/new-simulation">
+    <form id="general-form" method="post" action="/new-simulation">
       <h2>Simulate Attack</h2>
       <p><label>
         Attacker:
@@ -243,7 +246,7 @@
       </label></p>
       <p><input type="submit" value="Simulate"></p>
     </form>
-    
+  </div>
 
 
   </section></body>

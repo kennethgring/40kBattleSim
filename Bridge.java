@@ -8,7 +8,7 @@ public class Bridge {
     private final String password = "your_password";
 
     // TODO: Update when userId table comes out
-    boolean userExists(UserId userId) {
+    boolean userExists(int userId) {
         boolean exists = false;
         try {
             // Connect to the MySQL database
@@ -22,7 +22,7 @@ public class Bridge {
             "WHERE a.user_id = ?";
 
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, userId.getId());
+            statement.setInt(1, userId);
 
             // Execute the SQL query
             ResultSet resultSet = statement.executeQuery();
@@ -43,12 +43,12 @@ public class Bridge {
         return exists;
     }
 
-    void addUser(UserId userId);
+    void addUser(int userId);
 
     /*
      * Saves an attacker into the table
      */
-    public Entry<Attacker> saveAttacker(UserId userId, Attacker attacker) {
+    public Entry<Attacker> saveAttacker(int userId, Attacker attacker) {
         Entry<Attacker> entry = null;
         String unitName = attacker.getName();
         int ballisticSkill = attacker.getBalSkill();
@@ -63,7 +63,7 @@ public class Bridge {
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             // Set the parameter values for the SQL query
-            statement.setInt(1, userId.getId());
+            statement.setInt(1, userId);
             statement.setString(2, unitName);
             statement.setInt(3, ballisticSkill);
             statement.setInt(4, weaponSkill);
@@ -95,7 +95,7 @@ public class Bridge {
      * Saves a weapon into the table
      * TODO: Update once num is added to table
      */
-    Entry<Weapon> saveWeapon(UserId userId, Weapon weapon) {
+    Entry<Weapon> saveWeapon(int userId, Weapon weapon) {
         Entry<Weapon> entry = null;
         String name = weapon.getName();
         int num = weapon.getNum();
@@ -114,7 +114,7 @@ public class Bridge {
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             // Set the parameter values for the SQL query
-            statement.setInt(1, userId.getId());
+            statement.setInt(1, userId);
             statement.setBoolean(2, isRanged);
             statement.setString(3, name);
             statement.setInt(4, attacks);
@@ -144,7 +144,7 @@ public class Bridge {
         return entry;
     }
 
-    Entry<Defender> saveDefender(UserId userId, Defender defender) {
+    Entry<Defender> saveDefender(int userId, Defender defender) {
         Entry<Defender> entry = null;
         String name = defender.getName();
         int size = defender.getSize();
@@ -162,7 +162,7 @@ public class Bridge {
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             // Set the parameter values for the SQL query
-            statement.setInt(1, userId.getId());
+            statement.setInt(1, userId);
             statement.setString(2, name);
             statement.setInt(3, size);
             statement.setInt(4, toughness);
@@ -193,24 +193,11 @@ public class Bridge {
         return entry;
     }
 
-    boolean saveSimulation(UserId userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
-    List<Entry<Attacker>> loadAttackers(UserId userId);
-    List<Entry<Weapon>> loadWeapons(UserId userId);
-    List<Entry<Defender>> loadDefenders(UserId userId);
-    List<Simulation> loadSimulations(UserId userId);
-}
-
-class UserId {
-    // Fields and methods for UserId class
-    private int id;
-
-    public UserId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return this.id;
-    }
+    boolean saveSimulation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
+    List<Entry<Attacker>> loadAttackers(int userId);
+    List<Entry<Weapon>> loadWeapons(int userId);
+    List<Entry<Defender>> loadDefenders(int userId);
+    List<Simulation> loadSimulations(int userId);
 }
 
 // Contains all the inputs and outputs for a simulation. Provides access to static average values and
@@ -266,10 +253,10 @@ class Simulation {
 class Entry<UnitType> {
     // Fields and methods for Entry class
     private UnitType unitType;
-    private UserId userId;
+    private int userId;
     private int pk; //primary key
 
-    public Entry(UnitType unitType, UserId userId, int pk) {
+    public Entry(UnitType unitType, int userId, int pk) {
         this.unitType = unitType;
         this.userId = userId;
         this.pk = pk;
@@ -279,7 +266,7 @@ class Entry<UnitType> {
         return this.unitType;
     }
 
-    public UserId getUserId() {
+    public int getUserId() {
         return this.userId;
     }
 

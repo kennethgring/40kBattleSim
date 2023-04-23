@@ -1,11 +1,12 @@
 import java.util.*;
 import java.sql.*;
+import java.util.List;
 
 public class Bridge {
     // TODO: Also need methods to look up units by primary key. ALSO double check queries
-    private final String url = "jdbc:mysql://localhost:3306/40kBattleSim";
-    private final String username = "your_username";
-    private final String password = "your_password";
+    private final String url = "jdbc:mysql://localhost:12205/40kBattleSim";
+    private final String username = "root";
+    private final String password = "baktop09";
 
     // TODO: Update when userId table comes out
     boolean userExists(int userId) {
@@ -43,7 +44,9 @@ public class Bridge {
         return exists;
     }
 
-    void addUser(int userId);
+    void addUser(int userId) {
+
+    }
 
     /*
      * Saves an attacker into the table
@@ -193,11 +196,60 @@ public class Bridge {
         return entry;
     }
 
-    boolean saveSimulation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
-    List<Entry<Attacker>> loadAttackers(int userId);
-    List<Entry<Weapon>> loadWeapons(int userId);
-    List<Entry<Defender>> loadDefenders(int userId);
-    List<Simulation> loadSimulations(int userId);
+    boolean saveSimulation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results) {
+        return false;
+    }
+
+    /**
+     * Populates and returns a List of type Entry<Attacker> for frontend to use.
+     * @param userId all Entry<Attackers> that this userId can access
+     * @return 
+     */
+    public List<Entry<Attacker>> loadAttackers(int userId) {
+
+        List<Entry<Attacker>> attacker_list = new ArrayList();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, username, password);
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(
+                    "SELECT * FROM Attacker WHERE user_id = " + userId + " OR user_id = 0;");
+            
+            if (result.next()) {
+                String unit_name = result.getString("unit_name");
+                int ballistic_skill = result.getInt("ballistic_skill");
+                int weapon_skill = result.getInt("weapon_skill");
+                int pk = result.getInt("attacker_id");
+
+                Attacker attacker = new Attacker(unit_name, ballistic_skill, weapon_skill);
+                Entry<Attacker> entry = new Entry<Attacker>(attacker, userId, pk); // TODO: fix constructor
+                attacker_list.add(entry);
+            }
+            conn.close();
+            return attacker_list;
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e);
+            return null;
+        }
+
+    }
+    public List<Entry<Weapon>> loadWeapons(int userId) {
+        return null;
+    }
+    public List<Entry<Defender>> loadDefenders(int userId) {
+        return null;
+    }
+    public List<Simulation> loadSimulations(int userId) {
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Bridge test = new Bridge();
+
+        System.out.println(test.loadAttackers(0));
+    }
 }
 
 // Contains all the inputs and outputs for a simulation. Provides access to static average values and
@@ -257,7 +309,7 @@ class Entry<UnitType> {
     private int pk; //primary key
 
     public Entry(UnitType unitType, int userId, int pk) {
-        this.unitType = unitType;
+        this.unitType = (UnitType) unitType;
         this.userId = userId;
         this.pk = pk;
     }

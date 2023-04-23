@@ -7,7 +7,6 @@ public class Bridge {
     private final String username = "your_username";
     private final String password = "your_password";
 
-    // TODO: Update when userId table comes out
     boolean userExists(int userId) {
         boolean exists = false;
         try {
@@ -15,11 +14,7 @@ public class Bridge {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "SELECT COUNT(*) FROM Attacker a " +
-            "JOIN Weapon w ON a.user_id = w.user_id " +
-            "JOIN Defender d ON w.user_id = d.user_id " +
-            "JOIN Calculations c ON d.user_id = c.user_id " +
-            "WHERE a.user_id = ?";
+            String query = "SELECT COUNT(*) FROM User_IDs u WHERE u.user_id = ?";
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
@@ -43,7 +38,29 @@ public class Bridge {
         return exists;
     }
 
-    void addUser(int userId);
+    /*
+     * Adds a new user to the User_IDs table
+     */
+    void addUser(int userId) {
+        try {
+            // Connect to the MySQL database
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare the SQL query
+            String query = "INSERT INTO User_IDs (user_id) VALUES (?)";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+
+            statement.executeQuery();
+
+            
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /*
      * Saves an attacker into the table
@@ -193,7 +210,50 @@ public class Bridge {
         return entry;
     }
 
-    boolean saveSimulation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results);
+    /*
+     * Saves a calculation into the calculations table
+     * TODO: Finish once Modifiers on Calc table is explained
+     */
+    boolean saveCalculation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results) {
+        
+        
+        try {
+            // Connect to the MySQL database
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare the SQL query
+            String query = "INSERT INTO Defender (user_id, attacker_id, weapon_id, defender_id, modifiers) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameter values for the SQL query
+            statement.setInt(1, userId);
+            statement.setInt(2, attackerPk);
+            statement.setInt(3, weaponPk);
+            statement.setInt(4, defenderPk);
+            
+
+            // Execute the SQL query
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the generated attacker_id
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int defenderId = generatedKeys.getInt(1);
+                    // Create the Entry object with the saved data
+                    entry = new Entry<Defender>(defender, userId, defenderId);
+                }
+            }
+
+            // Close the database connection and statement
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entry;
+    }
+
     List<Entry<Attacker>> loadAttackers(int userId);
     List<Entry<Weapon>> loadWeapons(int userId);
     List<Entry<Defender>> loadDefenders(int userId);

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html th:fragment="layout (title, content)">
+<head>
+  <meta charset="utf-8">
+  <th:block th:replace="${title}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>40k Battle Sim</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/simulations">Saved Simulations</a>
+    <a href="/units">Saved Units</a>
+  </nav>
+  <th:block th:replace="${content}"/>
+</body>
+</html>

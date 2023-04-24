@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html th:replace="~{base :: layout(~{::title}, ~{::section})}">
+  <head>
+    <title>40kBattleSim</title>
+  </head>
+  <body><section th:remove="tag">
+
+
+<form method="post" action="/submit/new-attacker">
+  <h2>Create Attacker</h2>
+  <p><label>
+    Name:
+    <input name="name" type="text" required>
+  </label></p>
+  <p><input type="submit" value="Add Attacker"></p>
+</form>
+
+<form method="post" action="/submit/new-weapon">
+  <h2>Create Weapon</h2>
+  <p><label>
+    Name:
+    <input name="name" type="text" required>
+  </label></p>
+  <p><input type="submit" value="Add Weapon"></p>
+</form>
+
+<form method="post" action="/submit/new-defender">
+  <h2>Create Defender</h2>
+  <p><label>
+    Name:
+    <input name="name" type="text" required>
+  </label></p>
+  <p><input type="submit" value="Add Defender"></p>
+</form>
+
+<form method="post" action="/submit/new-simulation">
+  <h2>Simulate Attack</h2>
+  <p><label>
+    Attacker:
+    <select name="attacker" required>
+      <option value=""></option>
+      <th:block th:each="element : ${attackers}">
+        <option th:value="${element.name}" th:text="${element.name}"/>
+      </th:block>
+    </select>
+  </label></p>
+  <p><label>
+    Weapon:
+    <select name="weapon" required>
+      <option value=""></option>
+      <th:block th:each="element : ${weapons}">
+        <option th:value="${element.name}" th:text="${element.name}"/>
+      </th:block>
+    </select>
+  </label></p>
+  <p><label>
+    Defender:
+    <select name="defender" required>
+      <option value=""></option>
+      <th:block th:each="element : ${defenders}">
+        <option th:value="${element.name}" th:text="${element.name}"/>
+      </th:block>
+    </select>
+  </label></p>
+  <p><label>
+    Modifiers:
+    <input name="modifiers" type="text">
+  </label></p>
+  <p><input type="submit" value="Simulate"></p>
+</form>
+
+
+  </section></body>
+</html>

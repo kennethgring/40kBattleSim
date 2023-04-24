@@ -1,5 +1,6 @@
 import java.util.*;
 import java.sql.*;
+import java.util.List;
 
 /*
  * The bridge class contains the following methods for the front end to interact with the back end.
@@ -727,7 +728,7 @@ class Entry<UnitType> {
     private int pk; //primary key
 
     public Entry(UnitType unitType, int userId, int pk) {
-        this.unitType = unitType;
+        this.unitType = (UnitType) unitType;
         this.userId = userId;
         this.pk = pk;
     }

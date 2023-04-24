@@ -223,7 +223,7 @@ public class Bridge {
                 int pk = result.getInt("attacker_id");
 
                 Attacker attacker = new Attacker(unit_name, ballistic_skill, weapon_skill);
-                Entry<Attacker> entry = new Entry<Attacker>(attacker, userId, pk); // TODO: fix constructor
+                Entry<Attacker> entry = new Entry<Attacker>(attacker, userId, pk);
                 attacker_list.add(entry);
             }
             conn.close();
@@ -235,14 +235,119 @@ public class Bridge {
         }
 
     }
+
+    /**
+     * Method to populate List with all of userId's Weapon records.
+     * @param userId foreign key associated with Weapon table
+     * @return list with all available Weapon records for given userId
+     */
     public List<Entry<Weapon>> loadWeapons(int userId) {
-        return null;
+
+        List<Entry<Weapon>> weapon_list = new ArrayList();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, username, password);
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(
+                    "SELECT * FROM Weapon WHERE user_id = " + userId + " OR user_id = 0;");
+            
+            if (result.next()) {
+                String weapon_name = result.getString("weapon_name");
+                int num = result.getInt("number");
+                // if weapon_type == 0, then ranged weapon
+                boolean isRanged = (result.getInt("weapon_type") == 0);
+                int attacks = result.getInt("attacks");
+                int strength = result.getInt("strength");
+                int armor_pen = result.getInt("armor_pen");
+                int damage = result.getInt("damage");
+                int pk = result.getInt("weapon_id");
+
+                Weapon weapon = new Weapon(weapon_name, num, isRanged, attacks, strength, armor_pen, damage);
+                Entry<Weapon> entry = new Entry<Weapon>(weapon, userId, pk); // TODO: fix constructor
+                weapon_list.add(entry);
+            }
+            conn.close();
+            return weapon_list;
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e);
+            return null;
+        }
     }
+
+    /**
+     * Method to populate List with all of userId's Defender records.
+     * @param userId foreign key associated with Defender table
+     * @return list with all available Defender records for given userId
+     */
     public List<Entry<Defender>> loadDefenders(int userId) {
-        return null;
+
+        List<Entry<Defender>> defender_list = new ArrayList();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, username, password);
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(
+                    "SELECT * FROM Defender WHERE user_id = " + userId + " OR user_id = 0;");
+            
+            if (result.next()) {
+                String unit_name = result.getString("unit_name");
+                int size = result.getInt("size");
+                int toughness = result.getInt("toughness");
+                int save = result.getInt("save");
+                int wounds = result.getInt("wounds");
+                int feel_no_pain = result.getInt("feel_no_pain");
+                int pk = result.getInt("defender_id");
+
+                Defender defender = new Defender(unit_name, size, toughness, save, wounds, feel_no_pain);
+                Entry<Defender> entry = new Entry<Defender>(defender, userId, pk);
+                defender_list.add(entry);
+            }
+            conn.close();
+            return defender_list;
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e);
+            return null;
+        }
     }
+    
+    /**
+     * Method to populate List with all of userId's Calculation records.
+     * @param userId foreign key associated with Defender table
+     * @return list with all available Defender records for given userId
+     */
     public List<Simulation> loadSimulations(int userId) {
-        return null;
+
+        List<Entry<Simulation>> calc_list = new ArrayList();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, username, password);
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(
+                    "SELECT * FROM Calculation WHERE user_id = " + userId + " OR user_id = 0;");
+            
+            if (result.next()) {
+                int attacker_id = result.getInt("attacker_id");
+                int defender_id = result.getInt("defender_id");
+                int weapon_id = result.getInt("weapon_id");
+                String modifiers = result.getString("modifiers");
+                int pk = result.getInt("calc_id");
+
+                Simulation calc = new Simulation(attacker_id, weapon_id, defender_id, modifiers);
+                Entry<Simulation> entry = new Entry<Simulation>(calc, userId, pk);
+                calc_list.add(entry);
+            }
+            conn.close();
+            return calc_list;
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e);
+            return null;
+        }
     }
 
     public static void main(String[] args) {

@@ -1,3 +1,5 @@
+package com.example.application;
+
 import java.sql.*;
 
 /**

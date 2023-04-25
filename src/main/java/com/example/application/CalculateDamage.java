@@ -1,4 +1,7 @@
+package com.example.application;
+
 //import java.io.*;
+import com.example.application.unit.*;
 /*
  * The CalculateDamage class has three major methods the user interacts with:
  *  calcAvgDamage finds the average amount of damage inflicted by an attack given the dice probability

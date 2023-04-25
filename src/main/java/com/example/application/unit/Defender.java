@@ -1,3 +1,5 @@
+package com.example.application.unit;
+
 public class Defender {
     private String name;
     private int size;

@@ -5,20 +5,17 @@ import java.util.List;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.application.unit.*;
@@ -31,6 +28,7 @@ public class Application {
     private LinkedList<SimpleUnit> weapons;
     private LinkedList<SimpleUnit> defenders;
     private LinkedList<SimpleSimulation> simulations;
+    private int maxUserId = 0;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -55,7 +53,11 @@ public class Application {
      * Show forms to add units and simulations.
      */
     @GetMapping("/")
-    public String home(Model model, HttpServletResponse response) {
+    public String home(
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        ensureUserId(request, response);
         model.addAttribute("attackers", attackers);
         model.addAttribute("weapons", weapons);
         model.addAttribute("defenders", defenders);
@@ -66,7 +68,11 @@ public class Application {
      * Show saved simulations.
      */
     @GetMapping("/simulations")
-    public String comparisonPage(Model model, HttpServletResponse response) {
+    public String comparisonPage(
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        ensureUserId(request, response);
         model.addAttribute("simulations", simulations);
         return "simulations";
     }
@@ -75,7 +81,11 @@ public class Application {
      * Show saved attackers, weapons, and defenders.
      */
     @GetMapping("/units")
-    public String unitViewPage(Model model, HttpServletResponse response) {
+    public String unitViewPage(
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        ensureUserId(request, response);
         model.addAttribute("attackers", attackers);
         model.addAttribute("weapons", weapons);
         model.addAttribute("defenders", defenders);
@@ -85,7 +95,9 @@ public class Application {
     @PostMapping("/submit/new-attacker")
     public RedirectView newAttacker(
             @RequestParam(name="name") String name,
+            HttpServletRequest request,
             HttpServletResponse response) {
+        ensureUserId(request, response);
         attackers.add(new SimpleUnit(name));
         return seeOther("/");
     }
@@ -93,7 +105,9 @@ public class Application {
     @PostMapping("/submit/new-weapon")
     public RedirectView newWeapon(
             @RequestParam(name="name") String name,
+            HttpServletRequest request,
             HttpServletResponse response) {
+        ensureUserId(request, response);
         weapons.add(new SimpleUnit(name));
         return seeOther("/");
     }
@@ -101,7 +115,9 @@ public class Application {
     @PostMapping("/submit/new-defender")
     public RedirectView newDefender(
             @RequestParam(name="name") String name,
+            HttpServletRequest request,
             HttpServletResponse response) {
+        ensureUserId(request, response);
         defenders.add(new SimpleUnit(name));
         return seeOther("/");
     }
@@ -141,7 +157,9 @@ public class Application {
                 boolean rerollSaveOne,
             @RequestParam(name="damage-minus-1", defaultValue="off")
                 boolean damageMinusOne,
+            HttpServletRequest request,
             HttpServletResponse response) {
+        ensureUserId(request, response);
         SimpleUnit attacker = findUnitWithName(attackers, attackerName);
         SimpleUnit weapon = findUnitWithName(weapons, weaponName);
         SimpleUnit defender = findUnitWithName(defenders, defenderName);
@@ -166,6 +184,33 @@ public class Application {
         simulations.add(simulation);
         return seeOther("/simulations");
     }
+
+    /**
+     * Get the user's ID from a cookie, setting the cookie if needed.
+     */
+    private int ensureUserId(HttpServletRequest request,
+                             HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user-id")) {
+                    try {
+                        int cookieUserId = Integer.valueOf(cookie.getValue());
+                        if (0 < cookieUserId && cookieUserId <= maxUserId) {
+                            return cookieUserId;
+                        }
+                    } catch (NumberFormatException exc) {}
+                    break;
+                }
+            }
+        }
+        maxUserId++;
+        Cookie cookie = new Cookie("user-id", String.valueOf(maxUserId));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return maxUserId;
+    }
+
 
     @ExceptionHandler(NoSuchUnitException.class)
     public ResponseEntity<String> handleNoSuchUnit(

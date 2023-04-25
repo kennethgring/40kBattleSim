@@ -496,7 +496,7 @@ public class Bridge {
      */
     public List<Entry<Attacker>> loadAttackers(int userId) {
 
-        List<Entry<Attacker>> attacker_list = new ArrayList();
+        List<Entry<Attacker>> attacker_list = new ArrayList<Entry<Attacker>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -532,7 +532,7 @@ public class Bridge {
      */
     public List<Entry<Weapon>> loadWeapons(int userId) {
 
-        List<Entry<Weapon>> weapon_list = new ArrayList();
+        List<Entry<Weapon>> weapon_list = new ArrayList<Entry<Weapon>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -572,7 +572,7 @@ public class Bridge {
      */
     public List<Entry<Defender>> loadDefenders(int userId) {
 
-        List<Entry<Defender>> defender_list = new ArrayList();
+        List<Entry<Defender>> defender_list = new ArrayList<Entry<Defender>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -608,9 +608,9 @@ public class Bridge {
      * @param userId foreign key associated with Defender table
      * @return list with all available Defender records for given userId
      */
-    public List<Simulation> loadSimulations(int userId) {
+    public List<Entry<Simulation>> loadSimulations(int userId) {
 
-        List<Entry<Simulation>> calc_list = new ArrayList();
+        List<Entry<Simulation>> calc_list = new ArrayList<Entry<Simulation>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -623,7 +623,29 @@ public class Bridge {
                 int attacker_id = result.getInt("attacker_id");
                 int defender_id = result.getInt("defender_id");
                 int weapon_id = result.getInt("weapon_id");
-                String modifiers = result.getString("modifiers");
+                
+                boolean hitsPlusOne = result.getBoolean("hit+1");
+                boolean hitMinusOne = result.getBoolean("hit-1");
+                boolean rerollHits = result.getBoolean("reroll_hits");
+                boolean rerollHitsOne = result.getBoolean("reroll_hit1");
+                boolean rerollWounds = result.getBoolean("reroll_wounds");
+                boolean explodingHits = result.getBoolean("exploding_hits");
+                boolean mortalWoundsHit = result.getBoolean("mortal_wounds_hit");
+                boolean mortalWoundsWounds = result.getBoolean("mortal_wounds_wound");
+                boolean additionalAp = result.getBoolean("additional_ap_wound");
+                boolean savePlusOne = result.getBoolean("save+1");
+                boolean saveMinusOne = result.getBoolean("save-1");
+                boolean invulnerableSave = result.getBoolean("inulnerable_save");
+                boolean rerollSave = result.getBoolean("reroll_save");
+                boolean rerollSaveOne = result.getBoolean("reroll_save_1");
+                boolean damageMinusOne = result.getBoolean("damage-1");
+    
+                // Create Modifiers and Simulation objects with retrieved values
+                boolean[] mods = {hitsPlusOne, hitMinusOne, rerollHits, rerollHitsOne, rerollWounds, explodingHits,
+                    mortalWoundsHit, mortalWoundsWounds, additionalAp, savePlusOne, saveMinusOne, invulnerableSave,
+                    rerollSave, rerollSaveOne, damageMinusOne};
+                Modifiers modifiers = new Modifiers(mods);
+
                 int pk = result.getInt("calc_id");
 
                 Simulation calc = new Simulation(attacker_id, weapon_id, defender_id, modifiers);

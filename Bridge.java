@@ -157,7 +157,7 @@ public class Bridge {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "INSERT INTO Weapon (user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage, number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Weapon (user_id, isRanged, weapon_name, attacks, strength, armor_pen, damage, number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             // Set the parameter values for the SQL query
@@ -349,7 +349,7 @@ public class Bridge {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "SELECT user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage, number FROM Weapon WHERE weapon_id = ?";
+            String query = "SELECT user_id, isRanged, weapon_name, attacks, strength, armor_pen, damage, number FROM Weapon WHERE weapon_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
 
             // Set the parameter values for the SQL query
@@ -359,7 +359,7 @@ public class Bridge {
             if (rs.next()) {
                 // Retrieve values from the retrieved row
                 int userId = rs.getInt("user_id");
-                Boolean isRanged = rs.getBoolean("weapon_type");
+                Boolean isRanged = rs.getBoolean("isRanged");
                 String weaponName = rs.getString("unit_name");
                 int attacks = rs.getInt("attacks");
                 int strength = rs.getInt("strength");
@@ -544,8 +544,7 @@ public class Bridge {
             if (result.next()) {
                 String weapon_name = result.getString("weapon_name");
                 int num = result.getInt("number");
-                // if weapon_type == 0, then ranged weapon
-                boolean isRanged = (result.getInt("weapon_type") == 0);
+                boolean isRanged = result.getBoolean("isRanged");
                 int attacks = result.getInt("attacks");
                 int strength = result.getInt("strength");
                 int armor_pen = result.getInt("armor_pen");

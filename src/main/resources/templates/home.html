@@ -8,34 +8,49 @@
     <form id="general-form" method="post" action="/new-weapon">
       <h2>Create Weapon</h2>
       <p>
-        <div class="labels"><label>Name:</label></div>
+        <div class="labels"><label>Name:
         <div class="input-tab">
         <input class="input-field" name="name" type="text" required>
         </div>
+      </label></div>
       </p>
-      <p><label>
+      <p>
+        <div class="labels"><label>
         Number:
-        <input name="number" type="number" min="1" required>
-      </label></p>
-      <p><label>
+        <div class="input-tab">
+        <input class="input-field" name="number" type="number" min="1" required>
+      </div>
+      </label></div>
+      </p>
+      <p>
+        <div class="labels"><label>
         Type:
-        <select name="type" required>
+        <div class="input-tab"><select class="input-option" name="type" required>
           <option value=""></option>
           <option value="melee">Melee</option>
           <option value="ranged">Ranged</option>
-        </select>
-      </label></p>
-      <p><label>
+        </select></div>
+      </label></div>
+      </p>
+      <p>
+        <div class="labels"><label>
         Attacks (A):
-        <input name="attacks" type="number" min="1" required>
-      </label></p>
-      <p><label>
+        <div class="input-tab">
+        <input class="input-field" name="attacks" type="number" min="1" required>
+        </div>
+      </label></div>
+    </p>
+      <p><div class="labels"><label>
         Strength (S):
-        <input name="strength" type="number" min="1" required>
-      </label></p>
-      <p><label>
+        <div class="input-tab">
+        <input class="input-field" name="strength" type="number" min="1" required>
+        </div>
+      </label></div>
+      </p>
+      <p><div class="labels"><label>
         Armor Penetration (AP):
-        <select name="armor-pen" required>
+        <div class="input-tab">
+        <select class="input-option" name="armor-pen" required>
           <option value=""></option>
           <option value="0">0</option>
           <option value="-1">-1</option>
@@ -44,29 +59,38 @@
           <option value="-4">-4</option>
           <option value="-5">-5</option>
           <option value="-6">-6</option>
-        </select>
-      </label></p>
-      <p><label>
+        </select></div>
+      </label></div>
+      </p>
+      <p><div class="labels"><label>
         Damage (D):
-        <input name="damage" type="number" min="1" required>
-      </label></p>
-      <p><label>
+        <div class="input-tab">
+        <input class="input-field" name="damage" type="number" min="1" required>
+        </div>
+        </label></div>
+      </p>
+      <p><div class="labels"><label>
         Exploding Hits:
-        <input name="exploding-hits" type="checkbox">
-      </label></p>
-      <p><label>
+        <input class="input-check" name="exploding-hits" type="checkbox">
+      </label></div>
+      </p>
+      <p><div class="labels"><label>
         Mortal Wounds on 6's to Hit:
-        <input name="mw-6-hit" type="checkbox">
-      </label></p>
-      <p><label>
+        <input class="input-check" name="mw-6-hit" type="checkbox">
+      </label></div>
+      </p>
+      <p><div class="labels"><label>
         Mortal Wounds on 6's to Wound:
-        <input name="mw-6-wound" type="checkbox">
-      </label></p>
-      <p><label>
+        <input class="input-check" name="mw-6-wound" type="checkbox">
+        </label></div>
+      </p>
+      <p><div class="labels"><label>
         Additional AP on 6's to Wound:
-        <input name="aap-6-wound" type="checkbox">
-      </label></p>
+        <input class="input-check" name="aap-6-wound" type="checkbox">
+        </label></div>
+      </p>
       <p><input type="submit" value="Add Weapon"></p>
+      <p><button class="button submission-button" type="submit">Add Weapon</button></p>
     </form>
     
     <form id="general-form" method="post" action="/new-attacker">
@@ -246,8 +270,29 @@
       </label></p>
       <p><input type="submit" value="Simulate"></p>
     </form>
+    <button onclick="ChangeBackground();">Change Background</button>
+    <script type="text/javascript"> 
+      var totalCount = 10;
+      function ChangeBackground() 
+      {
+        const images = [
+        "url('1.jpg')",
+        "url('2.jpg')",
+        "url('3.jpg')",
+        "url('4.jpg')",
+        "url('5.jpg')",
+        "url('6.jpg')",
+        "url('7.jpg')",
+        "url('8.jpg')",
+        "url('9.jpg')",
+        "url('10.jpg')",
+        ]
+        var num = Math.ceil( Math.random() * totalCount );
+        console.log(num);
+        const section = document.querySelector('body')
+        section.style.backgroundImage = images[num-1];
+      }
+      </script>
   </div>
-
-
   </section></body>
 </html>

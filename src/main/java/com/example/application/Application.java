@@ -41,24 +41,23 @@ public class Application {
      */
     @GetMapping("/simulation")
     public String simulation(
-        //     @RequestParam(name="atk-bal-skill") int atkBalSkill,
-        //     @RequestParam(name="atk-wep-skill") int atkWepSkill,
-        //     @RequestParam(name="wep-number") int wepNumber,
-        //     @RequestParam(name="wep-type") String wepType,
-        //     @RequestParam(name="wep-attacks") int wepAttacks,
-        //     @RequestParam(name="wep-strength") int wepStrength,
-        //     @RequestParam(name="wep-armor-pen") int wepArmorPen,
-        //     @RequestParam(name="wep-damage") int wepDamage,
-        //     @RequestParam(name="def-size") int defSize,
-        //     @RequestParam(name="def-toughness") int defToughness,
-        //     @RequestParam(name="def-save") int defSave,
-        //     @RequestParam(name="def-wounds") int defWounds,
-        //     @RequestParam(name="def-fnp") int defFnp,
-        //     @RequestParam(name="def-invul-save", defaultValue="off")
-        //         boolean defInvulSave,
-        //     Model model,
-        //     HttpServletResponse response) {
-        ) {
+            // @RequestParam(name="atk-bal-skill") int atkBalSkill,
+            // @RequestParam(name="atk-wep-skill") int atkWepSkill,
+            // @RequestParam(name="wep-number") int wepNumber,
+            // @RequestParam(name="wep-type") String wepType,
+            // @RequestParam(name="wep-attacks") int wepAttacks,
+            // @RequestParam(name="wep-strength") int wepStrength,
+            // @RequestParam(name="wep-armor-pen") int wepArmorPen,
+            // @RequestParam(name="wep-damage") int wepDamage,
+            // @RequestParam(name="def-size") int defSize,
+            // @RequestParam(name="def-toughness") int defToughness,
+            // @RequestParam(name="def-save") int defSave,
+            // @RequestParam(name="def-wounds") int defWounds,
+            // @RequestParam(name="def-fnp") int defFnp,
+            // @RequestParam(name="def-invul-save", defaultValue="off")
+                // boolean defInvulSave,
+            Model model,
+            HttpServletResponse response) {
         // boolean wepIsRanged = wepType.equals("ranged");
         // model.addAttribute("atkBalSkill", atkBalSkill);
         // model.addAttribute("atkWepSkill", atkWepSkill);
@@ -74,6 +73,8 @@ public class Application {
         // model.addAttribute("defWounds", defWounds);
         // model.addAttribute("defFnp", defFnp);
         // model.addAttribute("defInvulSave", defInvulSave);
+
+        model.addAttribute("Test", "Test Text");
 
 
         // CalculateDamage calculator = new CalculateDamage();

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1 {text-align: center;}
+.hr {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Compare Two</h1>
+<!--This code will create the heading in the center. The text align in style makes it in the center.-->
+
+<!-- Start of the attributes for Simulation 1-->
+<h4>Attacking Units- </h4>
+<h4>Defending Units- </h4>
+<h4>Average Total Damage- </h4>
+<h4>Average Models Killed- </h4>
+<h4>Simulated Total Damage- </h4>
+<h4>Simulated Models Killed- </h4>
+<!-- End of the attributes for Simulation 1-->
+
+<div class="hr"></div> <!-- This creates the horizontal line between the two sepearate elements-->
+
+<!-- Start of the attributes for Simulation 2-->
+<h4>Attacking Units- </h4>
+<h4>Defending Units- </h4>
+<h4>Average Total Damage- </h4>
+<h4>Average Models Killed- </h4>
+<h4>Simulated Total Damage- </h4>
+<h4>Simulated Models Killed- </h4>
+<!-- End of the attributes for Simulation 2-->
+
+<br> <!-- Page break for formatting-->
+
+<!-- Gets input for the first simulation-->
+<label for="Compare">Compare</label>
+<input type="text" id="sim1" name="simulation1">
+
+<!-- Gets input for the second simulation-->
+<label for="To">To</label>
+<input type="text" id="sim2" name="simulation2">
+
+<!-- This is the button that will go get the comparison data-->
+<button type="Do Comparison">Do Comparison</button>
+
+<!-- Button that will take the user back to the home page-->
+<h4></h4><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'><button>Home Page</button></a>
+</body>
+<!--TODO
+Make it so that the color sheme of the page can be changed
+Color options should include Light (Black text on white background)
+Dark (White text on black background)
+Change the link of the button to the home page-->
+
+<!-- Should be able to connect to the back end using spring
+Use commands to call the Java classes in owen/springport application.java
+Lookup spring boot thymeleaf tutorial
+simulation.html
+clone Patrick's branch onto local front end on css and html-->
+</html>

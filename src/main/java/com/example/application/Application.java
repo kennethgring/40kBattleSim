@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.example.application.unit.*;
+
 @SpringBootApplication
 @Controller
 public class Application {
@@ -109,12 +111,56 @@ public class Application {
             @RequestParam(name="attacker") String attackerName,
             @RequestParam(name="weapon") String weaponName,
             @RequestParam(name="defender") String defenderName,
-            @RequestParam(name="modifiers") String modifiersName,
+            @RequestParam(name="hit-plus-1", defaultValue="off")
+                boolean hitPlusOne,
+            @RequestParam(name="hit-minus-1", defaultValue="off")
+                boolean hitMinusOne,
+            @RequestParam(name="reroll-hits", defaultValue="off")
+                boolean rerollHits,
+            @RequestParam(name="reroll-hits-1", defaultValue="off")
+                boolean rerollHitsOne,
+            @RequestParam(name="reroll-wounds", defaultValue="off")
+                boolean rerollWounds,
+            @RequestParam(name="exploding-hits", defaultValue="off")
+                boolean explodingHits,
+            @RequestParam(name="mortal-wound-hits", defaultValue="off")
+                boolean mortalWoundHits,
+            @RequestParam(name="mortal-wound-wounds", defaultValue="off")
+                boolean mortalWoundWounds,
+            @RequestParam(name="extra-ap-wound", defaultValue="off")
+                boolean extraAPWound,
+            @RequestParam(name="save-plus-1", defaultValue="off")
+                boolean savePlusOne,
+            @RequestParam(name="save-minus-1", defaultValue="off")
+                boolean saveMinusOne,
+            @RequestParam(name="invul-save", defaultValue="off")
+                boolean invulSave,
+            @RequestParam(name="reroll-save", defaultValue="off")
+                boolean rerollSave,
+            @RequestParam(name="reroll-save-1", defaultValue="off")
+                boolean rerollSaveOne,
+            @RequestParam(name="damage-minus-1", defaultValue="off")
+                boolean damageMinusOne,
             HttpServletResponse response) {
         SimpleUnit attacker = findUnitWithName(attackers, attackerName);
         SimpleUnit weapon = findUnitWithName(weapons, weaponName);
         SimpleUnit defender = findUnitWithName(defenders, defenderName);
-        SimpleUnit modifiers = new SimpleUnit(modifiersName);
+        Modifiers modifiers = new Modifiers(new boolean[] {
+            hitPlusOne,
+            hitMinusOne,
+            rerollHits,
+            rerollHitsOne,
+            rerollWounds,
+            explodingHits,
+            mortalWoundHits,
+            mortalWoundWounds,
+            extraAPWound,
+            savePlusOne,
+            saveMinusOne,
+            invulSave,
+            rerollSave,
+            rerollSaveOne,
+            damageMinusOne});
         SimpleSimulation simulation =
             new SimpleSimulation(attacker, weapon, defender, modifiers);
         simulations.add(simulation);

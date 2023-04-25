@@ -12,8 +12,50 @@
   <th:block th:text="${sim.weapon.name}"/>
   to destroy
   <th:block th:text="${sim.defender.name}"/>!
-  <th:block th:unless="${#strings.isEmpty(sim.modifiers.name)}">
-    (<th:block th:text="${sim.modifiers.name}"/>)
+  <th:block th:if="${sim.modifiers.hitPlusOne}">
+    (+1 to Hit)
+  </th:block>
+  <th:block th:if="${sim.modifiers.hitMinusOne}">
+    (&minus;1 to Hit)
+  </th:block>
+  <th:block th:if="${sim.modifiers.rerollHits}">
+    (Re-roll Hits)
+  </th:block>
+  <th:block th:if="${sim.modifiers.rerollHitsOne}">
+    (Re-roll Hit Rolls of 1)
+  </th:block>
+  <th:block th:if="${sim.modifiers.rerollWounds}">
+    (Re-roll Wounds)
+  </th:block>
+  <th:block th:if="${sim.modifiers.explodingHits}">
+    (Exploding Hits)
+  </th:block>
+  <th:block th:if="${sim.modifiers.mortalWoundHits}">
+    (Mortal Wounds on 6's to Hit)
+  </th:block>
+  <th:block th:if="${sim.modifiers.mortalWoundWounds}">
+    (Mortal Wounds on 6's to Wound)
+  </th:block>
+  <th:block th:if="${sim.modifiers.extraAPWound}">
+    (Additional AP on 6’s to wound)
+  </th:block>
+  <th:block th:if="${sim.modifiers.savePlusOne}">
+    (+1 to Save)
+  </th:block>
+  <th:block th:if="${sim.modifiers.saveMinusOne}">
+    (&minus;1 to Save)
+  </th:block>
+  <th:block th:if="${sim.modifiers.invulSave}">
+    (Invulnerable Save)
+  </th:block>
+  <th:block th:if="${sim.modifiers.rerollSave}">
+    (Re-roll Saves)
+  </th:block>
+  <th:block th:if="${sim.modifiers.rerollSaveOne}">
+    (Re-roll Saves of 1)
+  </th:block>
+  <th:block th:if="${sim.modifiers.damageMinusOne}">
+    (&minus;1 to Damage)
   </th:block>
 </p>
 <th:block th:if="${#lists.isEmpty(simulations)}">

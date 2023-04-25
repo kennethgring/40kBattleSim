@@ -1,12 +1,14 @@
 package com.example.application;
 
+import com.example.application.unit.*;
+
 public class SimpleSimulation {
     private SimpleUnit attacker;
     private SimpleUnit weapon;
     private SimpleUnit defender;
-    private SimpleUnit modifiers;
+    private Modifiers modifiers;
     public SimpleSimulation(SimpleUnit attacker, SimpleUnit weapon,
-                            SimpleUnit defender, SimpleUnit modifiers) {
+                            SimpleUnit defender, Modifiers modifiers) {
         this.attacker = attacker;
         this.weapon = weapon;
         this.defender = defender;
@@ -21,7 +23,7 @@ public class SimpleSimulation {
     public SimpleUnit getDefender() {
         return defender;
     }
-    public SimpleUnit getModifiers() {
+    public Modifiers getModifiers() {
         return modifiers;
     }
 }

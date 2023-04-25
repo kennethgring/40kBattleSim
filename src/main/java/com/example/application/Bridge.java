@@ -161,7 +161,7 @@ public class Bridge {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "INSERT INTO Weapon (user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage, number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Weapon (user_id, isRanged, weapon_name, attacks, strength, armor_pen, damage, number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             // Set the parameter values for the SQL query
@@ -353,7 +353,7 @@ public class Bridge {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "SELECT user_id, weapon_type, weapon_name, attacks, strength, armor_pen, damage, number FROM Weapon WHERE weapon_id = ?";
+            String query = "SELECT user_id, isRanged, weapon_name, attacks, strength, armor_pen, damage, number FROM Weapon WHERE weapon_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
 
             // Set the parameter values for the SQL query
@@ -363,7 +363,7 @@ public class Bridge {
             if (rs.next()) {
                 // Retrieve values from the retrieved row
                 int userId = rs.getInt("user_id");
-                Boolean isRanged = rs.getBoolean("weapon_type");
+                Boolean isRanged = rs.getBoolean("isRanged");
                 String weaponName = rs.getString("unit_name");
                 int attacks = rs.getInt("attacks");
                 int strength = rs.getInt("strength");
@@ -500,7 +500,7 @@ public class Bridge {
      */
     public List<Entry<Attacker>> loadAttackers(int userId) {
 
-        List<Entry<Attacker>> attacker_list = new ArrayList();
+        List<Entry<Attacker>> attacker_list = new ArrayList<Entry<Attacker>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -536,7 +536,7 @@ public class Bridge {
      */
     public List<Entry<Weapon>> loadWeapons(int userId) {
 
-        List<Entry<Weapon>> weapon_list = new ArrayList();
+        List<Entry<Weapon>> weapon_list = new ArrayList<Entry<Weapon>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -548,8 +548,7 @@ public class Bridge {
             if (result.next()) {
                 String weapon_name = result.getString("weapon_name");
                 int num = result.getInt("number");
-                // if weapon_type == 0, then ranged weapon
-                boolean isRanged = (result.getInt("weapon_type") == 0);
+                boolean isRanged = result.getBoolean("isRanged");
                 int attacks = result.getInt("attacks");
                 int strength = result.getInt("strength");
                 int armor_pen = result.getInt("armor_pen");
@@ -576,7 +575,7 @@ public class Bridge {
      */
     public List<Entry<Defender>> loadDefenders(int userId) {
 
-        List<Entry<Defender>> defender_list = new ArrayList();
+        List<Entry<Defender>> defender_list = new ArrayList<Entry<Defender>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -612,9 +611,9 @@ public class Bridge {
      * @param userId foreign key associated with Defender table
      * @return list with all available Defender records for given userId
      */
-    public List<Simulation> loadSimulations(int userId) {
+    public List<Entry<Simulation>> loadSimulations(int userId) {
 
-        List<Entry<Simulation>> calc_list = new ArrayList();
+        List<Entry<Simulation>> calc_list = new ArrayList<Entry<Simulation>>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -627,7 +626,29 @@ public class Bridge {
                 int attacker_id = result.getInt("attacker_id");
                 int defender_id = result.getInt("defender_id");
                 int weapon_id = result.getInt("weapon_id");
-                String modifiers = result.getString("modifiers");
+                
+                boolean hitsPlusOne = result.getBoolean("hit+1");
+                boolean hitMinusOne = result.getBoolean("hit-1");
+                boolean rerollHits = result.getBoolean("reroll_hits");
+                boolean rerollHitsOne = result.getBoolean("reroll_hit1");
+                boolean rerollWounds = result.getBoolean("reroll_wounds");
+                boolean explodingHits = result.getBoolean("exploding_hits");
+                boolean mortalWoundsHit = result.getBoolean("mortal_wounds_hit");
+                boolean mortalWoundsWounds = result.getBoolean("mortal_wounds_wound");
+                boolean additionalAp = result.getBoolean("additional_ap_wound");
+                boolean savePlusOne = result.getBoolean("save+1");
+                boolean saveMinusOne = result.getBoolean("save-1");
+                boolean invulnerableSave = result.getBoolean("inulnerable_save");
+                boolean rerollSave = result.getBoolean("reroll_save");
+                boolean rerollSaveOne = result.getBoolean("reroll_save_1");
+                boolean damageMinusOne = result.getBoolean("damage-1");
+    
+                // Create Modifiers and Simulation objects with retrieved values
+                boolean[] mods = {hitsPlusOne, hitMinusOne, rerollHits, rerollHitsOne, rerollWounds, explodingHits,
+                    mortalWoundsHit, mortalWoundsWounds, additionalAp, savePlusOne, saveMinusOne, invulnerableSave,
+                    rerollSave, rerollSaveOne, damageMinusOne};
+                Modifiers modifiers = new Modifiers(mods);
+
                 int pk = result.getInt("calc_id");
 
                 Simulation calc = new Simulation(attacker_id, weapon_id, defender_id, modifiers);

@@ -1,24 +1,32 @@
+-- For most up to date MySQL diagrams, check the specs document.
+
+CREATE TABLE 40kBattleSim.User_IDs (
+    user_id INT NOT NULL,
+    PRIMARY KEY (`user_id`)
+);
+
 CREATE TABLE 40kBattleSim.Attacker (
     user_id INT,
     attacker_id INT NOT NULL auto_increment,
     unit_name VARCHAR(255),
     ballistic_skill INT,
     weapon_skill INT,
-    PRIMARY KEY (`attacker_id`)
+    PRIMARY KEY (`attacker_id`),
+    FOREIGN KEY (`user_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
 );
 
--- Foreign key of attacker_id, since each weapon will reference an attacker's ballistic_skill or weapon_skill
 CREATE TABLE 40kBattleSim.Weapon (
     user_id INT,
     weapon_id INT NOT NULL auto_increment,
-    weapon_type BOOLEAN,
+    isRanged BOOLEAN,
     weapon_name VARCHAR(255),
     attacks INT,
     strength INT,
     armor_pen INT,
-    damage DOUBLE,
+    damage INT,
+    number INT,
     PRIMARY KEY (`weapon_id`),
-    FOREIGN KEY (`attacker_id`)
+    FOREIGN KEY (`attacker_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
 );
 
 CREATE TABLE 40kBattleSim.Defender (
@@ -30,7 +38,8 @@ CREATE TABLE 40kBattleSim.Defender (
     save INT,
     wounds INT,
     feel_no_pain INT,
-    PRIMARY KEY (`defender_id`)
+    PRIMARY KEY (`defender_id`),
+    FOREIGN KEY (`defender_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
 );
 
 -- modifiers is a set, meaning the SQL entry for that column can contain any number of items in the set or none at all.
@@ -44,9 +53,21 @@ CREATE TABLE 40kBattleSim.Calculations (
     attacker_id INT NOT NULL,
     weapon_id INT NOT NULL,
     defender_id INT NOT NULL,
-    modifiers SET('hit+1', 'hit-1', 'reroll_hits', 'reroll_hit_1', 'reroll_wounds', 'exploding_hits', 'mortal_wounds_hit',
-                  'mortal_wounds_wound', 'additiona_ap_wound', 'save+1', 'save-1', 'invulnerable_save', 'reroll_save',
-                  'reroll_save_1', 'damage-1'),
+    `hit+1` BOOLEAN,
+    `hit-1` BOOLEAN,
+    `reroll_hits` BOOLEAN,
+    `reroll_hit_1` BOOLEAN,
+    `reroll_wounds` BOOLEAN,
+    `exploding_hits` BOOLEAN,
+    `mortal_wounds_hit` BOOLEAN,
+    `mortal_wounds_wound` BOOLEAN,
+    `additional_ap_wound` BOOLEAN,
+    `save+1` BOOLEAN,
+    `save-1` BOOLEAN, 
+    `invulnerable_save` BOOLEAN,
+    `reroll_save` BOOLEAN,
+    `reroll_save_1` BOOLEAN,
+    `damage-1` BOOLEAN,
     PRIMARY KEY (calc_id),
     FOREIGN KEY (attacker_id) REFERENCES 40kBattleSim.Attacker(`attacker_id`),
     FOREIGN KEY (weapon_id) REFERENCES 40kBattleSim.Weapon(`weapon_id`),
@@ -55,7 +76,7 @@ CREATE TABLE 40kBattleSim.Calculations (
 
 
 -- Insertion of dummy testing data.
--- User ID will be staticly coded at 0 (cookies will replace this later)
+-- A dummy "global" User ID will be staticly coded at 0
 
 -- Insert a test attacker row into Attacker table.
 -- test_attacker_1 has ballistic skill = 5 and weapon skill = 5

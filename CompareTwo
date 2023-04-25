@@ -56,7 +56,7 @@ h1 {text-align: center;}
 <button type="Do Comparison">Do Comparison</button>
 
 <!-- Button that will take the user back to the home page-->
-<h4></h4><a href='home/html'><button>Home Page</button></a>
+<h4></h4><a href='/'><button>Home Page</button></a>
 </body>
 <!--TODO
 Make it so that the color sheme of the page can be changed

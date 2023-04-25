@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Compare Two - 40kBattleSim</title>
 <style>
 h1 {text-align: center;}
 .hr {
@@ -19,7 +20,7 @@ h1 {text-align: center;}
 <body>
 
 <h1>Compare Two</h1>
-<!--This code will create the heading in the center. The text align in style makes it in the center.-->
+<!--This code will create the heading. The text align in style makes it in the center.-->
 
 <!-- Start of the attributes for Simulation 1-->
 <h4>Attacking Units- </h4>
@@ -55,17 +56,17 @@ h1 {text-align: center;}
 <button type="Do Comparison">Do Comparison</button>
 
 <!-- Button that will take the user back to the home page-->
-<h4></h4><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'><button>Home Page</button></a>
+<h4></h4><a href='home/html'><button>Home Page</button></a>
 </body>
 <!--TODO
 Make it so that the color sheme of the page can be changed
 Color options should include Light (Black text on white background)
-Dark (White text on black background)
-Change the link of the button to the home page-->
+Dark (White text on black background)-->
 
 <!-- Should be able to connect to the back end using spring
 Use commands to call the Java classes in owen/springport application.java
 Lookup spring boot thymeleaf tutorial
 simulation.html
-clone Patrick's branch onto local front end on css and html-->
+clone Patrick's branch onto local front end on css and html
+Store files as html templates -- resources-> templates-->
 </html>

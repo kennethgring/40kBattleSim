@@ -10,6 +10,10 @@
 <ul th:unless="${attackers.empty}">
   <li th:each="unit : ${attackers}">
     <th:block th:text="${unit.name}"/>
+    <ul>
+      <li>Ballistic Skill: <th:block th:text="${unit.balSkill}"/>+</li>
+      <li>Weapon Skill: <th:block th:text="${unit.wepSkill}"/>+</li>
+    </ul>
   </li>
 </ul>
 <p th:if="${attackers.empty}">No attackers.</p>
@@ -18,6 +22,18 @@
 <ul th:unless="${weapons.empty}">
   <li th:each="unit : ${weapons}">
     <th:block th:text="${unit.name}"/>
+    <ul>
+      <li>Number: <th:block th:text="${unit.num}"/></li>
+      <li>
+        Type:
+        <th:block th:if="${unit.isRanged}" th:text="Ranged"/>
+        <th:block th:unless="${unit.isRanged}" th:text="Melee"/>
+      </li>
+      <li>Attacks: <th:block th:text="${unit.attacks}"/></li>
+      <li>Strength: <th:block th:text="${unit.strength}"/></li>
+      <li>Armor Penetration: <th:block th:text="${unit.armorPen}"/></li>
+      <li>Damage: <th:block th:text="${unit.damage}"/></li>
+    </ul>
   </li>
 </ul>
 <p th:if="${weapons.empty}">No weapons.</p>
@@ -26,6 +42,19 @@
 <ul th:unless="${defenders.empty}">
   <li th:each="unit : ${defenders}">
     <th:block th:text="${unit.name}"/>
+    <ul>
+      <li>Size: <th:block th:text="${unit.size}"/></li>
+      <li>Toughness: <th:block th:text="${unit.toughness}"/></li>
+      <li>Save: <th:block th:text="${unit.save}"/>+</li>
+      <li>Wounds: <th:block th:text="${unit.wounds}"/></li>
+      <li>
+        Feel No Pain:
+        <th:block th:unless="${unit.feelNoPain == 0}">
+          <th:block th:text="${unit.feelNoPain}"/>+
+        </th:block>
+        <th:block th:if="${unit.feelNoPain == 0}">NA</th:block>
+      </li>
+    </ul>
   </li>
 </ul>
 <p th:if="${defenders.empty}">No defenders.</p>

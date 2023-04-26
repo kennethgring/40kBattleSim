@@ -97,30 +97,49 @@ public class Application {
     @PostMapping("/submit/new-attacker")
     public RedirectView newAttacker(
             @RequestParam(name="name") String name,
+            @RequestParam(name="bal-skill") int balSkill,
+            @RequestParam(name="wep-skill") int wepSkill,
             HttpServletRequest request,
             HttpServletResponse response) {
+        // TODO: Validate parameters
         ensureUserId(request, response);
-        attackers.add(new Attacker(name, 0, 0));
+        attackers.add(new Attacker(name, balSkill, wepSkill));
         return seeOther("/");
     }
 
     @PostMapping("/submit/new-weapon")
     public RedirectView newWeapon(
             @RequestParam(name="name") String name,
+            @RequestParam(name="num") int num,
+            @RequestParam(name="type") String type,
+            @RequestParam(name="attacks") int attacks,
+            @RequestParam(name="strength") int strength,
+            @RequestParam(name="armor-pen") int armorPen,
+            @RequestParam(name="damage") int damage,
             HttpServletRequest request,
             HttpServletResponse response) {
+        // TODO: Validate parameters
+        boolean isRanged = type.equals("ranged");
         ensureUserId(request, response);
-        weapons.add(new Weapon(name, 0, false, 0, 0, 0, 0));
+        weapons.add(new Weapon(name, num, isRanged, attacks, strength,
+                               armorPen, damage));
         return seeOther("/");
     }
 
     @PostMapping("/submit/new-defender")
     public RedirectView newDefender(
             @RequestParam(name="name") String name,
+            @RequestParam(name="size") int size,
+            @RequestParam(name="toughness") int toughness,
+            @RequestParam(name="save") int save,
+            @RequestParam(name="wounds") int wounds,
+            @RequestParam(name="feel-no-pain") int feelNoPain,
             HttpServletRequest request,
             HttpServletResponse response) {
+        // TODO: Validate parameters
         ensureUserId(request, response);
-        defenders.add(new Defender(name, 0, 0, 0, 0, 0));
+        defenders.add(new Defender(name, size, toughness, save, wounds,
+                                   feelNoPain));
         return seeOther("/");
     }
 

@@ -12,6 +12,28 @@
     Name:
     <input name="name" type="text" required>
   </label></p>
+  <p><label>
+    Ballistic Skill (BS):
+    <select name="bal-skill" required>
+      <option value=""></option>
+      <option value="2">2+</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+    </select>
+  </label></p>
+  <p><label>
+    Weapon Skill (WS):
+    <select name="wep-skill" required>
+      <option value=""></option>
+      <option value="2">2+</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+    </select>
+  </label></p>
   <p><input type="submit" value="Add Attacker"></p>
 </form>
 
@@ -21,6 +43,43 @@
     Name:
     <input name="name" type="text" required>
   </label></p>
+  <p><label>
+    Number:
+    <input name="num" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Type:
+    <select name="type" required>
+      <option value=""></option>
+      <option value="melee">Melee</option>
+      <option value="ranged">Ranged</option>
+    </select>
+  </label></p>
+  <p><label>
+    Attacks (A):
+    <input name="attacks" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Strength (S):
+    <input name="strength" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Armor Penetration (AP):
+    <select name="armor-pen" required>
+      <option value=""></option>
+      <option value="0">0</option>
+      <option value="-1">-1</option>
+      <option value="-2">-2</option>
+      <option value="-3">-3</option>
+      <option value="-4">-4</option>
+      <option value="-5">-5</option>
+      <option value="-6">-6</option>
+    </select>
+  </label></p>
+  <p><label>
+    Damage (D):
+    <input name="damage" type="number" min="1" required>
+  </label></p>
   <p><input type="submit" value="Add Weapon"></p>
 </form>
 
@@ -29,6 +88,40 @@
   <p><label>
     Name:
     <input name="name" type="text" required>
+  </label></p>
+  <p><label>
+    Size:
+    <input name="size" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Toughness (T):
+    <input name="toughness" type="number" min="1" required>
+  </label></p>
+  <p><label>
+    Save (SV):
+    <select name="save" required>
+      <option value=""></option>
+      <option value="2">2+</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+      <option value="7">7+</option>
+    </select>
+  </label></p>
+  <p><label>
+    Wounds (W):
+    <input name="wounds" type="number" required>
+  </label></p>
+  <p><label>
+    Feel No Pain:
+    <select name="feel-no-pain" required>
+      <option value="0" selected>NA</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+      <option value="6">6+</option>
+    </select>
   </label></p>
   <p><input type="submit" value="Add Defender"></p>
 </form>

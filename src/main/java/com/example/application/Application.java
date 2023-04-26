@@ -75,6 +75,9 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         ensureUserId(request, response);
+        for (SimpleSimulation ssim : simulations) {
+            ssim.getSimulation().reSimulate();
+        }
         model.addAttribute("simulations", simulations);
         return "simulations";
     }

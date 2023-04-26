@@ -28,7 +28,7 @@ public class Application {
     private LinkedList<Attacker> attackers;
     private LinkedList<Weapon> weapons;
     private LinkedList<Defender> defenders;
-    private LinkedList<SimpleSimulation> simulations;
+    private LinkedList<Simulation> simulations;
     private int maxUserId = 0;
 
     public static void main(String[] args) {
@@ -75,8 +75,8 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         ensureUserId(request, response);
-        for (SimpleSimulation ssim : simulations) {
-            ssim.getSimulation().reSimulate();
+        for (Simulation sim : simulations) {
+            sim.reSimulate();
         }
         model.addAttribute("simulations", simulations);
         return "simulations";
@@ -224,8 +224,8 @@ public class Application {
             rerollSave,
             rerollSaveOne,
             damageMinusOne});
-        SimpleSimulation simulation =
-            new SimpleSimulation(attacker, weapon, defender, modifiers);
+        Simulation simulation = new Simulation(attacker, weapon, defender,
+                                               modifiers);
         simulations.add(simulation);
         return seeOther("/simulations");
     }

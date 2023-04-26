@@ -7,7 +7,7 @@
 
 
 <ul th:unless="${simulations.empty}">
-  <li th:each="sim : ${simulations}" th:with="sim2=${sim.simulation}">
+  <li th:each="sim : ${simulations}">
     <em th:text="${sim.attacker.name}"/>
     uses
     <em th:text="${sim.weapon.name}"/>
@@ -91,17 +91,17 @@
       </li>
       <li>
         Average attack:
-        <th:block th:text="${#numbers.formatDecimal(sim2.avgDamage, 1, 3)}"/>
+        <th:block th:text="${#numbers.formatDecimal(sim.avgDamage, 1, 3)}"/>
         damage,
-        <th:block th:text="${sim2.avgModelsKilled}"/>
-        <th:block th:text="${sim2.avgModelsKilled == 1 ? 'model' : 'models'}"/>
+        <th:block th:text="${sim.avgModelsKilled}"/>
+        <th:block th:text="${sim.avgModelsKilled == 1 ? 'model' : 'models'}"/>
         killed
       </li>
       <li>
         Sample attack:
-        <th:block th:text="${sim2.simDamage}"/> damage,
-        <th:block th:text="${sim2.simModelsKilled}"/>
-        <th:block th:text="${sim2.simModelsKilled == 1 ? 'model' : 'models'}"/>
+        <th:block th:text="${sim.simDamage}"/> damage,
+        <th:block th:text="${sim.simModelsKilled}"/>
+        <th:block th:text="${sim.simModelsKilled == 1 ? 'model' : 'models'}"/>
         killed
         (<a href="/simulations">Re-simulate</a>)
       </li>

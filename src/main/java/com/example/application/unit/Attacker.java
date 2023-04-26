@@ -1,3 +1,5 @@
+package com.example.application.unit;
+
 public class Attacker {
     private String name;
     private int balSkill;

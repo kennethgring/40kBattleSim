@@ -1,6 +1,10 @@
+package com.example.application;
+
 import java.util.*;
 import java.sql.*;
 import java.util.List;
+
+import com.example.application.unit.*;
 
 /*
  * The bridge class contains the following methods for the front end to interact with the back end.
@@ -714,6 +718,19 @@ class Simulation {
 
         this.simDamage = CalculateDamage.simAttackDamage(this.attacker, this.defender, this.weapon, this.modifiers);
         this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
+    }
+
+    public Attacker getAttacker() {
+        return attacker;
+    }
+    public Weapon getWeapon() {
+        return weapon;
+    }
+    public Defender getDefender() {
+        return defender;
+    }
+    public Modifiers getModifiers() {
+        return modifiers;
     }
 
     // Both values are calculated once and never touched again by the calculation

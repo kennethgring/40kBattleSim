@@ -1,3 +1,5 @@
+package com.example.application.unit;
+
 public class Weapon {
     private String name;
     private int num;

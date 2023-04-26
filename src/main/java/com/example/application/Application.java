@@ -2,6 +2,7 @@ package com.example.application;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,9 +25,9 @@ import com.example.application.unit.*;
 @Controller
 public class Application {
 
-    private LinkedList<SimpleUnit> attackers;
-    private LinkedList<SimpleUnit> weapons;
-    private LinkedList<SimpleUnit> defenders;
+    private LinkedList<Attacker> attackers;
+    private LinkedList<Weapon> weapons;
+    private LinkedList<Defender> defenders;
     private LinkedList<SimpleSimulation> simulations;
     private int maxUserId = 0;
 
@@ -36,16 +37,17 @@ public class Application {
 
     public Application() {
         attackers = new LinkedList<>();
-        attackers.add(new SimpleUnit("Warriarch Hammerius"));
-        attackers.add(new SimpleUnit("Stabbystab, the Attackist"));
+        attackers.add(new Attacker("Warriarch Hammerius", 0, 0));
+        attackers.add(new Attacker("Stabbystab, the Attackist", 0, 0));
         weapons = new LinkedList<>();
-        weapons.add(new SimpleUnit("Damascus Longsword"));
-        weapons.add(new SimpleUnit("The Slayinator"));
-        weapons.add(new SimpleUnit("Combination Laser Minigun and Chainsaw "
-                                   + "Launcher"));
+        weapons.add(new Weapon("Damascus Longsword", 0, false, 0, 0, 0, 0));
+        weapons.add(new Weapon("The Slayinator", 0, false, 0, 0, 0, 0));
+        weapons.add(new Weapon("Combination Laser Minigun and Chainsaw "
+                               + "Launcher", 0, false, 0, 0, 0, 0));
         defenders = new LinkedList<>();
-        defenders.add(new SimpleUnit("Invictus the Unpuncturable"));
-        defenders.add(new SimpleUnit("Shield Guy"));
+        defenders.add(new Defender("Invictus the Unpuncturable", 0, 0, 0, 0,
+                                   0));
+        defenders.add(new Defender("Shield Guy", 0, 0, 0, 0, 0));
         simulations = new LinkedList<>();
     }
 
@@ -98,7 +100,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         ensureUserId(request, response);
-        attackers.add(new SimpleUnit(name));
+        attackers.add(new Attacker(name, 0, 0));
         return seeOther("/");
     }
 
@@ -108,7 +110,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         ensureUserId(request, response);
-        weapons.add(new SimpleUnit(name));
+        weapons.add(new Weapon(name, 0, false, 0, 0, 0, 0));
         return seeOther("/");
     }
 
@@ -118,7 +120,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         ensureUserId(request, response);
-        defenders.add(new SimpleUnit(name));
+        defenders.add(new Defender(name, 0, 0, 0, 0, 0));
         return seeOther("/");
     }
 
@@ -160,9 +162,11 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         ensureUserId(request, response);
-        SimpleUnit attacker = findUnitWithName(attackers, attackerName);
-        SimpleUnit weapon = findUnitWithName(weapons, weaponName);
-        SimpleUnit defender = findUnitWithName(defenders, defenderName);
+        Attacker attacker = findUnitWithName(attackers, attackerName,
+                                             Attacker::getName);
+        Weapon weapon = findUnitWithName(weapons, weaponName, Weapon::getName);
+        Defender defender = findUnitWithName(defenders, defenderName,
+                                             Defender::getName);
         Modifiers modifiers = new Modifiers(new boolean[] {
             hitPlusOne,
             hitMinusOne,
@@ -231,12 +235,13 @@ public class Application {
     }
 
     /**
-     * Find a SimpleUnit with a given name in a list.
+     * Find a unit with a given name in a list.
      */
-    private SimpleUnit findUnitWithName(List<SimpleUnit> list, String name)
+    private <Unit> Unit findUnitWithName(List<Unit> list, String name,
+                                         Function<Unit, String> getName)
             throws NoSuchUnitException {
-        for (SimpleUnit element : list) {
-            if (element.getName().equals(name)) {
+        for (Unit element : list) {
+            if (getName.apply(element).equals(name)) {
                 return element;
             }
         }

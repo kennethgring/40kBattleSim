@@ -3,24 +3,24 @@ package com.example.application;
 import com.example.application.unit.*;
 
 public class SimpleSimulation {
-    private SimpleUnit attacker;
-    private SimpleUnit weapon;
-    private SimpleUnit defender;
+    private Attacker attacker;
+    private Weapon weapon;
+    private Defender defender;
     private Modifiers modifiers;
-    public SimpleSimulation(SimpleUnit attacker, SimpleUnit weapon,
-                            SimpleUnit defender, Modifiers modifiers) {
+    public SimpleSimulation(Attacker attacker, Weapon weapon,
+                            Defender defender, Modifiers modifiers) {
         this.attacker = attacker;
         this.weapon = weapon;
         this.defender = defender;
         this.modifiers = modifiers;
     }
-    public SimpleUnit getAttacker() {
+    public Attacker getAttacker() {
         return attacker;
     }
-    public SimpleUnit getWeapon() {
+    public Weapon getWeapon() {
         return weapon;
     }
-    public SimpleUnit getDefender() {
+    public Defender getDefender() {
         return defender;
     }
     public Modifiers getModifiers() {

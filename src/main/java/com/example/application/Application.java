@@ -268,3 +268,9 @@ public class Application {
     }
 
 }
+
+class NoSuchUnitException extends RuntimeException {
+    public NoSuchUnitException(String message) {
+        super(message);
+    }
+}

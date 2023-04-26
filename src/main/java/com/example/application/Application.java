@@ -101,7 +101,11 @@ public class Application {
             @RequestParam(name="wep-skill") int wepSkill,
             HttpServletRequest request,
             HttpServletResponse response) {
-        // TODO: Validate parameters
+            if (name.isEmpty()
+                    || balSkill < 2 || balSkill > 6
+                    || wepSkill < 2 || wepSkill > 6) {
+                throw new BadParamsException("Invalid attacker parameter(s)");
+            }
         ensureUserId(request, response);
         attackers.add(new Attacker(name, balSkill, wepSkill));
         return seeOther("/");
@@ -118,8 +122,16 @@ public class Application {
             @RequestParam(name="damage") int damage,
             HttpServletRequest request,
             HttpServletResponse response) {
-        // TODO: Validate parameters
         boolean isRanged = type.equals("ranged");
+        if (name.isEmpty()
+                || num < 1
+                || (!isRanged && !type.equals("melee"))
+                || attacks < 1
+                || strength < 1
+                || armorPen > 0 || armorPen < -6
+                || damage < 1) {
+            throw new BadParamsException("Invalid weapon parameter(s)");
+        }
         ensureUserId(request, response);
         weapons.add(new Weapon(name, num, isRanged, attacks, strength,
                                armorPen, damage));
@@ -136,7 +148,14 @@ public class Application {
             @RequestParam(name="feel-no-pain") int feelNoPain,
             HttpServletRequest request,
             HttpServletResponse response) {
-        // TODO: Validate parameters
+        if (name.isEmpty()
+                || size < 1
+                || toughness < 1
+                || save < 2 || save > 7
+                // Wounds can be any value, I guess.
+                || (feelNoPain != 0 && (feelNoPain < 2 || feelNoPain > 6))) {
+            throw new BadParamsException("Invalid defender parameter(s)");
+        }
         ensureUserId(request, response);
         defenders.add(new Defender(name, size, toughness, save, wounds,
                                    feelNoPain));
@@ -234,12 +253,19 @@ public class Application {
         return maxUserId;
     }
 
-
     @ExceptionHandler(NoSuchUnitException.class)
     public ResponseEntity<String> handleNoSuchUnit(
             NoSuchUnitException exception) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
+            .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(BadParamsException.class)
+    public ResponseEntity<String> handleBadParams(
+            BadParamsException exception) {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
             .body(exception.getMessage());
     }
 
@@ -271,6 +297,12 @@ public class Application {
 
 class NoSuchUnitException extends RuntimeException {
     public NoSuchUnitException(String message) {
+        super(message);
+    }
+}
+
+class BadParamsException extends RuntimeException {
+    public BadParamsException(String message) {
         super(message);
     }
 }

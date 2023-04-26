@@ -26,7 +26,7 @@ CREATE TABLE 40kBattleSim.Weapon (
     damage INT,
     number INT,
     PRIMARY KEY (`weapon_id`),
-    FOREIGN KEY (`attacker_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
+    FOREIGN KEY (`user_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
 );
 
 CREATE TABLE 40kBattleSim.Defender (
@@ -39,7 +39,7 @@ CREATE TABLE 40kBattleSim.Defender (
     wounds INT,
     feel_no_pain INT,
     PRIMARY KEY (`defender_id`),
-    FOREIGN KEY (`defender_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
+    FOREIGN KEY (`user_id`) REFERENCES 40kBattleSim.User_IDs(`user_id`)
 );
 
 -- modifiers is a set, meaning the SQL entry for that column can contain any number of items in the set or none at all.

@@ -37,17 +37,17 @@ public class Application {
 
     public Application() {
         attackers = new LinkedList<>();
-        attackers.add(new Attacker("Warriarch Hammerius", 0, 0));
-        attackers.add(new Attacker("Stabbystab, the Attackist", 0, 0));
+        attackers.add(new Attacker("Warriarch Hammerius", 4, 6));
+        attackers.add(new Attacker("Stabbystab, the Attackist", 2, 5));
         weapons = new LinkedList<>();
-        weapons.add(new Weapon("Damascus Longsword", 0, false, 0, 0, 0, 0));
-        weapons.add(new Weapon("The Slayinator", 0, false, 0, 0, 0, 0));
+        weapons.add(new Weapon("Damascus Longsword", 1, false, 1, 6, 0, 3));
+        weapons.add(new Weapon("The Slayinator", 1, false, 2, 9, -1, 3));
         weapons.add(new Weapon("Combination Laser Minigun and Chainsaw "
-                               + "Launcher", 0, false, 0, 0, 0, 0));
+                               + "Launcher", 1, true, 4, 9, -3, 2));
         defenders = new LinkedList<>();
-        defenders.add(new Defender("Invictus the Unpuncturable", 0, 0, 0, 0,
-                                   0));
-        defenders.add(new Defender("Shield Guy", 0, 0, 0, 0, 0));
+        defenders.add(new Defender("Invictus the Unpuncturable", 1, 4, 7, 0,
+                                   6));
+        defenders.add(new Defender("Shield Guy", 2, 2, 5, 0, 0));
         simulations = new LinkedList<>();
     }
 

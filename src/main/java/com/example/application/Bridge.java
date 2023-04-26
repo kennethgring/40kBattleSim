@@ -720,6 +720,19 @@ class Simulation {
         this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
     }
 
+    public Attacker getAttacker() {
+        return attacker;
+    }
+    public Weapon getWeapon() {
+        return weapon;
+    }
+    public Defender getDefender() {
+        return defender;
+    }
+    public Modifiers getModifiers() {
+        return modifiers;
+    }
+
     // Both values are calculated once and never touched again by the calculation
     public double getAvgDamage() {
         return this.avgDamage;

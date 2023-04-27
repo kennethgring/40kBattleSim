@@ -10,6 +10,9 @@
 <ul th:unless="${attackers.empty}">
   <li th:each="entry : ${attackers}" th:with="unit=${entry.unitType}">
     <th:block th:text="${unit.name}"/>
+    <th:block th:if="${entry.userId == 0}">
+      (<em>pre-made</em>)
+    </th:block>
     <ul>
       <li>Ballistic Skill: <th:block th:text="${unit.balSkill}"/>+</li>
       <li>Weapon Skill: <th:block th:text="${unit.wepSkill}"/>+</li>
@@ -22,6 +25,9 @@
 <ul th:unless="${weapons.empty}">
   <li th:each="entry : ${weapons}" th:with="unit=${entry.unitType}">
     <th:block th:text="${unit.name}"/>
+    <th:block th:if="${entry.userId == 0}">
+      (<em>pre-made</em>)
+    </th:block>
     <ul>
       <li>Number: <th:block th:text="${unit.num}"/></li>
       <li>
@@ -42,6 +48,9 @@
 <ul th:unless="${defenders.empty}">
   <li th:each="entry : ${defenders}" th:with="unit=${entry.unitType}">
     <th:block th:text="${unit.name}"/>
+    <th:block th:if="${entry.userId == 0}">
+      (<em>pre-made</em>)
+    </th:block>
     <ul>
       <li>Size: <th:block th:text="${unit.size}"/></li>
       <li>Toughness: <th:block th:text="${unit.toughness}"/></li>

@@ -8,9 +8,9 @@ Do it differently if you have a better idea.
 
 Return whether the user ID is that of an existing user.
 
-## `void addUser(UserId userId)`
+## `int addUser()`
 
-Add the user ID to the list of known users.
+Add a new user to the database and return the generated user ID.
 
 ## `boolean saveAttacker(UserId userId, Attacker attacker)`
 

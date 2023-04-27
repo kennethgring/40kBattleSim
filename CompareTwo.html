@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html th:replace="~{base :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Compare Two - 40kBattleSim</title>
+<style>
+h1 {text-align: center;}
+.hr {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+</style>
+</head>
+
+<body>
+<section th:remove="tag">
+
+<h1>Compare Two</h1>
+<!--This code will create the heading in the center. The text align in style makes it in the center.-->
+
+<!-- Start of the attributes for Simulation 1-->
+<h4>Simulation 1</h4>
+<pre>
+  <span th:text="'Attacking Units- ' + ${attackerName1}"/>
+  <span th:text="'Defending Units- ' + ${defenderName1}"/>
+  <span th:text="'Average Total Damage- ' + ${avgTotalDamage1}"/>
+  <span th:text="'Average Models Killed- ' + ${avgModelsKilled1}"/>
+  <span th:text="'Simulated Total Damage- ' + ${simTotalDamage1}"/>
+  <span th:text="'Simulated Models Killed- ' + ${simModelsKilled1}"/>
+  </pre>
+<!-- End of the attributes for Simulation 1-->
+
+<div class="hr"></div> <!-- This creates the horizontal line between the two sepearate elements-->
+
+<!-- Start of the attributes for Simulation 2-->
+<h4>Simulation 2</h4>
+<pre>
+  <span th:text="'Attacking Units- ' + ${attackerName2}"/>
+  <span th:text="'Defending Units- ' + ${defenderName2}"/>
+  <span th:text="'Average Total Damage- ' + ${avgTotalDamage2}"/>
+  <span th:text="'Average Models Killed- ' + ${avgModelsKilled2}"/>
+  <span th:text="'Simulated Total Damage- ' + ${simTotalDamage2}"/>
+  <span th:text="'Simulated Models Killed- ' + ${simModelsKilled2}"/>
+</pre>
+<!-- End of the attributes for Simulation 2-->
+
+<br> <!-- Page break for formatting-->
+
+<!-- Gets input for the first simulation-->
+<!-- Expects calculations IDs-->
+<label for="Compare">Compare</label>
+<input type="text" id="sim1" name="simulation1">
+
+<!-- Gets input for the second simulation-->
+<label for="To">To</label>
+<input type="text" id="sim2" name="simulation2">
+
+<!-- This is the button that will go get the comparison data-->
+<button type="Do Comparison">Do Comparison</button>
+
+<!-- Button that will take the user back to the home page-->
+<h4></h4><a href='/'><button>Home Page</button></a>
+</section>
+</body>
+<!--TODO
+Make it so that the color sheme of the page can be changed
+Color options should include Light (Black text on white background)
+Dark (White text on black background) and Badger (White text on red background)
+Change the link of the button to the home page-->
+</html>

@@ -1,7 +1,9 @@
 package com.example.application;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 import jakarta.servlet.http.Cookie;
@@ -308,4 +310,125 @@ class BadParamsException extends RuntimeException {
     public BadParamsException(String message) {
         super(message);
     }
+}
+
+class FakeBridge {
+
+    private static HashMap<Integer, UserData> db;
+    private static int pkCounter = 10000;
+    private static Random random = new Random();
+    static {
+        db = new HashMap<>();
+        db.put(0, new UserData());
+        saveAttacker(0, new Attacker("Warriarch Hammerius", 4, 6));
+        saveAttacker(0, new Attacker("Stabbystab, the Attackist", 2, 5));
+        saveWeapon(0, new Weapon("Damascus Longsword", 1, false, 1, 6, 0, 3));
+        saveWeapon(0, new Weapon("The Slayinator", 1, false, 2, 9, -1, 3));
+        saveWeapon(0, new Weapon("Combination Laser Minigun and Chainsaw "
+                                 + "Launcher", 1, true, 4, 9, -3, 2));
+        saveDefender(0, new Defender("Invictus the Unpuncturable", 1, 4, 7, 0,
+                                     6));
+        saveDefender(0, new Defender("Shield Guy", 2, 2, 5, 0, 0));
+    }
+
+    public static boolean userExists(int userId) {
+        return db.containsKey(userId);
+    }
+
+    public static int addUser() {
+        int userId;
+        for (;;) {
+            userId = random.nextInt(1 << 23);
+            if (!userExists(userId)) {
+                break;
+            }
+        }
+        db.put(userId, new UserData());
+        return userId;
+    }
+
+    public static boolean saveAttacker(int userId, Attacker attacker) {
+        int pk = pkCounter++;
+        Entry<Attacker> entry = new Entry<>(attacker, userId, pk);
+        db.get(userId).attackers.put(pk, entry);
+        return true;
+    }
+    public static boolean saveWeapon(int userId, Weapon weapon) {
+        int pk = pkCounter++;
+        Entry<Weapon> entry = new Entry<>(weapon, userId, pk);
+        db.get(userId).weapons.put(pk, entry);
+        return true;
+    }
+    public static boolean saveDefender(int userId, Defender defender) {
+        int pk = pkCounter++;
+        Entry<Defender> entry = new Entry<>(defender, userId, pk);
+        db.get(userId).defenders.put(pk, entry);
+        return true;
+    }
+
+    public static boolean saveSimulation(int userId, int attackerPk,
+                                         int weaponPk, int defenderPk,
+                                         Modifiers modifiers) {
+        UserData userData = db.get(userId);
+        Entry<Attacker> atkEntry = userData.attackers.get(attackerPk);
+        Entry<Weapon> wepEntry = userData.weapons.get(weaponPk);
+        Entry<Defender> defEntry = userData.defenders.get(defenderPk);
+        if (atkEntry == null) {
+            atkEntry = db.get(0).attackers.get(attackerPk);
+        }
+        if (wepEntry == null) {
+            wepEntry = db.get(0).weapons.get(weaponPk);
+        }
+        if (defEntry == null) {
+            defEntry = db.get(0).defenders.get(defenderPk);
+        }
+        if (atkEntry == null || wepEntry == null || defEntry == null) {
+            return false;
+        }
+        userData.simulations.add(new Simulation(
+            atkEntry.getUnitType(), wepEntry.getUnitType(),
+            defEntry.getUnitType(), modifiers));
+        return true;
+    }
+
+    public static List<Entry<Attacker>> loadAttackers(int userId) {
+        return loadUnits(userId, data -> data.attackers);
+    }
+    public static List<Entry<Weapon>> loadWeapons(int userId) {
+        return loadUnits(userId, data -> data.weapons);
+    }
+    public static List<Entry<Defender>> loadDefenders(int userId) {
+        return loadUnits(userId, data -> data.defenders);
+    }
+
+    private static <Unit> List<Entry<Unit>> loadUnits(
+            int userId, Function<UserData,
+            HashMap<Integer, Entry<Unit>>> getEntries) {
+        List<Entry<Unit>> list = new LinkedList<>();
+        for (Entry<Unit> entry : getEntries.apply(db.get(0)).values()) {
+            list.add(entry);
+        }
+        for (Entry<Unit> entry : getEntries.apply(db.get(userId)).values()) {
+            list.add(entry);
+        }
+        return list;
+    }
+
+    public static List<Simulation> loadSimulations(int userId) {
+        return db.get(userId).simulations;
+    }
+
+    private static class UserData {
+        public HashMap<Integer, Entry<Attacker>> attackers;
+        public HashMap<Integer, Entry<Weapon>> weapons;
+        public HashMap<Integer, Entry<Defender>> defenders;
+        public LinkedList<Simulation> simulations;
+        public UserData() {
+            attackers = new HashMap<>();
+            weapons = new HashMap<>();
+            defenders = new HashMap<>();
+            simulations = new LinkedList<>();
+        }
+    }
+
 }

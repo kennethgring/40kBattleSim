@@ -27,30 +27,8 @@ import com.example.application.unit.*;
 @Controller
 public class Application {
 
-    private LinkedList<Attacker> attackers;
-    private LinkedList<Weapon> weapons;
-    private LinkedList<Defender> defenders;
-    private LinkedList<Simulation> simulations;
-    private int maxUserId = 0;
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    public Application() {
-        attackers = new LinkedList<>();
-        attackers.add(new Attacker("Warriarch Hammerius", 4, 6));
-        attackers.add(new Attacker("Stabbystab, the Attackist", 2, 5));
-        weapons = new LinkedList<>();
-        weapons.add(new Weapon("Damascus Longsword", 1, false, 1, 6, 0, 3));
-        weapons.add(new Weapon("The Slayinator", 1, false, 2, 9, -1, 3));
-        weapons.add(new Weapon("Combination Laser Minigun and Chainsaw "
-                               + "Launcher", 1, true, 4, 9, -3, 2));
-        defenders = new LinkedList<>();
-        defenders.add(new Defender("Invictus the Unpuncturable", 1, 4, 7, 0,
-                                   6));
-        defenders.add(new Defender("Shield Guy", 2, 2, 5, 0, 0));
-        simulations = new LinkedList<>();
     }
 
     /**
@@ -61,10 +39,10 @@ public class Application {
             Model model,
             HttpServletRequest request,
             HttpServletResponse response) {
-        ensureUserId(request, response);
-        model.addAttribute("attackers", attackers);
-        model.addAttribute("weapons", weapons);
-        model.addAttribute("defenders", defenders);
+        int userId = ensureUserId(request, response);
+        model.addAttribute("attackers", FakeBridge.loadAttackers(userId));
+        model.addAttribute("weapons", FakeBridge.loadWeapons(userId));
+        model.addAttribute("defenders", FakeBridge.loadDefenders(userId));
         return "home";
     }
 
@@ -76,7 +54,8 @@ public class Application {
             Model model,
             HttpServletRequest request,
             HttpServletResponse response) {
-        ensureUserId(request, response);
+        int userId = ensureUserId(request, response);
+        List<Simulation> simulations = FakeBridge.loadSimulations(userId);
         for (Simulation sim : simulations) {
             sim.reSimulate();
         }
@@ -92,10 +71,10 @@ public class Application {
             Model model,
             HttpServletRequest request,
             HttpServletResponse response) {
-        ensureUserId(request, response);
-        model.addAttribute("attackers", attackers);
-        model.addAttribute("weapons", weapons);
-        model.addAttribute("defenders", defenders);
+        int userId = ensureUserId(request, response);
+        model.addAttribute("attackers", FakeBridge.loadAttackers(userId));
+        model.addAttribute("weapons", FakeBridge.loadWeapons(userId));
+        model.addAttribute("defenders", FakeBridge.loadDefenders(userId));
         return "units";
     }
 
@@ -111,8 +90,9 @@ public class Application {
                     || wepSkill < 2 || wepSkill > 6) {
                 throw new BadParamsException("Invalid attacker parameter(s)");
             }
-        ensureUserId(request, response);
-        attackers.add(new Attacker(name, balSkill, wepSkill));
+        int userId = ensureUserId(request, response);
+        Attacker attacker = new Attacker(name, balSkill, wepSkill);
+        FakeBridge.saveAttacker(userId, attacker);
         return seeOther("/");
     }
 
@@ -137,9 +117,10 @@ public class Application {
                 || damage < 1) {
             throw new BadParamsException("Invalid weapon parameter(s)");
         }
-        ensureUserId(request, response);
-        weapons.add(new Weapon(name, num, isRanged, attacks, strength,
-                               armorPen, damage));
+        int userId = ensureUserId(request, response);
+        Weapon weapon = new Weapon(name, num, isRanged, attacks, strength,
+                                   armorPen, damage);
+        FakeBridge.saveWeapon(userId, weapon);
         return seeOther("/");
     }
 
@@ -161,17 +142,18 @@ public class Application {
                 || (feelNoPain != 0 && (feelNoPain < 2 || feelNoPain > 6))) {
             throw new BadParamsException("Invalid defender parameter(s)");
         }
-        ensureUserId(request, response);
-        defenders.add(new Defender(name, size, toughness, save, wounds,
-                                   feelNoPain));
+        int userId = ensureUserId(request, response);
+        Defender defender = new Defender(name, size, toughness, save, wounds,
+                                         feelNoPain);
+        FakeBridge.saveDefender(userId, defender);
         return seeOther("/");
     }
 
     @PostMapping("/submit/new-simulation")
     public RedirectView newSimulation(
-            @RequestParam(name="attacker") String attackerName,
-            @RequestParam(name="weapon") String weaponName,
-            @RequestParam(name="defender") String defenderName,
+            @RequestParam(name="attacker") int attackerPk,
+            @RequestParam(name="weapon") int weaponPk,
+            @RequestParam(name="defender") int defenderPk,
             @RequestParam(name="hit-plus-1", defaultValue="off")
                 boolean hitPlusOne,
             @RequestParam(name="hit-minus-1", defaultValue="off")
@@ -204,12 +186,7 @@ public class Application {
                 boolean damageMinusOne,
             HttpServletRequest request,
             HttpServletResponse response) {
-        ensureUserId(request, response);
-        Attacker attacker = findUnitWithName(attackers, attackerName,
-                                             Attacker::getName);
-        Weapon weapon = findUnitWithName(weapons, weaponName, Weapon::getName);
-        Defender defender = findUnitWithName(defenders, defenderName,
-                                             Defender::getName);
+        int userId = ensureUserId(request, response);
         Modifiers modifiers = new Modifiers(new boolean[] {
             hitPlusOne,
             hitMinusOne,
@@ -226,9 +203,8 @@ public class Application {
             rerollSave,
             rerollSaveOne,
             damageMinusOne});
-        Simulation simulation = new Simulation(attacker, weapon, defender,
-                                               modifiers);
-        simulations.add(simulation);
+        FakeBridge.saveSimulation(userId, attackerPk, weaponPk, defenderPk,
+                                  modifiers);
         return seeOther("/simulations");
     }
 
@@ -243,7 +219,8 @@ public class Application {
                 if (cookie.getName().equals("user-id")) {
                     try {
                         int cookieUserId = Integer.valueOf(cookie.getValue());
-                        if (0 < cookieUserId && cookieUserId <= maxUserId) {
+                        if (cookieUserId != 0
+                                && FakeBridge.userExists(cookieUserId)) {
                             return cookieUserId;
                         }
                     } catch (NumberFormatException exc) {}
@@ -251,11 +228,11 @@ public class Application {
                 }
             }
         }
-        maxUserId++;
-        Cookie cookie = new Cookie("user-id", String.valueOf(maxUserId));
+        int userId = FakeBridge.addUser();
+        Cookie cookie = new Cookie("user-id", String.valueOf(userId));
         cookie.setPath("/");
         response.addCookie(cookie);
-        return maxUserId;
+        return userId;
     }
 
     @ExceptionHandler(NoSuchUnitException.class)

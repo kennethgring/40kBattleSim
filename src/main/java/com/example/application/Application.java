@@ -203,8 +203,12 @@ public class Application {
             rerollSave,
             rerollSaveOne,
             damageMinusOne});
-        FakeBridge.saveSimulation(userId, attackerPk, weaponPk, defenderPk,
-                                  modifiers);
+        boolean success = FakeBridge.saveSimulation(
+            userId, attackerPk, weaponPk, defenderPk, modifiers);
+        if (!success) {
+            throw new NoSuchUnitException(
+                "Could not find all specified units");
+        }
         return seeOther("/simulations");
     }
 

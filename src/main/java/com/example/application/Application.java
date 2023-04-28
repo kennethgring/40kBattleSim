@@ -56,9 +56,6 @@ public class Application {
             HttpServletResponse response) {
         int userId = ensureUserId(request, response);
         List<Simulation> simulations = FakeBridge.loadSimulations(userId);
-        for (Simulation sim : simulations) {
-            sim.reSimulate();
-        }
         model.addAttribute("simulations", simulations);
         return "simulations";
     }
@@ -396,7 +393,11 @@ class FakeBridge {
     }
 
     public static List<Simulation> loadSimulations(int userId) {
-        return db.get(userId).simulations;
+        List<Simulation> simulations = db.get(userId).simulations;
+        for (Simulation sim : simulations) {
+            sim.reSimulate();
+        }
+        return simulations;
     }
 
     private static class UserData {

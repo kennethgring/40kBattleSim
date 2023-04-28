@@ -42,7 +42,7 @@ public class Bridge {
      * Checks if a user with the passed in userId exists in the User_IDs table.
      * Returns true if it does.
      */
-    boolean userExists(int userId) {
+    public static boolean userExists(int userId) {
         boolean exists = false;
         try {
             // Connect to the MySQL database
@@ -76,7 +76,7 @@ public class Bridge {
     /*
      * Adds a new user to the User_IDs table
      */
-    void addUser(int userId) {
+    public static void addUser(int userId) {
         try {
             // Connect to the MySQL database
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -498,7 +498,7 @@ public class Bridge {
      * @param userId all Entry<Attackers> that this userId can access
      * @return 
      */
-    public List<Entry<Attacker>> loadAttackers(int userId) {
+    public static List<Entry<Attacker>> loadAttackers(int userId) {
 
         List<Entry<Attacker>> attacker_list = new ArrayList<Entry<Attacker>>();
 
@@ -534,7 +534,7 @@ public class Bridge {
      * @param userId foreign key associated with Weapon table
      * @return list with all available Weapon records for given userId
      */
-    public List<Entry<Weapon>> loadWeapons(int userId) {
+    public static List<Entry<Weapon>> loadWeapons(int userId) {
 
         List<Entry<Weapon>> weapon_list = new ArrayList<Entry<Weapon>>();
 
@@ -573,7 +573,7 @@ public class Bridge {
      * @param userId foreign key associated with Defender table
      * @return list with all available Defender records for given userId
      */
-    public List<Entry<Defender>> loadDefenders(int userId) {
+    public static List<Entry<Defender>> loadDefenders(int userId) {
 
         List<Entry<Defender>> defender_list = new ArrayList<Entry<Defender>>();
 
@@ -611,7 +611,7 @@ public class Bridge {
      * @param userId foreign key associated with Defender table
      * @return list with all available Defender records for given userId
      */
-    public List<Entry<Simulation>> loadSimulations(int userId) {
+    public static List<Entry<Simulation>> loadSimulations(int userId) {
 
         List<Entry<Simulation>> calc_list = new ArrayList<Entry<Simulation>>();
 

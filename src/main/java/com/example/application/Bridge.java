@@ -8,6 +8,7 @@ import com.example.application.unit.*;
 
 /*
  * The bridge class contains the following methods for the front end to interact with the back end.
+ * NOTE: MUST BE ON CAMPUS VPN TO ACCESS DB PROPERLY!
  * 
  * These methods checks for an existing user and can add a user to the table:
  *      userExists
@@ -607,9 +608,9 @@ public class Bridge {
     }
     
     /**
-     * Method to populate List with all of userId's Calculation records.
-     * @param userId foreign key associated with Defender table
-     * @return list with all available Defender records for given userId
+     * Method to populate List with all of userId's Calculations records.
+     * @param userId foreign key associated with Calculations table
+     * @return list with all available Calculations records for given userId
      */
     public static List<Entry<Simulation>> loadSimulations(int userId) {
 
@@ -620,7 +621,7 @@ public class Bridge {
             Connection conn = DriverManager.getConnection(url, username, password);
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(
-                    "SELECT * FROM Calculation WHERE user_id = " + userId + " OR user_id = 0;");
+                    "SELECT * FROM Calculations WHERE user_id = " + userId + " OR user_id = 0;");
             
             while (result.next()) {
                 int attacker_id = result.getInt("attacker_id");
@@ -664,6 +665,10 @@ public class Bridge {
         }
     }
 
+    /**
+     * Main method to test changes locally.
+     * @param args
+     */
     public static void main(String[] args) {
         Bridge test = new Bridge();
 

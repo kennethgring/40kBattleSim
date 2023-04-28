@@ -801,23 +801,24 @@ class Entry<UnitType> {
 
         if (unitType instanceof Attacker) {
             Attacker attacker = (Attacker) unitType;
-            return "Attacker: " + attacker.getName() + ", Ballistic Skill: " 
-                + attacker.getBalSkill() + ", Weapon Skill: " + attacker.getWepSkill();
+            return "Attacker: [" + attacker.getName() + "Ballistic Skill: " 
+                + attacker.getBalSkill() + ", Weapon Skill: " + attacker.getWepSkill() + "]\n";
 
         } else if (unitType instanceof Defender) {
             Defender defender = (Defender) unitType;
-            return "Defender: " + defender.getName() + ", Size: " + defender.getSize() + 
+            return "Defender: [" + defender.getName() + "Size: " + defender.getSize() + 
                 ", Toughness: " + defender.getToughness() + ", Save: " + defender.getSave() +
-                ", Wounds: " + defender.getFeelNoPain() + ", Feel No Pain: " + defender.getFeelNoPain();
+                ", Wounds: " + defender.getFeelNoPain() + ", Feel No Pain: " + defender.getFeelNoPain()
+                + "]\n";
 
         } else if (unitType instanceof Weapon) {
             Weapon weapon = (Weapon) unitType;
-            return "Weapon: " + weapon.getName() + ", Number: " + weapon.getNum() + ", isRanged: " +
+            return "Weapon: [" + weapon.getName() + "Number: " + weapon.getNum() + ", isRanged: " +
                 weapon.getIsRanged() + ", Attacks: " + weapon.getAttacks() + ", Strength: " + weapon.getStrength()
-                + ", Armor Penetration: " + weapon.getArmorPen() + ", Damage: " + weapon.getDamage();
+                + ", Armor Penetration: " + weapon.getArmorPen() + ", Damage: " + weapon.getDamage() + "]\n";
         }
 
-        return "Error: UnitType not Attacker, Defender or Weapon.";
+        return "Error: UnitType not Attacker, Defender or Weapon.\n";
     }
 
     public UnitType getUnitType() {

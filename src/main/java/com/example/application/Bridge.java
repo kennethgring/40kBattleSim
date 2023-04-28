@@ -88,7 +88,7 @@ public class Bridge {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
 
-            statement.executeQuery();
+            statement.executeUpdate();
 
             
             statement.close();
@@ -252,16 +252,16 @@ public class Bridge {
     /*
      * Saves a calculation into the calculations table, returns true on success
      */
-    public static boolean saveCalculation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers, Simulation results) {
+    public static boolean saveCalculation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers) {
         boolean added = false;
         try {
             // Connect to the MySQL database
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "INSERT INTO Calculation (user_id, attacker_id, weapon_id, defender_id, hit+1, hit-1, reroll_hits, reroll_hit_1," +
-                "reroll_wounds, exploding_hits, mortal_wounds_hit, mortal_wounds_wound, additional_ap_wound, save+1, save-1," +
-                "invulnerable_save, reroll_save, reroll_save_1, damage-1) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Calculations (user_id, attacker_id, weapon_id, defender_id, `hit+1`, `hit-1`, reroll_hits, reroll_hit_1," +
+                "reroll_wounds, exploding_hits, mortal_wounds_hit, mortal_wounds_wound, additional_ap_wound, `save+1`, `save-1`," +
+                "invulnerable_save, reroll_save, reroll_save_1, `damage-1`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
 
             // Set the parameter values for the SQL query
@@ -365,7 +365,7 @@ public class Bridge {
                 // Retrieve values from the retrieved row
                 int userId = rs.getInt("user_id");
                 Boolean isRanged = rs.getBoolean("isRanged");
-                String weaponName = rs.getString("unit_name");
+                String weaponName = rs.getString("weapon_name");
                 int attacks = rs.getInt("attacks");
                 int strength = rs.getInt("strength");
                 int armorPen = rs.getInt("armor_pen");
@@ -445,9 +445,9 @@ public class Bridge {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // Prepare the SQL query
-            String query = "SELECT attacker_id, weapon_id, defender_id, hit+1, hit-1, reroll_hits, reroll_hit_1," +
-            "reroll_wounds, exploding_hits, mortal_wounds_hit, mortal_wounds_wound, additional_ap_wound, save+1, save-1," +
-            "invulnerable_save, reroll_save, reroll_save_1, damage-1 FROM Calculation WHERE calc_id = ?";
+            String query = "SELECT attacker_id, weapon_id, defender_id, `hit+1`, `hit-1`, reroll_hits, reroll_hit_1," +
+            "reroll_wounds, exploding_hits, mortal_wounds_hit, mortal_wounds_wound, additional_ap_wound, `save+1`, `save-1`," +
+            "invulnerable_save, reroll_save, reroll_save_1, `damage-1` FROM Calculations WHERE calc_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
 
             // Set the parameter values for the SQL query
@@ -463,7 +463,7 @@ public class Bridge {
                 boolean hitsPlusOne = rs.getBoolean("hit+1");
                 boolean hitMinusOne = rs.getBoolean("hit-1");
                 boolean rerollHits = rs.getBoolean("reroll_hits");
-                boolean rerollHitsOne = rs.getBoolean("reroll_hit1");
+                boolean rerollHitsOne = rs.getBoolean("reroll_hit_1");
                 boolean rerollWounds = rs.getBoolean("reroll_wounds");
                 boolean explodingHits = rs.getBoolean("exploding_hits");
                 boolean mortalWoundsHit = rs.getBoolean("mortal_wounds_hit");
@@ -471,7 +471,7 @@ public class Bridge {
                 boolean additionalAp = rs.getBoolean("additional_ap_wound");
                 boolean savePlusOne = rs.getBoolean("save+1");
                 boolean saveMinusOne = rs.getBoolean("save-1");
-                boolean invulnerableSave = rs.getBoolean("inulnerable_save");
+                boolean invulnerableSave = rs.getBoolean("invulnerable_save");
                 boolean rerollSave = rs.getBoolean("reroll_save");
                 boolean rerollSaveOne = rs.getBoolean("reroll_save_1");
                 boolean damageMinusOne = rs.getBoolean("damage-1");
@@ -631,7 +631,7 @@ public class Bridge {
                 boolean hitsPlusOne = result.getBoolean("hit+1");
                 boolean hitMinusOne = result.getBoolean("hit-1");
                 boolean rerollHits = result.getBoolean("reroll_hits");
-                boolean rerollHitsOne = result.getBoolean("reroll_hit1");
+                boolean rerollHitsOne = result.getBoolean("reroll_hit_1");
                 boolean rerollWounds = result.getBoolean("reroll_wounds");
                 boolean explodingHits = result.getBoolean("exploding_hits");
                 boolean mortalWoundsHit = result.getBoolean("mortal_wounds_hit");
@@ -639,7 +639,7 @@ public class Bridge {
                 boolean additionalAp = result.getBoolean("additional_ap_wound");
                 boolean savePlusOne = result.getBoolean("save+1");
                 boolean saveMinusOne = result.getBoolean("save-1");
-                boolean invulnerableSave = result.getBoolean("inulnerable_save");
+                boolean invulnerableSave = result.getBoolean("invulnerable_save");
                 boolean rerollSave = result.getBoolean("reroll_save");
                 boolean rerollSaveOne = result.getBoolean("reroll_save_1");
                 boolean damageMinusOne = result.getBoolean("damage-1");
@@ -672,6 +672,7 @@ public class Bridge {
     public static void main(String[] args) {
         Bridge test = new Bridge();
 
+        // List tests //
         List<Entry<Attacker>> attacker_list = test.loadAttackers(0);
         System.out.println(attacker_list);
 
@@ -692,6 +693,75 @@ public class Bridge {
         for (int i = 0; i < def_list.size(); i++) {
             System.out.println("def_list[" + i + "] pk: " + def_list.get(i).getPk());
         }
+
+        // User Tests //
+        if (userExists(0)) {
+            System.out.println("Test Passed: User 0 exists");
+        } else {
+            System.out.println("Test Failed: User 0 does not exist");
+        }
+
+        //addUser(69);
+        if (userExists(69)) {
+            System.out.println("Test Passed: User 69 was added");
+        } else {
+            System.out.println("Test Failed: User 69 was not added");
+        } 
+
+        // Find Method Tests //
+        Entry<Attacker> atkrFindTest = findAttacker(1);
+        System.out.print(atkrFindTest.toString());
+
+        Entry<Defender> dfndrFindTest = findDefender(1);
+        System.out.print(dfndrFindTest.toString());
+
+        Entry<Weapon> wpnFindTest = findWeapon(1);
+        System.out.print(wpnFindTest.toString());
+
+        // Save Method Tests //
+        /* In many of the below tests there is code that is commented out. All of these blocks of code add entries to the DB
+         * and the following uncommented blocks retrieve those entries as testing. If the entries are ever deleted, uncomment those
+         * blocks and then run main. Make sure to recomment them afterwards or else the DB will fill with duplicate values after every
+         * test.
+         */
+        /* This code was executed once, the code below shows it succeeded
+        Attacker atkrSave = new Attacker("save_test_atkr", 4, 4);
+        Entry<Attacker> atkrSaveEntry = saveAttacker(69, atkrSave);
+        */
+        List<Entry<Attacker>> attacker_list_69 = loadAttackers(69);
+        System.out.println(attacker_list_69);
+
+        /* This code was executed once, the code below shows it succeeded
+        Defender dfndrSave = new Defender ("save_test_dfndr", 10, 4, 4, 2, 4);
+        Entry<Defender> dfndrSaveEntry = saveDefender(69, dfndrSave);
+        */
+        List<Entry<Defender>> defender_list_69 = loadDefenders(69);
+        System.out.println(defender_list_69);
+
+        /* This code was executed once, the code below shows it succeeded
+        Weapon wpnSave = new Weapon ("save_test_wpn", 10, true, 10, 4, -2, 1);
+        Entry<Weapon> wpnSaveEntry = saveWeapon(69, wpnSave);
+        */
+        List<Entry<Weapon>> weapon_list_69 = loadWeapons(69);
+        System.out.println(weapon_list_69);
+
+        // Calculation Tests // 
+        /* The below code was executed successfully but commented out to avoid filling the table with duplicates
+        Modifiers modTest;
+        boolean[] mods = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+        modTest = new Modifiers(mods);
+        if (saveCalculation(69, 3, 3, 3, modTest)) {
+            System.out.println("Test passed: Calculation was added");
+        } else {
+            System.out.println("Test failed: Calculation was not saved");
+        }
+        */
+        List<Entry<Simulation>> simList = loadSimulations(69);
+        System.out.println(simList);
+
+        Simulation simFindTest = findCalculation(1);
+        System.out.println("AttackerId: " + simFindTest.getAttackerId() + 
+            ", WeaponId: " + simFindTest.getWeaponId() + ", DefenderId: " + simFindTest.getDefenderId());
     }
 }
 
@@ -704,6 +774,10 @@ class Simulation {
     private Defender defender;
     private Modifiers modifiers;
 
+    private int attackerId;
+    private int weaponId;
+    private int defenderId;
+
     private double avgDamage;
     private int avgModelsKilled;
 
@@ -711,6 +785,7 @@ class Simulation {
     private int simModelsKilled;
 
     // Constructor that uses the objects
+    /* Old constructor TODO: Delete if uneeded
     public Simulation(Attacker attacker, Weapon weapon, Defender defender, Modifiers modifiers) {
         this.attacker = attacker;
         this.defender = defender;
@@ -724,9 +799,13 @@ class Simulation {
         this.simDamage = CalculateDamage.simAttackDamage(this.attacker, this.defender, this.weapon, this.modifiers);
         this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
     }
+    */
 
     // Constructor that uses object Ids
     public Simulation(int attackerId, int weaponId, int defenderId, Modifiers modifiers) {
+        this.attackerId = attackerId;
+        this.weaponId = weaponId;
+        this.defenderId = defenderId;
         Entry<Attacker> atkr = Bridge.findAttacker(attackerId); 
         Entry<Defender> dfnr = Bridge.findDefender(defenderId);
         Entry<Weapon> wpn = Bridge.findWeapon(weaponId);
@@ -755,6 +834,16 @@ class Simulation {
     }
     public Modifiers getModifiers() {
         return modifiers;
+    }
+
+    public int getAttackerId() {
+        return attackerId;
+    }
+    public int getWeaponId() {
+        return weaponId;
+    }
+    public int getDefenderId() {
+        return defenderId;
     }
 
     // Both values are calculated once and never touched again by the calculation
@@ -801,24 +890,29 @@ class Entry<UnitType> {
 
         if (unitType instanceof Attacker) {
             Attacker attacker = (Attacker) unitType;
-            return "Attacker: [" + attacker.getName() + "Ballistic Skill: " 
+            return "Attacker: [Name: " + attacker.getName() + ", Ballistic Skill: " 
                 + attacker.getBalSkill() + ", Weapon Skill: " + attacker.getWepSkill() + "]\n";
 
         } else if (unitType instanceof Defender) {
             Defender defender = (Defender) unitType;
-            return "Defender: [" + defender.getName() + "Size: " + defender.getSize() + 
+            return "Defender: [Name: " + defender.getName() + ", Size: " + defender.getSize() + 
                 ", Toughness: " + defender.getToughness() + ", Save: " + defender.getSave() +
                 ", Wounds: " + defender.getFeelNoPain() + ", Feel No Pain: " + defender.getFeelNoPain()
                 + "]\n";
 
         } else if (unitType instanceof Weapon) {
             Weapon weapon = (Weapon) unitType;
-            return "Weapon: [" + weapon.getName() + "Number: " + weapon.getNum() + ", isRanged: " +
+            return "Weapon: [Name: " + weapon.getName() + ", Number: " + weapon.getNum() + ", isRanged: " +
                 weapon.getIsRanged() + ", Attacks: " + weapon.getAttacks() + ", Strength: " + weapon.getStrength()
                 + ", Armor Penetration: " + weapon.getArmorPen() + ", Damage: " + weapon.getDamage() + "]\n";
+
+        } else if (unitType instanceof Simulation) {
+            Simulation sim = (Simulation) unitType;
+            return "Simulation: [Attacker_Id: " + sim.getAttackerId() + ", Weapon_Id: " + sim.getWeaponId() +
+                ", DefenderId: " + sim.getDefenderId() + "]\n";
         }
 
-        return "Error: UnitType not Attacker, Defender or Weapon.\n";
+        return "Error: UnitType not Attacker, Defender, Weapon or Simulation.\n";
     }
 
     public UnitType getUnitType() {

@@ -35,7 +35,10 @@ import com.example.application.unit.*;
  * 
  */
 public class Bridge {
-    private static String url = "jdbc:mysql://cs506-team-09.cs.wisc.edu:3306/40kBattleSim";
+    private static String url = "jdbc:mysql://"
+        + (System.getenv().getOrDefault("MYSQL_HOST",
+                                        "cs506-team-09.cs.wisc.edu"))
+        + ":3306/40kBattleSim";
     private static String username = "root";
     private static String password = "baktop09";
     private static Random random = new Random();

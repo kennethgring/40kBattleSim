@@ -34,9 +34,9 @@ import com.example.application.unit.*;
  * TODO: Test methods
  */
 public class Bridge {
-    private static String url = "jdbc:mysql://localhost:3306/40kBattleSim";
-    private static String username = "your_username";
-    private static String password = "your_password";
+    private static String url = "jdbc:mysql://cs506-team-09.cs.wisc.edu:3306/40kBattleSim";
+    private static String username = "root";
+    private static String password = "baktop09";
 
     /*
      * Checks if a user with the passed in userId exists in the User_IDs table.
@@ -509,7 +509,7 @@ public class Bridge {
             ResultSet result = statement.executeQuery(
                     "SELECT * FROM Attacker WHERE user_id = " + userId + " OR user_id = 0;");
             
-            if (result.next()) {
+            while (result.next()) {
                 String unit_name = result.getString("unit_name");
                 int ballistic_skill = result.getInt("ballistic_skill");
                 int weapon_skill = result.getInt("weapon_skill");
@@ -545,7 +545,7 @@ public class Bridge {
             ResultSet result = statement.executeQuery(
                     "SELECT * FROM Weapon WHERE user_id = " + userId + " OR user_id = 0;");
             
-            if (result.next()) {
+            while (result.next()) {
                 String weapon_name = result.getString("weapon_name");
                 int num = result.getInt("number");
                 boolean isRanged = result.getBoolean("isRanged");
@@ -584,7 +584,7 @@ public class Bridge {
             ResultSet result = statement.executeQuery(
                     "SELECT * FROM Defender WHERE user_id = " + userId + " OR user_id = 0;");
             
-            if (result.next()) {
+            while (result.next()) {
                 String unit_name = result.getString("unit_name");
                 int size = result.getInt("size");
                 int toughness = result.getInt("toughness");
@@ -622,7 +622,7 @@ public class Bridge {
             ResultSet result = statement.executeQuery(
                     "SELECT * FROM Calculation WHERE user_id = " + userId + " OR user_id = 0;");
             
-            if (result.next()) {
+            while (result.next()) {
                 int attacker_id = result.getInt("attacker_id");
                 int defender_id = result.getInt("defender_id");
                 int weapon_id = result.getInt("weapon_id");
@@ -667,7 +667,26 @@ public class Bridge {
     public static void main(String[] args) {
         Bridge test = new Bridge();
 
-        System.out.println(test.loadAttackers(0));
+        List<Entry<Attacker>> attacker_list = test.loadAttackers(0);
+        System.out.println(attacker_list);
+
+        for (int i = 0; i < attacker_list.size(); i++) {
+            System.out.println("attacker_list[" + i + "] pk: " + attacker_list.get(i).getPk());
+        }
+
+        List<Entry<Weapon>> weap_list = test.loadWeapons(0);
+        System.out.println(weap_list);
+
+        for (int i = 0; i < weap_list.size(); i++) {
+            System.out.println("weap_list[" + i + "] pk: " + weap_list.get(i).getPk());
+        }
+
+        List<Entry<Defender>> def_list = test.loadDefenders(0);
+        System.out.println(def_list);
+        
+        for (int i = 0; i < def_list.size(); i++) {
+            System.out.println("def_list[" + i + "] pk: " + def_list.get(i).getPk());
+        }
     }
 }
 

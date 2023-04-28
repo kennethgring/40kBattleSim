@@ -3,6 +3,7 @@ package com.example.application;
 import java.util.*;
 import java.sql.*;
 import java.util.List;
+import java.util.Random;
 
 import com.example.application.unit.*;
 
@@ -11,8 +12,8 @@ import com.example.application.unit.*;
  * NOTE: MUST BE ON CAMPUS VPN TO ACCESS DB PROPERLY!
  * 
  * These methods checks for an existing user and can add a user to the table:
- *      userExists
- *      addUser
+ *      userExists - Returns ture if the user exists
+ *      addUser - Generates a random, unused int for a new user
  * 
  * These methods add data to their associated tables:
  *      saveAttacker
@@ -32,12 +33,12 @@ import com.example.application.unit.*;
  *      loadWeapons
  *      loadSimulations
  * 
- * TODO: Test methods
  */
 public class Bridge {
     private static String url = "jdbc:mysql://cs506-team-09.cs.wisc.edu:3306/40kBattleSim";
     private static String username = "root";
     private static String password = "baktop09";
+    private static Random random = new Random();
 
     /*
      * Checks if a user with the passed in userId exists in the User_IDs table.
@@ -77,7 +78,14 @@ public class Bridge {
     /*
      * Adds a new user to the User_IDs table
      */
-    public static void addUser(int userId) {
+    public static int addUser() {
+        int userId;
+        for (;;) {
+            userId = random.nextInt(1 << 23);
+            if (!userExists(userId)) {
+                break;
+            }
+        }
         try {
             // Connect to the MySQL database
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -96,6 +104,7 @@ public class Bridge {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return userId;
     }
 
     /*
@@ -557,7 +566,7 @@ public class Bridge {
                 int pk = result.getInt("weapon_id");
 
                 Weapon weapon = new Weapon(weapon_name, num, isRanged, attacks, strength, armor_pen, damage);
-                Entry<Weapon> entry = new Entry<Weapon>(weapon, userId, pk); // TODO: fix constructor
+                Entry<Weapon> entry = new Entry<Weapon>(weapon, userId, pk); 
                 weapon_list.add(entry);
             }
             conn.close();
@@ -783,23 +792,6 @@ class Simulation {
 
     private int simDamage;
     private int simModelsKilled;
-
-    // Constructor that uses the objects
-    /* Old constructor TODO: Delete if uneeded
-    public Simulation(Attacker attacker, Weapon weapon, Defender defender, Modifiers modifiers) {
-        this.attacker = attacker;
-        this.defender = defender;
-        this.weapon = weapon;
-
-        this.modifiers = modifiers;
-
-        this.avgDamage = CalculateDamage.calcAvgDamage(this.attacker, this.weapon, this.defender, this.modifiers);
-        this.avgModelsKilled = CalculateDamage.calcModelsKilled(this.avgDamage, this.weapon, this.defender, this.modifiers);
-
-        this.simDamage = CalculateDamage.simAttackDamage(this.attacker, this.defender, this.weapon, this.modifiers);
-        this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
-    }
-    */
 
     // Constructor that uses object Ids
     public Simulation(int attackerId, int weaponId, int defenderId, Modifiers modifiers) {

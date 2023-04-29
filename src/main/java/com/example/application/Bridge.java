@@ -793,6 +793,21 @@ class Simulation {
     private int simDamage;
     private int simModelsKilled;
 
+    // Constructor that uses objects. This will not have the object primary keys!
+    public Simulation(Attacker attacker, Weapon weapon, Defender defender, Modifiers modifiers) {
+        this.attacker = attacker;
+        this.defender = defender;
+        this.weapon = weapon;
+
+        this.modifiers = modifiers;
+
+        this.avgDamage = CalculateDamage.calcAvgDamage(this.attacker, this.weapon, this.defender, this.modifiers);
+        this.avgModelsKilled = CalculateDamage.calcModelsKilled(this.avgDamage, this.weapon, this.defender, this.modifiers);
+
+        this.simDamage = CalculateDamage.simAttackDamage(this.attacker, this.defender, this.weapon, this.modifiers);
+        this.simModelsKilled = CalculateDamage.calcModelsKilled(this.simDamage, this.weapon, this.defender, this.modifiers);
+    }
+
     // Constructor that uses object Ids
     public Simulation(int attackerId, int weaponId, int defenderId, Modifiers modifiers) {
         this.attackerId = attackerId;

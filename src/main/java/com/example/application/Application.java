@@ -55,8 +55,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         int userId = ensureUserId(request, response);
-        List<Simulation> simulations = FakeBridge.loadSimulations(userId);
-        model.addAttribute("simulations", simulations);
+        model.addAttribute("simulations", FakeBridge.loadSimulations(userId));
         return "simulations";
     }
 
@@ -392,12 +391,13 @@ class FakeBridge {
         return list;
     }
 
-    public static List<Simulation> loadSimulations(int userId) {
-        List<Simulation> simulations = db.get(userId).simulations;
-        for (Simulation sim : simulations) {
+    public static List<Entry<Simulation>> loadSimulations(int userId) {
+        LinkedList<Entry<Simulation>> list = new LinkedList<>();
+        for (Simulation sim : db.get(userId).simulations) {
             sim.reSimulate();
+            list.add(new Entry<>(sim, userId, 0));
         }
-        return simulations;
+        return list;
     }
 
     private static class UserData {

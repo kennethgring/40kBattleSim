@@ -113,7 +113,9 @@ public class CalculateDamage {
         }
         // Damage is totalled, mortal wounds skip the save process but can still be blocked by feel no pain
         double avgDamage = ((unsavedWounds + unsavedExtraAP) * damage) + mortalWounds; 
-        avgDamage -= avgDamage * ((7.0 - defender.getFeelNoPain())/6.0);
+        if (defender.getFeelNoPain() != 7) {
+            avgDamage -= avgDamage * ((7.0 - defender.getFeelNoPain())/6.0);
+        }
         return avgDamage;
     }
 
@@ -285,9 +287,11 @@ public class CalculateDamage {
         }
         damageDealt += mortalWounds;
         // Subtracts any damage blocked by feel no pain
-        for (int i = 0; i < damageDealt; i++) {
-            if (rollD6() >= defender.getFeelNoPain()) {
-                damageDealt--;
+        if (defender.getFeelNoPain() != 7) {
+            for (int i = 0; i < damageDealt; i++) {
+                if (rollD6() >= defender.getFeelNoPain()) {
+                    damageDealt--;
+                }
             }
         }
         return damageDealt;

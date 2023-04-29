@@ -16,7 +16,8 @@ body{
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  font-family: 'Heavy Metal Blight', sans-serif;                                       
+  font-family: 'Heavy Metal Blight', sans-serif; 
+  text-shadow: 2px 2px #ff0000;                                      
 }
 
 input[type=button] {

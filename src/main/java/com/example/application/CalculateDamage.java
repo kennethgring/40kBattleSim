@@ -78,29 +78,39 @@ public class CalculateDamage {
         }
         // Set aside wounds that have an extra point of armor penetration
         double extraAPWounds = 0;
-        double otherSave = effSave(weapon, defender, modifiers) - 1;
+        double otherSave = effSave(weapon, defender, modifiers) + 1;
         if (modifiers.getExtraAPWound()) {
             extraAPWounds = (hits / 6);
             woundsDealt -= extraAPWounds;
-            if (otherSave <= 1) {
-                otherSave = 2;
-            }
         }
 
-        // Then the defender has a chance to save against woundsDealt and feelNoPain unsaved damage
-        double unsavedWounds = woundsDealt * (1 - ((7.0 - effSave(weapon, defender, modifiers))/6.0));
-        double unsavedExtraAP = extraAPWounds * (1 - ((7.0 - otherSave)/6.0));
-        // Reroll saves of one, also contains rerolls for the separate extra AP wound track
-        if (modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
-            unsavedWounds -= (woundsDealt / 6) * ((7.0 - effSave(weapon, defender, modifiers))/6.0);
-            if (modifiers.getExtraAPWound()) {
-                unsavedExtraAP -= (extraAPWounds / 6) * ((7.0 - otherSave)/6.0);
+        // This block simulates saves against wounds
+        double unsavedWounds = 0;
+        if (effSave(weapon, defender, modifiers) < 7) {
+            // Then the defender has a chance to save against woundsDealt
+            unsavedWounds = woundsDealt * (1 - ((7.0 - effSave(weapon, defender, modifiers))/6.0));
+            // Reroll saves of one, also contains rerolls for the separate extra AP wound track
+            if (modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
+                unsavedWounds -= (woundsDealt / 6) * ((7.0 - effSave(weapon, defender, modifiers))/6.0);
+            } else if (modifiers.getRerollSave()) {
+                unsavedWounds -= unsavedWounds * ((7.0 - effSave(weapon, defender, modifiers))/6.0);
             }
-        } else if (modifiers.getRerollSave()) {
-            unsavedWounds -= unsavedWounds * ((7.0 - effSave(weapon, defender, modifiers))/6.0);
-            if (modifiers.getExtraAPWound()) {
+        } else {
+            unsavedWounds = woundsDealt;
+        }
+        // This is a repeat of the last block but for wounds with an extra point of armor penetration
+        double unsavedExtraAP = 0;
+        if (otherSave < 7 && modifiers.getExtraAPWound()) {
+            // Then the defender has a chance to save against woundsDealt and feelNoPain unsaved damage
+            unsavedExtraAP = extraAPWounds * (1 - ((7.0 - otherSave)/6.0));
+            // Reroll saves of one, also contains rerolls for the separate extra AP wound track
+            if (modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
+                unsavedExtraAP -= (extraAPWounds / 6) * ((7.0 - otherSave)/6.0);
+            } else if (modifiers.getRerollSave()) {
                 unsavedExtraAP -= unsavedExtraAP * ((7.0 - otherSave)/6.0);
             }
+        } else if (modifiers.getExtraAPWound()){
+            unsavedExtraAP = extraAPWounds;
         }
 
         // Damage minus one
@@ -244,46 +254,52 @@ public class CalculateDamage {
         // Create the separate wound track for extra ap wounds
         if (modifiers.getExtraAPWound()) {
             int otherSave = effSave + 1;
-            if (otherSave >= 7) {
-                otherSave = 6;
-            } else if (otherSave <= 1) {
+            if (otherSave <= 1) {
                 otherSave = 2;
             }
-            for (int i = 0; i < extraAPWounds; i++) {
+            if (otherSave < 7) {
+                for (int i = 0; i < extraAPWounds; i++) {
+                    roll = rollD6();
+                    if (roll < otherSave) {
+                        if (roll == 1 && modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
+                            roll = rollD6();
+                            if (roll >= otherSave) {
+                                damageDealt -= damage;
+                            }
+                        } else if (modifiers.getRerollSave()) {
+                            roll = rollD6();
+                            if (roll >= otherSave) {
+                                damageDealt -= damage;
+                            }
+                        }
+                        damageDealt += damage;
+                    }
+                }
+            } else {
+                damageDealt += extraAPWounds * damage;
+            }
+        }
+        // Finds the total unsaved damage, if the save is modified past 6 then it all goes through
+        if (effSave < 7) {
+            for (int i = 0; i < woundsDealt; i++) {
                 roll = rollD6();
-                if (roll < otherSave) {
+                if (roll < effSave) {
                     if (roll == 1 && modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
                         roll = rollD6();
-                        if (roll >= otherSave) {
+                        if (roll >= effSave) {
                             damageDealt -= damage;
                         }
                     } else if (modifiers.getRerollSave()) {
                         roll = rollD6();
-                        if (roll >= otherSave) {
+                        if (roll >= effSave) {
                             damageDealt -= damage;
                         }
                     }
                     damageDealt += damage;
                 }
             }
-        }
-        // Finds the total unsaved damage
-        for (int i = 0; i < woundsDealt; i++) {
-            roll = rollD6();
-            if (roll < effSave) {
-                if (roll == 1 && modifiers.getRerollSaveOne() && !modifiers.getRerollSave()) {
-                    roll = rollD6();
-                    if (roll >= effSave) {
-                        damageDealt -= damage;
-                    }
-                } else if (modifiers.getRerollSave()) {
-                    roll = rollD6();
-                    if (roll >= effSave) {
-                        damageDealt -= damage;
-                    }
-                }
-                damageDealt += damage;
-            }
+        } else {
+            damageDealt += woundsDealt * damage;
         }
         damageDealt += mortalWounds;
         // Subtracts any damage blocked by feel no pain
@@ -392,9 +408,7 @@ public class CalculateDamage {
         if (!modifiers.getInvulSave()) {
             effSave = effSave + weapon.getArmorPen();
         }
-        if (effSave >= 7) {
-            effSave = 6;
-        } else if (effSave <= 1) {
+        if (effSave <= 1) {
             effSave = 2;
         }
         return effSave;

@@ -19,13 +19,13 @@ import com.example.application.unit.*;
  *      saveAttacker
  *      saveWeapon
  *      saveDefender
- *      saveCalculation
+ *      saveSimulation
  * 
  * These methods search for a single row in the associated table based on a passed in primary key:
  *      findAttacker
  *      findWeapon
  *      findDefender
- *      findCalculation
+ *      findSimulation
  * 
  * These methods find all the rows of the associated table and return them as a list
  *      loadAttackers
@@ -261,7 +261,7 @@ public class Bridge {
     /*
      * Saves a calculation into the calculations table, returns true on success
      */
-    public static boolean saveCalculation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers) {
+    public static boolean saveSimulation(int userId, int attackerPk, int weaponPk, int defenderPk, Modifiers modifiers) {
         boolean added = false;
         try {
             // Connect to the MySQL database
@@ -447,7 +447,7 @@ public class Bridge {
      * Finds a single row from the Calculation table using the passed in calcId and saves it into a
      * Simulation object which it returns
      */
-    public static Simulation findCalculation(int calcId) {
+    public static Simulation findSimulation(int calcId) {
         Simulation simulation = null;
         try {
             // Connect to the MySQL database
@@ -759,7 +759,7 @@ public class Bridge {
         Modifiers modTest;
         boolean[] mods = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
         modTest = new Modifiers(mods);
-        if (saveCalculation(69, 3, 3, 3, modTest)) {
+        if (saveSimulation(69, 3, 3, 3, modTest)) {
             System.out.println("Test passed: Calculation was added");
         } else {
             System.out.println("Test failed: Calculation was not saved");
@@ -768,7 +768,7 @@ public class Bridge {
         List<Entry<Simulation>> simList = loadSimulations(69);
         System.out.println(simList);
 
-        Simulation simFindTest = findCalculation(1);
+        Simulation simFindTest = findSimulation(1);
         System.out.println("AttackerId: " + simFindTest.getAttackerId() + 
             ", WeaponId: " + simFindTest.getWeaponId() + ", DefenderId: " + simFindTest.getDefenderId());
     }

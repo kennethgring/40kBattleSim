@@ -58,10 +58,10 @@
       <li>Wounds: <th:block th:text="${unit.wounds}"/></li>
       <li>
         Feel No Pain:
-        <th:block th:unless="${unit.feelNoPain == 0}">
+        <th:block th:unless="${unit.feelNoPain == 7}">
           <th:block th:text="${unit.feelNoPain}"/>+
         </th:block>
-        <th:block th:if="${unit.feelNoPain == 0}">NA</th:block>
+        <th:block th:if="${unit.feelNoPain == 7}">NA</th:block>
       </li>
     </ul>
   </li>

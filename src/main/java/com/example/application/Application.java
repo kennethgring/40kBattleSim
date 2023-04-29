@@ -109,7 +109,7 @@ public class Application {
                 || (!isRanged && !type.equals("melee"))
                 || attacks < 1
                 || strength < 1
-                || armorPen > 0 || armorPen < -6
+                || armorPen > 0
                 || damage < 1) {
             throw new BadParamsException("Invalid weapon parameter(s)");
         }
@@ -134,8 +134,8 @@ public class Application {
                 || size < 1
                 || toughness < 1
                 || save < 2 || save > 7
-                // Wounds can be any value, I guess.
-                || (feelNoPain != 0 && (feelNoPain < 2 || feelNoPain > 6))) {
+                || wounds < 1
+                || feelNoPain < 2 || feelNoPain > 7) {
             throw new BadParamsException("Invalid defender parameter(s)");
         }
         int userId = ensureUserId(request, response);
@@ -304,8 +304,8 @@ class FakeBridge {
         saveWeapon(0, new Weapon("Combination Laser Minigun and Chainsaw "
                                  + "Launcher", 1, true, 4, 9, -3, 2));
         saveDefender(0, new Defender("Invictus the Unpuncturable", 1, 4, 7, 0,
-                                     6));
-        saveDefender(0, new Defender("Shield Guy", 2, 2, 5, 0, 0));
+                                     3));
+        saveDefender(0, new Defender("Shield Guy", 2, 2, 5, 0, 7));
     }
 
     public static boolean userExists(int userId) {

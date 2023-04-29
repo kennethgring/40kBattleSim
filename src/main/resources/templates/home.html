@@ -65,16 +65,7 @@
   </label></p>
   <p><label>
     Armor Penetration (AP):
-    <select name="armor-pen" required>
-      <option value=""></option>
-      <option value="0">0</option>
-      <option value="-1">-1</option>
-      <option value="-2">-2</option>
-      <option value="-3">-3</option>
-      <option value="-4">-4</option>
-      <option value="-5">-5</option>
-      <option value="-6">-6</option>
-    </select>
+    <input name="armor-pen" type="number" max="0" required>
   </label></p>
   <p><label>
     Damage (D):
@@ -111,16 +102,16 @@
   </label></p>
   <p><label>
     Wounds (W):
-    <input name="wounds" type="number" required>
+    <input name="wounds" type="number" min="1" required>
   </label></p>
   <p><label>
     Feel No Pain:
     <select name="feel-no-pain" required>
-      <option value="0" selected>NA</option>
-      <option value="3">3+</option>
-      <option value="4">4+</option>
-      <option value="5">5+</option>
+      <option value="7" selected>NA</option>
       <option value="6">6+</option>
+      <option value="5">5+</option>
+      <option value="4">4+</option>
+      <option value="3">3+</option>
     </select>
   </label></p>
   <p><input type="submit" value="Add Defender"></p>

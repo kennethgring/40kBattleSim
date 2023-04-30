@@ -4,14 +4,39 @@
   <meta charset="utf-8">
   <th:block th:replace="${title}"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.cdnfonts.com/css/heavy-metal-blight" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>40k Battle Sim</h1>
+  <h1></h1>
   <nav>
     <a href="/">Home</a>
     <a href="/simulations">Saved Simulations</a>
     <a href="/units">Saved Units</a>
+    <a onclick="ChangeBackground();">Change Background</a>
+    <script type="text/javascript"> 
+      var totalCount = 10;
+      function ChangeBackground() 
+      {
+        const images = [
+        "url('1.jpg')",
+        "url('2.jpg')",
+        "url('3.jpg')",
+        "url('4.jpg')",
+        "url('5.jpg')",
+        "url('6.jpg')",
+        "url('7.jpg')",
+        "url('8.jpg')",
+        "url('9.jpg')",
+        "url('10.jpg')",
+        ]
+        var num = Math.ceil( Math.random() * totalCount );
+        console.log(num);
+        const section = document.querySelector('body')
+        section.style.backgroundImage = images[num-1];
+      }
+      </script>
+
   </nav>
   <th:block th:replace="${content}"/>
 </body>

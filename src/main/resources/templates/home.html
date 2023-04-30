@@ -4,17 +4,18 @@
     <title>40kBattleSim</title>
   </head>
   <body><section th:remove="tag">
-
-
-<form method="post" action="/submit/new-attacker">
+    <div class="container">
+      
+<div class="form-container">
+<form id="general-form" method="post" action="/submit/new-attacker">
   <h2>Create Attacker</h2>
-  <p><label>
+  <p><div class="labels"><label>
     Name:
-    <input name="name" type="text" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="name" type="text" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Ballistic Skill (BS):
-    <select name="bal-skill" required>
+    <select class="input-option" name="bal-skill" required>
       <option value=""></option>
       <option value="6">6+</option>
       <option value="5">5+</option>
@@ -22,10 +23,10 @@
       <option value="3">3+</option>
       <option value="2">2+</option>
     </select>
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Weapon Skill (WS):
-    <select name="wep-skill" required>
+    <select class="input-option" name="wep-skill" required>
       <option value=""></option>
       <option value="6">6+</option>
       <option value="5">5+</option>
@@ -33,64 +34,68 @@
       <option value="3">3+</option>
       <option value="2">2+</option>
     </select>
-  </label></p>
-  <p><input type="submit" value="Add Attacker"></p>
+  </label></div></p>
+  <p><div class="labels"><button class="button submission-button" type="submit">Add Attacker</button></div></p>
 </form>
+</div>
 
-<form method="post" action="/submit/new-weapon">
+<div class="form-container">
+<form id="general-form" method="post" action="/submit/new-weapon">
   <h2>Create Weapon</h2>
-  <p><label>
+  <p><div class="labels"><label>
     Name:
-    <input name="name" type="text" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="name" type="text" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Number:
-    <input name="num" type="number" min="1" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="num" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Type:
-    <select name="type" required>
+    <select class="input-option" name="type" required>
       <option value=""></option>
       <option value="melee">Melee</option>
       <option value="ranged">Ranged</option>
     </select>
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Attacks (A):
-    <input name="attacks" type="number" min="1" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="attacks" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Strength (S):
-    <input name="strength" type="number" min="1" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="strength" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Armor Penetration (AP):
-    <input name="armor-pen" type="number" max="0" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="armor-pen" type="number" max="0" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Damage (D):
-    <input name="damage" type="number" min="1" required>
-  </label></p>
-  <p><input type="submit" value="Add Weapon"></p>
+    <div class="input-tab"><input class="input-field" name="damage" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><button class="button submission-button" type="submit">Add Weapon</button></div></p>
 </form>
+</div>
 
-<form method="post" action="/submit/new-defender">
+<div class="form-container">
+<form id="general-form" method="post" action="/submit/new-defender">
   <h2>Create Defender</h2>
-  <p><label>
+  <p><div class="labels"><label>
     Name:
-    <input name="name" type="text" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="name" type="text" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Size:
-    <input name="size" type="number" min="1" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="size" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Toughness (T):
-    <input name="toughness" type="number" min="1" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="toughness" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Save (SV):
-    <select name="save" required>
+    <select class="input-option" name="save" required>
       <option value=""></option>
       <option value="7">7+</option>
       <option value="6">6+</option>
@@ -99,122 +104,125 @@
       <option value="3">3+</option>
       <option value="2">2+</option>
     </select>
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Wounds (W):
-    <input name="wounds" type="number" min="1" required>
-  </label></p>
-  <p><label>
+    <div class="input-tab"><input class="input-field" name="wounds" type="number" min="1" required></div>
+  </label></div></p>
+  <p><div class="labels"><label>
     Feel No Pain:
-    <select name="feel-no-pain" required>
+    <select class="input-option" name="feel-no-pain" required>
       <option value="7" selected>NA</option>
       <option value="6">6+</option>
       <option value="5">5+</option>
       <option value="4">4+</option>
       <option value="3">3+</option>
     </select>
-  </label></p>
-  <p><input type="submit" value="Add Defender"></p>
+  </label></div></p>
+  <p><div class="labels"><button class="button submission-button" type="submit">Add Defender</button></div></p>
 </form>
+</div>
 
-<form method="post" action="/submit/new-simulation">
+<div class="form-container">
+<form id="general-form" method="post" action="/submit/new-simulation">
   <h2>Simulate Attack</h2>
-  <p><label>
+  <p><div class="labels"><label>
     Attacker:
-    <select name="attacker" required>
+    <select class="input-option" name="attacker" required>
       <option value=""></option>
       <th:block th:each="entry : ${attackers}"
                 th:with="unit=${entry.unitType}">
         <option th:value="${entry.pk}" th:text="${unit.name}"/>
       </th:block>
     </select>
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Weapon:
-    <select name="weapon" required>
+    <select class="input-option" name="weapon" required>
       <option value=""></option>
       <th:block th:each="entry : ${weapons}"
                 th:with="unit=${entry.unitType}">
         <option th:value="${entry.pk}" th:text="${unit.name}"/>
       </th:block>
     </select>
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Defender:
-    <select name="defender" required>
+    <select class="input-option" name="defender" required>
       <option value=""></option>
       <th:block th:each="entry : ${defenders}"
                 th:with="unit=${entry.unitType}">
         <option th:value="${entry.pk}" th:text="${unit.name}"/>
       </th:block>
     </select>
-  </label></p>
+  </label></div></p>
   <h3>Attacker Modifiers</h3>
-  <p><label>
+  <p><div class="labels"><label>
     +1 to Hit:
     <input name="hit-plus-1" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     &minus;1 to Hit:
     <input name="hit-minus-1" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Re-roll Hits:
     <input name="reroll-hits" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Re-roll Hit Rolls of 1:
     <input name="reroll-hits-1" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Re-roll Wounds:
     <input name="reroll-wounds" type="checkbox">
-  </label></p>
+  </label></div></p>
   <h3>Weapon Modifiers</h3>
-  <p><label>
+  <p><div class="labels"><label>
     Exploding Hits:
     <input name="exploding-hits" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Mortal Wounds on 6's to Hit:
     <input name="mortal-wound-hits" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Mortal Wounds on 6's to Wound:
     <input name="mortal-wound-wounds" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Additional AP on 6’s to wound:
     <input name="extra-ap-wound" type="checkbox">
-  </label></p>
+  </label></div></p>
   <h3>Defender Modifiers</h3>
-  <p><label>
+  <p><div class="labels"><label>
     +1 to Save:
     <input name="save-plus-1" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     &minus;1 to Save:
     <input name="save-minus-1" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Invulnerable Save:
     <input name="invul-save" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Re-roll Saves:
     <input name="reroll-save" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     Re-roll Saves of 1:
     <input name="reroll-save-1" type="checkbox">
-  </label></p>
-  <p><label>
+  </label></div></p>
+  <p><div class="labels"><label>
     &minus;1 to Damage:
     <input name="damage-minus-1" type="checkbox">
-  </label></p>
-  <p><input type="submit" value="Simulate"></p>
+  </label></div></p>
+  <p><div class="labels"><button class="button submission-button" type="submit">Simulate</button></div></p>
 </form>
+</div>
 
-
+</div>
   </section></body>
 </html>

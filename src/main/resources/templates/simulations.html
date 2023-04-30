@@ -5,7 +5,7 @@
   </head>
   <body><section th:remove="tag">
 
-
+<div class="container">
 <ul th:unless="${simulations.empty}">
   <li th:each="entry : ${simulations}" th:with="sim=${entry.unitType}">
     <em th:text="${sim.attacker.name}"/>
@@ -112,6 +112,6 @@
   <p>No simulations.</p>
 </th:block>
 
-
+</div>
   </section></body>
 </html>

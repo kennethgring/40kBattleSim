@@ -4,7 +4,7 @@
     <title>Saved Units | 40kBattleSim</title>
   </head>
   <body><section th:remove="tag">
-
+    <div class="container">
 
 <h2>Attackers</h2>
 <ul th:unless="${attackers.empty}">
@@ -68,6 +68,6 @@
 </ul>
 <p th:if="${defenders.empty}">No defenders.</p>
 
-
+</div>
   </section></body>
 </html>

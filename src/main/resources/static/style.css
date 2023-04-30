@@ -2,7 +2,7 @@
   color-scheme: light dark;
 }
 
-header {
+h1 {
   background-image: url('./logo.png');
   background-color: rgba(0, 0, 0, 0);
   background-size: cover;
@@ -24,13 +24,46 @@ input[type=button] {
   font-family: 'Heavy Metal Blight', sans-serif;     
 }
 
+nav {
+  background:rgba(39, 38, 43, 0.905);
+  margin: auto;
+  border: 6px solid #000000;
+  width: 90%;
+  padding: 1em;
+  display: flex; 
+  justify-content: space-between; 
+}
+
+a {
+  color: #3361de; 
+  text-shadow: 2px 2px #000000;
+  font-size: 25px;
+  padding: 10px 50px;
+}
+
+a:hover {
+  border-radius: 20px;
+  background-color: #ff0000a7;
+}
+
+a:visited {
+  color: #4253ef;
+  text-shadow: 2px 2px #000000;
+}
+
 .container {
-  background-color: rgba(120, 240, 124, 0.7);
+  background-color: rgba(120, 240, 124, 0.361);
   border-radius: 20px;
   margin: auto; 
   width: 90%;
   padding: 1em;
   margin-top: 20px;
+}
+
+.form-container {
+  background-color: rgba(215, 231, 40, 0.503);
+  border-radius: 40px;
+  margin: 60px;
 }
 
 #general-form {
@@ -41,7 +74,7 @@ input[type=button] {
 
 .labels {
   margin: 18px 0 0 20px;
-  width: 40%;
+  width: 80%;
   vertical-align: top;
   margin-top: 20px;
 }
@@ -49,7 +82,6 @@ input[type=button] {
 .input-tab {
   text-align: left;
   width: 100%;
-  margin-left: 10px;
 }
 
 .input-field {
@@ -58,7 +90,6 @@ input[type=button] {
   padding: 5px;
   margin: 18px 0 0 10px;
   border: 2px solid #fe0101;
-  /* border-radius: 4px; */
   font-family: inherit;
   font-size: 15px;
   font-weight: bold;
@@ -67,7 +98,7 @@ input[type=button] {
 
 .input-option {
   background-color: #6a6a6a;
-  width: 50%;
+  width: 30%;
   padding: 5px;
   margin: 18px 0 0 10px;
   border: 2px solid #fe0101;
@@ -97,10 +128,10 @@ input[type=button] {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  margin: 18px 0 0 10px;
   transition-duration: 0.4s;
-  cursor: pointer;
+  font-family: 'Heavy Metal Blight', sans-serif !important; 
+  font-size: 1em;
 }
 .submission-button {
   background-color: #6a6a6a; 
@@ -113,15 +144,3 @@ input[type=button] {
   color: #6a6a6a;
 }
 
-
-h1 {
-  color: #a00000;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  h1 {
-    color: #ff8080;
-  }
-
-}

@@ -14,5 +14,11 @@
     <a href="/units">Saved Units</a>
   </nav>
   <th:block th:replace="${content}"/>
+  <footer>
+    <p><a th:href="'/share-session/' + ${userId}">
+      Link to share this session
+    </a></p>
+    <p><a href="/clear-session">Clear session</a></p>
+  </footer>
 </body>
 </html>

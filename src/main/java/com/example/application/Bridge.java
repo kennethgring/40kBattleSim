@@ -527,9 +527,10 @@ public class Bridge {
                 int ballistic_skill = result.getInt("ballistic_skill");
                 int weapon_skill = result.getInt("weapon_skill");
                 int pk = result.getInt("attacker_id");
+                int entryUserId = result.getInt("user_id");
 
                 Attacker attacker = new Attacker(unit_name, ballistic_skill, weapon_skill);
-                Entry<Attacker> entry = new Entry<Attacker>(attacker, userId, pk);
+                Entry<Attacker> entry = new Entry<Attacker>(attacker, entryUserId, pk);
                 attacker_list.add(entry);
             }
             conn.close();
@@ -567,9 +568,10 @@ public class Bridge {
                 int armor_pen = result.getInt("armor_pen");
                 int damage = result.getInt("damage");
                 int pk = result.getInt("weapon_id");
+                int entryUserId = result.getInt("user_id");
 
                 Weapon weapon = new Weapon(weapon_name, num, isRanged, attacks, strength, armor_pen, damage);
-                Entry<Weapon> entry = new Entry<Weapon>(weapon, userId, pk); 
+                Entry<Weapon> entry = new Entry<Weapon>(weapon, entryUserId, pk); 
                 weapon_list.add(entry);
             }
             conn.close();
@@ -605,9 +607,10 @@ public class Bridge {
                 int wounds = result.getInt("wounds");
                 int feel_no_pain = result.getInt("feel_no_pain");
                 int pk = result.getInt("defender_id");
+                int entryUserId = result.getInt("user_id");
 
                 Defender defender = new Defender(unit_name, size, toughness, save, wounds, feel_no_pain);
-                Entry<Defender> entry = new Entry<Defender>(defender, userId, pk);
+                Entry<Defender> entry = new Entry<Defender>(defender, entryUserId, pk);
                 defender_list.add(entry);
             }
             conn.close();
@@ -655,6 +658,7 @@ public class Bridge {
                 boolean rerollSave = result.getBoolean("reroll_save");
                 boolean rerollSaveOne = result.getBoolean("reroll_save_1");
                 boolean damageMinusOne = result.getBoolean("damage-1");
+                int entryUserId = result.getInt("user_id");
     
                 // Create Modifiers and Simulation objects with retrieved values
                 boolean[] mods = {hitsPlusOne, hitMinusOne, rerollHits, rerollHitsOne, rerollWounds, explodingHits,
@@ -665,7 +669,7 @@ public class Bridge {
                 int pk = result.getInt("calc_id");
 
                 Simulation calc = new Simulation(attacker_id, weapon_id, defender_id, modifiers);
-                Entry<Simulation> entry = new Entry<Simulation>(calc, userId, pk);
+                Entry<Simulation> entry = new Entry<Simulation>(calc, entryUserId, pk);
                 calc_list.add(entry);
             }
             conn.close();

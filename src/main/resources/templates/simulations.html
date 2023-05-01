@@ -6,8 +6,10 @@
   <body><section th:remove="tag">
 
 <div class="container">
+
 <ul th:unless="${simulations.empty}">
   <li th:each="entry : ${simulations}" th:with="sim=${entry.unitType}">
+    <div class="simulation-container">
     <em th:text="${sim.attacker.name}"/>
     uses
     <em th:text="${sim.weapon.name}"/>
@@ -103,13 +105,17 @@
         <th:block th:text="${sim.simModelsKilled}"/>
         <th:block th:text="${sim.simModelsKilled == 1 ? 'model' : 'models'}"/>
         killed
-        (<a href="/simulations">Re-simulate</a>)
+        <a class="button submission-button" href="/simulations">Re-simulate</a>
       </li>
     </ul>
+    </div>
   </li>
-</ul>
+  </ul>
+
 <th:block th:if="${simulations.empty}">
+  <div class="simulation-container">
   <p>No simulations.</p>
+  </div>
 </th:block>
 
 </div>

@@ -34,11 +34,21 @@ nav {
   justify-content: space-between; 
 }
 
+ul {
+  list-style: none; 
+  margin: auto; 
+  padding: auto; 
+}
+
+li {
+  width: auto;
+}
+
 a {
   color: #3361de; 
   text-shadow: 2px 2px #000000;
   font-size: 25px;
-  padding: 10px 50px;
+  padding: 20px 50px;
 }
 
 a:hover {
@@ -64,6 +74,14 @@ a:visited {
   background-color: rgba(215, 231, 40, 0.503);
   border-radius: 40px;
   margin: 60px;
+}
+
+.simulation-container {
+  background-color: rgba(215, 231, 40, 0.503);
+  border-radius: 20px;
+  margin: 30px;
+  padding: 20px;
+  /* display: block; */
 }
 
 #general-form {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
@@ -40,6 +41,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         int userId = ensureUserId(request, response);
+        model.addAttribute("userId", userId);
         model.addAttribute("attackers", Bridge.loadAttackers(userId));
         model.addAttribute("weapons", Bridge.loadWeapons(userId));
         model.addAttribute("defenders", Bridge.loadDefenders(userId));
@@ -55,6 +57,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         int userId = ensureUserId(request, response);
+        model.addAttribute("userId", userId);
         model.addAttribute("simulations", Bridge.loadSimulations(userId));
         return "simulations";
     }
@@ -68,6 +71,7 @@ public class Application {
             HttpServletRequest request,
             HttpServletResponse response) {
         int userId = ensureUserId(request, response);
+        model.addAttribute("userId", userId);
         model.addAttribute("attackers", Bridge.loadAttackers(userId));
         model.addAttribute("weapons", Bridge.loadWeapons(userId));
         model.addAttribute("defenders", Bridge.loadDefenders(userId));
@@ -209,6 +213,30 @@ public class Application {
     }
 
     /**
+     * Load a user ID cookie.
+     */
+    @GetMapping("/share-session/{userId}")
+    public RedirectView shareSession(
+            @PathVariable int userId,
+            HttpServletResponse response) {
+        if (userId != 0 && Bridge.userExists(userId)) {
+            response.addCookie(userIdCookie(userId));
+        }
+        return seeOther("/");
+    }
+
+    /**
+     * Clear the user ID cookie.
+     */
+    @GetMapping("/clear-session")
+    public RedirectView clearSession(HttpServletResponse response) {
+        Cookie cookie = userIdCookie(-1);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return seeOther("/");
+    }
+
+    /**
      * Get the user's ID from a cookie, setting the cookie if needed.
      */
     private int ensureUserId(HttpServletRequest request,
@@ -229,10 +257,14 @@ public class Application {
             }
         }
         int userId = Bridge.addUser();
+        response.addCookie(userIdCookie(userId));
+        return userId;
+    }
+
+    private Cookie userIdCookie(int userId) {
         Cookie cookie = new Cookie("user-id", String.valueOf(userId));
         cookie.setPath("/");
-        response.addCookie(cookie);
-        return userId;
+        return cookie;
     }
 
     @ExceptionHandler(NoSuchUnitException.class)

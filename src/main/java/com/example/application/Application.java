@@ -1,94 +1,178 @@
 package com.example.application;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.example.application.calc.Attacker;
-import com.example.application.calc.CalculateDamage;
-import com.example.application.calc.Defender;
-import com.example.application.calc.Weapon;
-//Hello
-//Hello from patrick
 @SpringBootApplication
 @Controller
 public class Application {
+
+    private LinkedList<SimpleUnit> attackers;
+    private LinkedList<SimpleUnit> weapons;
+    private LinkedList<SimpleUnit> defenders;
+    private LinkedList<SimpleSimulation> simulations;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
+    public Application() {
+        attackers = new LinkedList<>();
+        attackers.add(new SimpleUnit("Warriarch Hammerius"));
+        attackers.add(new SimpleUnit("Stabbystab, the Attackist"));
+        weapons = new LinkedList<>();
+        weapons.add(new SimpleUnit("Damascus Longsword"));
+        weapons.add(new SimpleUnit("The Slayinator"));
+        weapons.add(new SimpleUnit("Combination Laser Minigun and Chainsaw "
+                + "Launcher"));
+        defenders = new LinkedList<>();
+        defenders.add(new SimpleUnit("Invictus the Unpuncturable"));
+        defenders.add(new SimpleUnit("Shield Guy"));
+        simulations = new LinkedList<>();
+    }
+
     /**
-     * Show the simulation form.
+     * Show forms to add units and simulations.
      */
     @GetMapping("/")
     public String home(Model model, HttpServletResponse response) {
+        model.addAttribute("attackers", attackers);
+        model.addAttribute("weapons", weapons);
+        model.addAttribute("defenders", defenders);
         return "home";
     }
 
     /**
-     * Run a simulation.
+     * Show saved simulations.
      */
-    @GetMapping("/simulation")
-    public String simulation(
-            @RequestParam(name="atk-bal-skill") int atkBalSkill,
-            @RequestParam(name="atk-wep-skill") int atkWepSkill,
-            @RequestParam(name="wep-number") int wepNumber,
-            @RequestParam(name="wep-type") String wepType,
-            @RequestParam(name="wep-attacks") int wepAttacks,
-            @RequestParam(name="wep-strength") int wepStrength,
-            @RequestParam(name="wep-armor-pen") int wepArmorPen,
-            @RequestParam(name="wep-damage") int wepDamage,
-            @RequestParam(name="def-size") int defSize,
-            @RequestParam(name="def-toughness") int defToughness,
-            @RequestParam(name="def-save") int defSave,
-            @RequestParam(name="def-wounds") int defWounds,
-            @RequestParam(name="def-fnp") int defFnp,
-            @RequestParam(name="def-invul-save", defaultValue="off")
-                boolean defInvulSave,
-            Model model,
+    @GetMapping("/simulations")
+    public String comparisonPage(Model model, HttpServletResponse response) {
+        model.addAttribute("simulations", simulations);
+        return "simulations";
+    }
+
+    /**
+     * Show saved attackers, weapons, and defenders.
+     */
+    @GetMapping("/units")
+    public String unitViewPage(Model model, HttpServletResponse response) {
+        model.addAttribute("attackers", attackers);
+        model.addAttribute("weapons", weapons);
+        model.addAttribute("defenders", defenders);
+        return "units";
+    }
+
+    // Add to main (Compare Calculations Page)
+    @GetMapping("/CompareTwo")
+    public String compareTwoPage(
+            Model model, HttpServletResponse response) {
+
+        // Calculation 1
+        model.addAttribute("attackerName1", "Warriarch Hammerius");
+        model.addAttribute("defenderName1", "Invictus the Unpuncturable");
+        model.addAttribute("avgTotalDamage1", 5.30003);
+        model.addAttribute("avgModelsKilled1", 2.556);
+        model.addAttribute("simTotalDamage1", 7);
+        model.addAttribute("simModelsKilled1", 4);
+
+        // Calculation 2
+        model.addAttribute("attackerName2", "Stabbystab the Attackist");
+        model.addAttribute("defenderName2", "Shield Guy");
+        model.addAttribute("avgTotalDamage2", 7.6699);
+        model.addAttribute("avgModelsKilled2", 4.667);
+        model.addAttribute("simTotalDamage2", 8);
+        model.addAttribute("simModelsKilled2", 5);
+
+        return "CompareTwo";
+    }
+
+    @PostMapping("/submit/new-attacker")
+    public RedirectView newAttacker(
+            @RequestParam(name = "name") String name,
             HttpServletResponse response) {
-        boolean wepIsRanged = wepType.equals("ranged");
-        model.addAttribute("atkBalSkill", atkBalSkill);
-        model.addAttribute("atkWepSkill", atkWepSkill);
-        model.addAttribute("wepNumber", wepNumber);
-        model.addAttribute("wepIsRanged", wepIsRanged);
-        model.addAttribute("wepAttacks", wepAttacks);
-        model.addAttribute("wepStrength", wepStrength);
-        model.addAttribute("wepArmorPen", wepArmorPen);
-        model.addAttribute("wepDamage", wepDamage);
-        model.addAttribute("defSize", defSize);
-        model.addAttribute("defToughness", defToughness);
-        model.addAttribute("defSave", defSave);
-        model.addAttribute("defWounds", defWounds);
-        model.addAttribute("defFnp", defFnp);
-        model.addAttribute("defInvulSave", defInvulSave);
+        attackers.add(new SimpleUnit(name));
+        return seeOther("/");
+    }
 
+    @PostMapping("/submit/new-weapon")
+    public RedirectView newWeapon(
+            @RequestParam(name = "name") String name,
+            HttpServletResponse response) {
+        weapons.add(new SimpleUnit(name));
+        return seeOther("/");
+    }
 
-        CalculateDamage calculator = new CalculateDamage();
-        Attacker atk = new Attacker(atkBalSkill, atkWepSkill);
-        Weapon wep = new Weapon(wepNumber, wepIsRanged, wepAttacks,
-                                wepStrength, wepArmorPen, wepDamage);
-        Defender def = new Defender(defSize, defToughness, defSave, defWounds,
-                                    defFnp, defInvulSave);
+    @PostMapping("/submit/new-defender")
+    public RedirectView newDefender(
+            @RequestParam(name = "name") String name,
+            HttpServletResponse response) {
+        defenders.add(new SimpleUnit(name));
+        return seeOther("/");
+    }
 
-        double avgDamage = calculator.calcAvgDamage(atk, wep, def);
-        int avgModelsKilled = calculator.calcAvgModelsKilled(avgDamage, wep,
-                                                             def);
-        model.addAttribute("avgDamage", avgDamage);
-        model.addAttribute("avgModelsKilled", avgModelsKilled);
+    @PostMapping("/submit/new-simulation")
+    public RedirectView newSimulation(
+            @RequestParam(name = "attacker") String attackerName,
+            @RequestParam(name = "weapon") String weaponName,
+            @RequestParam(name = "defender") String defenderName,
+            @RequestParam(name = "modifiers") String modifiersName,
+            HttpServletResponse response) {
+        SimpleUnit attacker = findUnitWithName(attackers, attackerName);
+        SimpleUnit weapon = findUnitWithName(weapons, weaponName);
+        SimpleUnit defender = findUnitWithName(defenders, defenderName);
+        SimpleUnit modifiers = new SimpleUnit(modifiersName);
+        SimpleSimulation simulation = new SimpleSimulation(attacker, weapon, defender, modifiers);
+        simulations.add(simulation);
+        return seeOther("/simulations");
+    }
 
-        return "simulation";
+    @ExceptionHandler(NoSuchUnitException.class)
+    public ResponseEntity<String> handleNoSuchUnit(
+            NoSuchUnitException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
+
+    /**
+     * Create an HTTP 303 See Other redirect to the given path.
+     */
+    private RedirectView seeOther(String path) {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(path);
+        redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+        return redirectView;
+    }
+
+    /**
+     * Find a SimpleUnit with a given name in a list.
+     */
+    private SimpleUnit findUnitWithName(List<SimpleUnit> list, String name)
+            throws NoSuchUnitException {
+        for (SimpleUnit element : list) {
+            if (element.getName().equals(name)) {
+                return element;
+            }
+        }
+        throw new NoSuchUnitException("No such unit: " + name);
     }
 
 }

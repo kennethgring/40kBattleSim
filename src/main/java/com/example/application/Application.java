@@ -1,11 +1,5 @@
 package com.example.application;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -85,11 +79,11 @@ public class Application {
             @RequestParam(name="wep-skill") int wepSkill,
             HttpServletRequest request,
             HttpServletResponse response) {
-            if (name.isEmpty()
-                    || balSkill < 2 || balSkill > 6
-                    || wepSkill < 2 || wepSkill > 6) {
-                throw new BadParamsException("Invalid attacker parameter(s)");
-            }
+        if (name.isEmpty()
+                || balSkill < 2 || balSkill > 6
+                || wepSkill < 2 || wepSkill > 6) {
+            throw new BadParamsException("Invalid attacker parameter(s)");
+        }
         int userId = ensureUserId(request, response);
         Attacker attacker = new Attacker(name, balSkill, wepSkill);
         Bridge.saveAttacker(userId, attacker);
@@ -315,20 +309,6 @@ public class Application {
         redirectView.setUrl(path);
         redirectView.setStatusCode(HttpStatus.SEE_OTHER);
         return redirectView;
-    }
-
-    /**
-     * Find a unit with a given name in a list.
-     */
-    private <Unit> Unit findUnitWithName(List<Unit> list, String name,
-                                         Function<Unit, String> getName)
-            throws NoSuchUnitException {
-        for (Unit element : list) {
-            if (getName.apply(element).equals(name)) {
-                return element;
-            }
-        }
-        throw new NoSuchUnitException("No such unit: " + name);
     }
 
 }

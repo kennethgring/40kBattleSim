@@ -9,6 +9,7 @@
 </head>
 <body>
   <h1></h1>
+  <main>
   <nav>
     <a href="/">Home</a>
     <a href="/simulations">Saved Simulations</a>
@@ -46,8 +47,15 @@
         section.style.backgroundImage = images[num-1];
       }
       </script>
-
   </nav>
   <th:block th:replace="${content}"/>
+  </main>
+  <footer>
+    <p><a th:href="'/share-session/' + ${userId}">
+      Link to share this session
+    </a></p>
+    <p><a href="/clear-session">Clear session</a></p>
+  </footer>
+
 </body>
 </html>

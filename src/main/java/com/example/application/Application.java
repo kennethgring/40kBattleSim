@@ -237,6 +237,30 @@ public class Application {
     }
 
     /**
+     * Incomplete side-by-side simulation comparison page.
+     */
+    @GetMapping("/compare-two-teaser")
+    public String compareTwoTeaser(Model model) {
+        // Calculation 1
+        model.addAttribute("attackerName1", "Warriarch Hammerius");
+        model.addAttribute("defenderName1", "Invictus the Unpuncturable");
+        model.addAttribute("avgTotalDamage1", 5.30003);
+        model.addAttribute("avgModelsKilled1", 2.556);
+        model.addAttribute("simTotalDamage1", 7);
+        model.addAttribute("simModelsKilled1", 4);
+
+        // Calculation 2
+        model.addAttribute("attackerName2", "Stabbystab the Attackist");
+        model.addAttribute("defenderName2", "Shield Guy");
+        model.addAttribute("avgTotalDamage2", 7.6699);
+        model.addAttribute("avgModelsKilled2", 4.667);
+        model.addAttribute("simTotalDamage2", 8);
+        model.addAttribute("simModelsKilled2", 5);
+
+        return "compare-two-teaser";
+    }
+
+    /**
      * Get the user's ID from a cookie, setting the cookie if needed.
      */
     private int ensureUserId(HttpServletRequest request,

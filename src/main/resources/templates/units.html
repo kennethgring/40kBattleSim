@@ -4,8 +4,9 @@
     <title>Saved Units | 40kBattleSim</title>
   </head>
   <body><section th:remove="tag">
+    <div class="container">
 
-
+<div class="simulation-container">
 <h2>Attackers</h2>
 <ul th:unless="${attackers.empty}">
   <li th:each="entry : ${attackers}" th:with="unit=${entry.unitType}">
@@ -20,7 +21,9 @@
   </li>
 </ul>
 <p th:if="${attackers.empty}">No attackers.</p>
+</div>
 
+<div class="simulation-container">
 <h2>Weapons</h2>
 <ul th:unless="${weapons.empty}">
   <li th:each="entry : ${weapons}" th:with="unit=${entry.unitType}">
@@ -43,7 +46,9 @@
   </li>
 </ul>
 <p th:if="${weapons.empty}">No weapons.</p>
+</div>
 
+<div class="simulation-container">
 <h2>Defenders</h2>
 <ul th:unless="${defenders.empty}">
   <li th:each="entry : ${defenders}" th:with="unit=${entry.unitType}">
@@ -67,7 +72,8 @@
   </li>
 </ul>
 <p th:if="${defenders.empty}">No defenders.</p>
+</div>
 
-
+</div>
   </section></body>
 </html>

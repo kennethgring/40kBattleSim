@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Compare Two - 40kBattleSim</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: auto;
+  max-width: 80ch;
+}
+
+  </style>
+</head>
+<body>
+  <h1>40k Battle Sim</h1>
+
+
+<h1>Compare Two</h1>
+<!--This code will create the heading in the center. The text align in style makes it in the center.-->
+
+<!-- Start of the attributes for Simulation 1-->
+<h4>Simulation 1</h4>
+<pre>
+  <span th:text="'Attacking Units- ' + ${attackerName1}"/>
+  <span th:text="'Defending Units- ' + ${defenderName1}"/>
+  <span th:text="'Average Total Damage- ' + ${avgTotalDamage1}"/>
+  <span th:text="'Average Models Killed- ' + ${avgModelsKilled1}"/>
+  <span th:text="'Simulated Total Damage- ' + ${simTotalDamage1}"/>
+  <span th:text="'Simulated Models Killed- ' + ${simModelsKilled1}"/>
+  </pre>
+<!-- End of the attributes for Simulation 1-->
+
+<div class="hr"></div> <!-- This creates the horizontal line between the two sepearate elements-->
+
+<!-- Start of the attributes for Simulation 2-->
+<h4>Simulation 2</h4>
+<pre>
+  <span th:text="'Attacking Units- ' + ${attackerName2}"/>
+  <span th:text="'Defending Units- ' + ${defenderName2}"/>
+  <span th:text="'Average Total Damage- ' + ${avgTotalDamage2}"/>
+  <span th:text="'Average Models Killed- ' + ${avgModelsKilled2}"/>
+  <span th:text="'Simulated Total Damage- ' + ${simTotalDamage2}"/>
+  <span th:text="'Simulated Models Killed- ' + ${simModelsKilled2}"/>
+</pre>
+<!-- End of the attributes for Simulation 2-->
+
+<br> <!-- Page break for formatting-->
+
+<!-- Gets input for the first simulation-->
+<!-- Expects calculations IDs-->
+<label for="Compare">Compare</label>
+<input type="text" id="sim1" name="simulation1">
+
+<!-- Gets input for the second simulation-->
+<label for="To">To</label>
+<input type="text" id="sim2" name="simulation2">
+
+<!-- This is the button that will go get the comparison data-->
+<button type="Do Comparison">Do Comparison</button>
+
+<!-- Button that will take the user back to the home page-->
+<h4></h4><a href='/'><button>Home Page</button></a>
+
+
+</body>
+</html>

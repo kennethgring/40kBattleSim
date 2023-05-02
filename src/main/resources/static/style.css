@@ -19,6 +19,7 @@ body {
   height: 100%;
   font-family: 'Heavy Metal Blight', sans-serif; 
   text-shadow: 2px 2px #ff0000;  
+  margin: 0;
 }
 
 main {
